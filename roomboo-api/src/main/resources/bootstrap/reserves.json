@@ -34,5 +34,17 @@
 		"to": "2010-07-20T16:00:00.000",
 		"confirmed": false,
 		"code": "000222"
+	},
+	{
+		"room": {
+			"id": "jamesjoyce"
+		},
+		"owner": {
+			"id": "johndoe"
+		},
+		"from": "2010-07-20T11:00:00.000",
+		"to": "2010-07-20T12:00:00.000",
+		"confirmed": true,
+		"code": "111333"
 	}
 ]

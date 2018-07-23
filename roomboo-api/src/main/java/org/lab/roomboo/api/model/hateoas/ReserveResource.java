@@ -39,6 +39,7 @@ public class ReserveResource extends ResourceSupport {
 			}
 			reserve.setRoom(Room.builder().id(roomId).build());
 		}
+		add(linkTo(ReserveController.class).withRel("reserves"));
 	}
 
 }

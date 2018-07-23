@@ -1,12 +1,17 @@
 [
-  {
-    "id": "labcabrera",
-    "displayName": "Luis",
-    "email": "lab.cabrera@gmail.com" 
-  },
-  {
-    "id": "test",
-    "displayName": "Test",
-    "email": "test@roombo.org" 
-  }
+	{
+		"id": "admin",
+		"displayName": "Admin",
+		"email": "admin@roombo.org"
+	},
+	{
+		"id": "labcabrera",
+		"displayName": "Luis",
+		"email": "lab.cabrera@gmail.com"
+	},
+	{
+		"id": "johndoe",
+		"displayName": "John Doe",
+		"email": "john.doe@roombo.org"
+	}
 ]
