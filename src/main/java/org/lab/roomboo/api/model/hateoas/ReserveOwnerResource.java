@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.model;
+package org.lab.roomboo.api.model.hateoas;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;

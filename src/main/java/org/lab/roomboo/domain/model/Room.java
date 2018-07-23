@@ -3,8 +3,6 @@ package org.lab.roomboo.domain.model;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +23,6 @@ public class Room {
 
 	private String name;
 
-	@JsonIgnore
 	@DBRef
 	private Building building;
 

@@ -1,4 +1,4 @@
-package org.lab.roomboo.exception;
+package org.lab.roomboo.domain.exception;
 
 @SuppressWarnings("serial")
 public class RoombooException extends RuntimeException {

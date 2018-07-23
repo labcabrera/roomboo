@@ -5,13 +5,13 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.RoomReserveRequest;
+import org.lab.roomboo.domain.exception.ReserveException;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.model.RoomReserve;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.lab.roomboo.domain.repository.RoomReserveRepository;
-import org.lab.roomboo.exception.ReserveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

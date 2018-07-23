@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.model;
+package org.lab.roomboo.api.model.hateoas;
 
 import org.lab.roomboo.domain.model.RoomReserve;
 import org.springframework.hateoas.ResourceSupport;

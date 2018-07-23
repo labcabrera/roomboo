@@ -3,6 +3,7 @@ package org.lab.roomboo.domain.initializer;
 import java.io.InputStream;
 import java.util.List;
 
+import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.model.ReserveOwner;
@@ -13,7 +14,6 @@ import org.lab.roomboo.domain.repository.CompanyRepository;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.lab.roomboo.domain.repository.RoomReserveRepository;
-import org.lab.roomboo.exception.RoombooException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
