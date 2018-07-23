@@ -9,6 +9,30 @@
 		"from": "2010-07-23T10:00:00.000",
 		"to": "2010-07-23T11:00:00.000",
 		"confirmed": true,
-		"code": "ABCDEF"
+		"code": "000111"
+	},
+	{
+		"room": {
+			"id": "milankundera"
+		},
+		"owner": {
+			"id": "labcabrera"
+		},
+		"from": "2010-07-23T14:00:00.000",
+		"to": "2010-07-23T16:00:00.000",
+		"confirmed": false,
+		"code": "000222"
+	},
+	{
+		"room": {
+			"id": "jamesjoyce"
+		},
+		"owner": {
+			"id": "labcabrera"
+		},
+		"from": "2010-07-20T14:00:00.000",
+		"to": "2010-07-20T16:00:00.000",
+		"confirmed": false,
+		"code": "000222"
 	}
 ]
