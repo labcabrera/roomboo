@@ -1,1 +1,2 @@
-rootProject.name = 'roomboo'
+include ":roomboo-domain",
+        ":roomboo-api"
