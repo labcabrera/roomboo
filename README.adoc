@@ -7,3 +7,14 @@ image:https://api.codacy.com/project/badge/Grade/018b2390426f4138aa16f2548c75f8b
 
 Aplicación para la reserva de salas de reuniones.
 
+
+== Requisitos
+
+* JDK8+
+* MongoDB
+
+== Docker
+
+La imagen de docker se puede encontrar en:
+
+https://hub.docker.com/r/labcabrera/roomboo-api/
