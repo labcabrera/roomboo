@@ -1,5 +1,7 @@
 = Roomboo
 
+image:https://travis-ci.org/labcabrera/roomboo.svg?branch=master["Build Status", link="https://travis-ci.org/labcabrera/roomboo"]
+
 == Introducción
 
 Aplicación para la reserva de salas de reuniones.
