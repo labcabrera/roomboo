@@ -11,4 +11,8 @@ public class RoomSearchRequest {
 
 	private String buildingId;
 
+	private Integer minSize;
+	
+	private Boolean videoRequired;
+
 }

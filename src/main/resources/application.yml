@@ -12,4 +12,5 @@ management:
 logging:
   level:
     org.lab.roomboo: DEBUG
-    org: INFO
+    org.springframework: DEBUG
+    springfox: WARN

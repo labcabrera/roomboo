@@ -31,5 +31,16 @@
       "size": 20,
       "video": "false"
     }
-  }
+  },
+  {
+    "id": "fiodordostoyevski",
+    "name": "Fiódor Dostoyevski",
+    "building": {
+      "id": "building03"
+    },
+    "features": {
+      "size": 50,
+      "video": "true"
+    }
+   }
 ]
