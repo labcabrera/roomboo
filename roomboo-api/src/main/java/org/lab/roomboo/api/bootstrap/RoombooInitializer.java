@@ -1,4 +1,4 @@
-package org.lab.roomboo.domain.initializer;
+package org.lab.roomboo.api.bootstrap;
 
 import java.io.InputStream;
 import java.util.List;

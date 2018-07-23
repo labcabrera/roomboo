@@ -1,11 +1,11 @@
-package org.lab.roomboo.service;
+package org.lab.roomboo.api.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.RoomReserveRequest;
-import org.lab.roomboo.domain.exception.ReserveException;
+import org.lab.roomboo.domain.exception.ReserveOwnerNotFoundException;
+import org.lab.roomboo.domain.exception.RoomNotFoundException;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.model.RoomReserve;
@@ -40,18 +40,14 @@ public class ReserveService {
 	private ReserveCodeGenerator codeGenerator;
 
 	public RoomReserve reserve(RoomReserveRequest request) {
-		Optional<Room> room = roomRepository.findById(request.getRoomId());
-		if (!room.isPresent()) {
-			throw new ReserveException("Invalid roomId " + request.getRoomId());
-		}
-		Optional<ReserveOwner> owner = ownerRepository.findById(request.getOwnerId());
-		if (!owner.isPresent()) {
-			throw new ReserveException("Invalid ownerId " + request.getRoomId());
-		}
+		Room room = roomRepository.findById(request.getRoomId())
+			.orElseThrow(() -> new RoomNotFoundException(request.getRoomId()));
+		ReserveOwner owner = ownerRepository.findById(request.getOwnerId())
+			.orElseThrow(() -> new ReserveOwnerNotFoundException(request.getOwnerId()));
 		// TODO check dates
 		RoomReserve reserve = new RoomReserve();
-		reserve.setOwner(owner.get());
-		reserve.setRoom(room.get());
+		reserve.setOwner(owner);
+		reserve.setRoom(room);
 		reserve.setFrom(request.getFrom());
 		reserve.setTo(request.getTo());
 		reserve.setConfirmed(false);

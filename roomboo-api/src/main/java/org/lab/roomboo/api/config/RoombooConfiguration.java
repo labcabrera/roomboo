@@ -1,4 +1,4 @@
-package org.lab.roomboo.config;
+package org.lab.roomboo.api.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;

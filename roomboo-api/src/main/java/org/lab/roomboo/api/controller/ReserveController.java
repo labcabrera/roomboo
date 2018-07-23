@@ -1,8 +1,8 @@
 package org.lab.roomboo.api.controller;
 
 import org.lab.roomboo.api.model.RoomReserveRequest;
+import org.lab.roomboo.api.service.ReserveService;
 import org.lab.roomboo.domain.model.RoomReserve;
-import org.lab.roomboo.service.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

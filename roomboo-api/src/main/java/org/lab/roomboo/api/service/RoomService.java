@@ -1,4 +1,4 @@
-package org.lab.roomboo.service;
+package org.lab.roomboo.api.service;
 
 import java.util.List;
 

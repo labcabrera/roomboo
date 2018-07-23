@@ -6,6 +6,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.lab.roomboo.api.controller.BuildingController;
 import org.lab.roomboo.api.controller.ReserveOwnerController;
 import org.lab.roomboo.api.controller.RoomController;
+import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Room;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -23,7 +24,7 @@ public class RoomResource extends ResourceSupport {
 		if (room.getBuilding() != null) {
 			String buildingId = room.getBuilding().getId();
 			add(linkTo(methodOn(BuildingController.class).findById(buildingId)).withRel("building"));
-			room.setBuilding(null);
+			room.setBuilding(Building.builder().id(buildingId).build());
 		}
 		add(linkTo(ReserveOwnerController.class).withRel("rooms"));
 	}

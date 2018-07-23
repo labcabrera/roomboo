@@ -1,6 +1,6 @@
-package org.lab.roomboo;
+package org.lab.roomboo.api;
 
-import org.lab.roomboo.domain.initializer.RoombooInitializer;
+import org.lab.roomboo.api.bootstrap.RoombooInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

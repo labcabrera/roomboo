@@ -1,9 +1,9 @@
 package org.lab.roomboo.domain.exception;
 
 @SuppressWarnings("serial")
-public class RoomOwnerNotFoundException extends RoombooException {
+public class RoomNotFoundException extends RoombooException {
 
-	public RoomOwnerNotFoundException(String id) {
+	public RoomNotFoundException(String id) {
 		super("Room " + id + " not found");
 	}
 
