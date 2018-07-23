@@ -1,6 +1,7 @@
 = Roomboo
 
 image:https://travis-ci.org/labcabrera/roomboo.svg?branch=master["Build Status", link="https://travis-ci.org/labcabrera/roomboo"]
+image:https://api.codacy.com/project/badge/Grade/018b2390426f4138aa16f2548c75f8bc["Codacy code quality", link="https://www.codacy.com/app/lab.cabrera/roomboo?utm_source=github.com&utm_medium=referral&utm_content=labcabrera/roomboo&utm_campaign=Badge_Grade"]
 
 == Introducción
 
