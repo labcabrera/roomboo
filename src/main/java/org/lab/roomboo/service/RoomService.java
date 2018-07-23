@@ -1,6 +1,7 @@
 package org.lab.roomboo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.RoomSearchRequest;
@@ -16,7 +17,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RoomSearchService {
+public class RoomService {
 
 	@Autowired
 	private RoomRepository repository;
@@ -24,8 +25,20 @@ public class RoomSearchService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	public List<Room> search() {
-		return repository.findAll();
+	public Optional<Room> findById(String id) {
+		return repository.findById(id);
+	}
+
+	public Room insert(Room entity) {
+		return repository.insert(entity);
+	}
+
+	public Room update(Room entity) {
+		return repository.save(entity);
+	}
+
+	public void delete(String id) {
+		repository.deleteById(id);
 	}
 
 	public Page<Room> search(RoomSearchRequest request, Pageable pageable) {
@@ -37,7 +50,7 @@ public class RoomSearchService {
 			query.addCriteria(Criteria.where("features.size").gte(request.getMinSize()));
 		}
 		if (request.getVideoRequired() != null && request.getVideoRequired()) {
-			query.addCriteria(Criteria.where("features.video").is("true"));
+			query.addCriteria(Criteria.where("features.video").is(Boolean.TRUE));
 		}
 		List<Room> list = mongoTemplate.find(query, Room.class);
 		return PageableExecutionUtils.getPage(list, pageable, () -> mongoTemplate.count(query, Room.class));
