@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.lab.roomboo.domain.exception.ReserveOwnerNotFoundException;
-import org.lab.roomboo.domain.exception.RoomNotFoundException;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
@@ -41,9 +40,9 @@ public class ReserveService {
 
 	// TODO wrap parameters
 	public Reserve reserve(String roomId, String ownerId, LocalDateTime from, LocalDateTime to) {
-		Room room = roomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
+		Room room = roomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException(Room.class, roomId));
 		ReserveOwner owner = ownerRepository.findById(ownerId)
-			.orElseThrow(() -> new ReserveOwnerNotFoundException(ownerId));
+			.orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, ownerId));
 		// TODO check dates
 		Reserve reserve = new Reserve();
 		reserve.setOwner(owner);

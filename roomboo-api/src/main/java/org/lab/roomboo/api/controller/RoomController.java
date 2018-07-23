@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.hateoas.RoomResource;
-import org.lab.roomboo.domain.exception.RoomNotFoundException;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.RoomRepository;
@@ -68,7 +68,7 @@ public class RoomController {
 	@GetMapping("/{id}")
 	public ResponseEntity<RoomResource> findById(@PathVariable("id") String id) {
 		return roomRepository.findById(id).map(p -> ResponseEntity.ok(new RoomResource(p)))
-			.orElseThrow(() -> new RoomNotFoundException(id));
+			.orElseThrow(() -> new EntityNotFoundException(Room.class, id));
 	}
 
 	@ApiOperation(value = "Room insert")
@@ -95,7 +95,7 @@ public class RoomController {
 		return roomRepository.findById(id).map(p -> {
 			roomRepository.deleteById(id);
 			return ResponseEntity.noContent().build();
-		}).orElseThrow(() -> new RoomNotFoundException(id));
+		}).orElseThrow(() -> new EntityNotFoundException(Room.class, id));
 	}
 
 }

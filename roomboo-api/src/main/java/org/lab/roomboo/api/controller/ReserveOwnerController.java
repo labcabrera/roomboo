@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lab.roomboo.api.model.hateoas.ReserveOwnerResource;
-import org.lab.roomboo.domain.exception.ReserveOwnerNotFoundException;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class ReserveOwnerController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ReserveOwnerResource> findById(@PathVariable("id") String id) {
 		return reserveOwnerRepository.findById(id).map(p -> ResponseEntity.ok(new ReserveOwnerResource(p)))
-			.orElseThrow(() -> new ReserveOwnerNotFoundException(id));
+			.orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, id));
 	}
 
 	@ApiOperation(value = "Reserve owner insert")
@@ -87,7 +87,7 @@ public class ReserveOwnerController {
 		return reserveOwnerRepository.findById(id).map(p -> {
 			reserveOwnerRepository.deleteById(id);
 			return ResponseEntity.noContent().build();
-		}).orElseThrow(() -> new ReserveOwnerNotFoundException(id));
+		}).orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, id));
 	}
 
 }

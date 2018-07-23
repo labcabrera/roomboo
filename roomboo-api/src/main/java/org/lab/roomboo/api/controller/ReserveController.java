@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.hateoas.ReserveResource;
-import org.lab.roomboo.domain.exception.BuildingNotFoundException;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
@@ -70,6 +70,6 @@ public class ReserveController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ReserveResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new ReserveResource(p)))
-			.orElseThrow(() -> new BuildingNotFoundException(id));
+			.orElseThrow(() -> new EntityNotFoundException(Reserve.class, id));
 	}
 }
