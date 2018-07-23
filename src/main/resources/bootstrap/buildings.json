@@ -1,0 +1,23 @@
+[
+  {
+    "id": "building01",
+    "name": "Example building 1",
+    "company": {
+      "id": "company01"
+    }
+  },
+  {
+    "id": "building02",
+    "name": "Example building 2",
+    "company": {
+      "id": "company01"
+    }
+  },
+  {
+    "id": "building03",
+    "name": "Example building company 2",
+    "company": {
+      "id": "company02"
+    }
+  }
+]

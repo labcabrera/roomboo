@@ -1,0 +1,35 @@
+[
+  {
+    "id": "milankundera",
+    "name": "Milan Kundera",
+    "building": {
+      "id": "building01"
+    },
+    "features": {
+      "size": 15,
+      "video": "false"
+    }
+  },
+    {
+    "id": "franzkafka",
+    "name": "Kranz Kafka",
+    "building": {
+      "id": "building01"
+    },
+    "features": {
+      "size": 30,
+      "video": "true"
+    }
+  },
+  {
+    "id": "jamesjoyce",
+    "name": "James Joyce",
+    "building": {
+      "id": "building01"
+    },
+    "features": {
+      "size": 20,
+      "video": "false"
+    }
+  }
+]
