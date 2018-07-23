@@ -19,4 +19,6 @@ public class RoomFeatures {
 
 	private Boolean video;
 
+	private Boolean conferenceCall;
+
 }

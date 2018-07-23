@@ -65,7 +65,7 @@ public class RoomController {
 		return new ResponseEntity<Room>(HttpStatus.NO_CONTENT);
 	}
 
-	@ApiOperation(value = "Room search", notes = "notes")
+	@ApiOperation(value = "Room search")
 	@PostMapping
 	private Page<Room> find( // @formatter:off
 			@RequestBody RoomSearchRequest request,

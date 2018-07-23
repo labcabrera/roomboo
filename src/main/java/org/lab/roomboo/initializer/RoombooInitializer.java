@@ -6,10 +6,14 @@ import java.util.List;
 import org.lab.roomboo.exception.RoombooException;
 import org.lab.roomboo.model.Building;
 import org.lab.roomboo.model.Company;
+import org.lab.roomboo.model.ReserveOwner;
 import org.lab.roomboo.model.Room;
+import org.lab.roomboo.model.RoomReserve;
 import org.lab.roomboo.repository.BuildingRepository;
 import org.lab.roomboo.repository.CompanyRepository;
+import org.lab.roomboo.repository.ReserveOwnerRepository;
 import org.lab.roomboo.repository.RoomRepository;
+import org.lab.roomboo.repository.RoomReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,13 +38,22 @@ public class RoombooInitializer {
 	@Autowired
 	private RoomRepository roomRepository;
 
+	@Autowired
+	private ReserveOwnerRepository reserveOwnerRepository;
+
+	@Autowired
+	private RoomReserveRepository roomReserveRepository;
+
 	public boolean isInitialized() {
+		// TODO force restart data
 		return false;
 	}
 
 	public void initialize() {
 		log.info("Loading initialization data");
 
+		roomReserveRepository.deleteAll();
+		reserveOwnerRepository.deleteAll();
 		buildingRepository.deleteAll();
 		companyRepository.deleteAll();
 		roomRepository.deleteAll();
@@ -52,7 +65,8 @@ public class RoombooInitializer {
 			});
 			companyRepository.insert(list);
 			log.info("Inserted {} companies", list.size());
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new RoombooException("Bootstrap error", ex);
 		}
 
@@ -61,7 +75,8 @@ public class RoombooInitializer {
 			});
 			buildingRepository.insert(list);
 			log.info("Inserted {} buildings", list.size());
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new RoombooException("Bootstrap error", ex);
 		}
 
@@ -70,7 +85,28 @@ public class RoombooInitializer {
 			});
 			roomRepository.insert(list);
 			log.info("Inserted {} rooms", list.size());
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
+			throw new RoombooException("Bootstrap error", ex);
+		}
+
+		try (InputStream in = classLoader.getResourceAsStream("bootstrap/owners.json")) {
+			List<ReserveOwner> list = objectMapper.readValue(in, new TypeReference<List<ReserveOwner>>() {
+			});
+			reserveOwnerRepository.insert(list);
+			log.info("Inserted {} reserve owners", list.size());
+		}
+		catch (Exception ex) {
+			throw new RoombooException("Bootstrap error", ex);
+		}
+
+		try (InputStream in = classLoader.getResourceAsStream("bootstrap/reserves.json")) {
+			List<RoomReserve> list = objectMapper.readValue(in, new TypeReference<List<RoomReserve>>() {
+			});
+			roomReserveRepository.insert(list);
+			log.info("Inserted {} room reserves", list.size());
+		}
+		catch (Exception ex) {
 			throw new RoombooException("Bootstrap error", ex);
 		}
 	}
