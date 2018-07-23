@@ -2,4 +2,4 @@
 
 == Introduction
 
-**Room book**ing application.
+API para la reserva de salas.
