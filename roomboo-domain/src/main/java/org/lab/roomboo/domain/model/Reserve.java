@@ -19,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoomReserve {
+public class Reserve {
 
 	private String id;
 

@@ -2,12 +2,18 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost/roomboo
+  jackson:
+    default-property-inclusion: non_null
 
 management:
   endpoints:
     web:
       exposure:
         include: '*'
+
+
+
+
 
 logging:
   level:

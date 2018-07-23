@@ -8,12 +8,12 @@ import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
-import org.lab.roomboo.domain.model.RoomReserve;
+import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.repository.BuildingRepository;
 import org.lab.roomboo.domain.repository.CompanyRepository;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
-import org.lab.roomboo.domain.repository.RoomReserveRepository;
+import org.lab.roomboo.domain.repository.ReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +42,7 @@ public class RoombooInitializer {
 	private ReserveOwnerRepository reserveOwnerRepository;
 
 	@Autowired
-	private RoomReserveRepository roomReserveRepository;
+	private ReserveRepository roomReserveRepository;
 
 	public boolean isInitialized() {
 		// TODO force restart data
@@ -101,7 +101,7 @@ public class RoombooInitializer {
 		}
 
 		try (InputStream in = classLoader.getResourceAsStream("bootstrap/reserves.json")) {
-			List<RoomReserve> list = objectMapper.readValue(in, new TypeReference<List<RoomReserve>>() {
+			List<Reserve> list = objectMapper.readValue(in, new TypeReference<List<Reserve>>() {
 			});
 			roomReserveRepository.insert(list);
 			log.info("Inserted {} room reserves", list.size());
