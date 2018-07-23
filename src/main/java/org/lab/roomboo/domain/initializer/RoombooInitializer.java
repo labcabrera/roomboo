@@ -1,19 +1,19 @@
-package org.lab.roomboo.initializer;
+package org.lab.roomboo.domain.initializer;
 
 import java.io.InputStream;
 import java.util.List;
 
+import org.lab.roomboo.domain.model.Building;
+import org.lab.roomboo.domain.model.Company;
+import org.lab.roomboo.domain.model.ReserveOwner;
+import org.lab.roomboo.domain.model.Room;
+import org.lab.roomboo.domain.model.RoomReserve;
+import org.lab.roomboo.domain.repository.BuildingRepository;
+import org.lab.roomboo.domain.repository.CompanyRepository;
+import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
+import org.lab.roomboo.domain.repository.RoomRepository;
+import org.lab.roomboo.domain.repository.RoomReserveRepository;
 import org.lab.roomboo.exception.RoombooException;
-import org.lab.roomboo.model.Building;
-import org.lab.roomboo.model.Company;
-import org.lab.roomboo.model.ReserveOwner;
-import org.lab.roomboo.model.Room;
-import org.lab.roomboo.model.RoomReserve;
-import org.lab.roomboo.repository.BuildingRepository;
-import org.lab.roomboo.repository.CompanyRepository;
-import org.lab.roomboo.repository.ReserveOwnerRepository;
-import org.lab.roomboo.repository.RoomRepository;
-import org.lab.roomboo.repository.RoomReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

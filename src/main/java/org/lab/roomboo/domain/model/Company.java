@@ -1,4 +1,6 @@
-package org.lab.roomboo.model;
+package org.lab.roomboo.domain.model;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,18 +9,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Document(collection = "companies")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoomFeatures {
+public class Company {
 
-	private Integer size;
+	private String id;
 
-	private Boolean video;
-
-	private Boolean conferenceCall;
+	private String name;
 
 }

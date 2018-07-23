@@ -3,7 +3,7 @@ package org.lab.roomboo.api.controller;
 import java.util.Optional;
 
 import org.lab.roomboo.api.model.RoomSearchRequest;
-import org.lab.roomboo.model.Room;
+import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

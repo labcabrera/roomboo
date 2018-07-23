@@ -1,9 +1,7 @@
-package org.lab.roomboo.model;
+package org.lab.roomboo.domain.model;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,23 +10,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Document(collection = "rooms")
+@Document(collection = "buildings")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Room {
+public class Building {
 
 	private String id;
 
 	private String name;
 
-	@JsonIgnore
 	@DBRef
-	private Building building;
-
-	private RoomFeatures features;
+	private Company company;
 
 }
