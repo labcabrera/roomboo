@@ -24,4 +24,6 @@ public class ReserveOwner {
 
 	private String displayName;
 
+	private Boolean active;
+
 }

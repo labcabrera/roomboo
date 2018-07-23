@@ -5,6 +5,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.controller.BuildingController;
+import org.lab.roomboo.api.controller.CalendarController;
 import org.lab.roomboo.api.controller.ReserveController;
 import org.lab.roomboo.api.controller.ReserveOwnerController;
 import org.lab.roomboo.api.controller.RoomController;
@@ -29,6 +30,8 @@ public class RoomResource extends ResourceSupport {
 			room.setBuilding(Building.builder().id(buildingId).build());
 		}
 		add(linkTo(methodOn(ReserveController.class).find(id, StringUtils.EMPTY, 0, 10)).withRel("reserves"));
+		add(linkTo(methodOn(CalendarController.class).findToday(id)).withRel("today"));
+		add(linkTo(methodOn(CalendarController.class).findTomorrow(id)).withRel("tomorrow"));
 		add(linkTo(ReserveOwnerController.class).withRel("rooms"));
 	}
 

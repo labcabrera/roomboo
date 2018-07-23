@@ -23,6 +23,8 @@ public class Reserve {
 
 	private String id;
 
+	private String name;
+
 	@DBRef
 	private Room room;
 

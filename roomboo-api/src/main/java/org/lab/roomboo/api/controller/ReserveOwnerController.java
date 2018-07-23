@@ -51,7 +51,6 @@ public class ReserveOwnerController {
 		Resources<ReserveOwnerResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
-		resources.add(new Link(fromController(BuildingController.class).build().toString(), "buildings"));
 		return ResponseEntity.ok(resources);
 	}
 

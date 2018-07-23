@@ -1,50 +1,80 @@
 [
 	{
+		"name": "Reserva Luis - Sala Kundera mañana",
 		"room": {
 			"id": "milankundera"
 		},
 		"owner": {
 			"id": "labcabrera"
 		},
-		"from": "2010-07-23T10:00:00.000",
-		"to": "2010-07-23T11:00:00.000",
+		"from": "2018-07-23T10:00:00.000",
+		"to": "2018-07-23T11:00:00.000",
 		"confirmed": true,
 		"code": "000111"
 	},
 	{
+		"name": "Reserva Luis - Sala Kundera tarde",
 		"room": {
 			"id": "milankundera"
 		},
 		"owner": {
 			"id": "labcabrera"
 		},
-		"from": "2010-07-23T14:00:00.000",
-		"to": "2010-07-23T16:00:00.000",
-		"confirmed": false,
+		"from": "2018-07-23T14:00:00.000",
+		"to": "2018-07-23T16:00:00.000",
+		"confirmed": true,
 		"code": "000222"
 	},
 	{
+	    "name": "Reserva Luis - Sala Joyce tarde",
 		"room": {
 			"id": "jamesjoyce"
 		},
 		"owner": {
 			"id": "labcabrera"
 		},
-		"from": "2010-07-20T14:00:00.000",
-		"to": "2010-07-20T16:00:00.000",
+		"from": "2018-07-20T14:00:00.000",
+		"to": "2018-07-20T16:00:00.000",
 		"confirmed": false,
 		"code": "000222"
 	},
 	{
+		"name": "Reserva John - Sala Joyce mañana",
 		"room": {
 			"id": "jamesjoyce"
 		},
 		"owner": {
 			"id": "johndoe"
 		},
-		"from": "2010-07-20T11:00:00.000",
-		"to": "2010-07-20T12:00:00.000",
-		"confirmed": true,
+		"from": "2018-07-20T11:00:00.000",
+		"to": "2018-07-20T12:00:00.000",
+		"confirmed": false,
 		"code": "111333"
+	},
+	{
+		"name": "Reserva Luis - Sala Kundera mañana",
+		"room": {
+			"id": "milankundera"
+		},
+		"owner": {
+			"id": "labcabrera"
+		},
+		"from": "2018-07-24T09:00:00.000",
+		"to": "2018-07-24T10:00:00.000",
+		"confirmed": true,
+		"code": "888222"
+	},
+	{
+		"name": "Reserva Luis - Sala Kundera tarde (sin confirmar)",
+		"room": {
+			"id": "milankundera"
+		},
+		"owner": {
+			"id": "labcabrera"
+		},
+		"from": "2018-07-24T14:00:00.000",
+		"to": "2018-07-24T15:00:00.000",
+		"confirmed": false,
+		"code": "888222"
 	}
 ]

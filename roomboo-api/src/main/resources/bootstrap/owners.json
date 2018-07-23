@@ -2,16 +2,25 @@
 	{
 		"id": "admin",
 		"displayName": "Admin",
-		"email": "admin@roombo.org"
+		"email": "admin@roombo.org",
+		"active": true
+	},
+	{
+		"id": "inactive",
+		"displayName": "Inactive user",
+		"email": "inactive@roombo.org",
+		"active": false
 	},
 	{
 		"id": "labcabrera",
 		"displayName": "Luis",
-		"email": "lab.cabrera@gmail.com"
+		"email": "lab.cabrera@gmail.com",
+		"active": true
 	},
 	{
 		"id": "johndoe",
 		"displayName": "John Doe",
-		"email": "john.doe@roombo.org"
+		"email": "john.doe@roombo.org",
+		"active": true
 	}
 ]

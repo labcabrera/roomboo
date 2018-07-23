@@ -62,6 +62,7 @@ public class ReserveController {
 		resources.add(new Link(fromController(ReserveController.class).build().toString(), "reserves"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "owners"));
+		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "calendar"));
 		return ResponseEntity.ok(resources);
 	}
 
