@@ -2,12 +2,15 @@ buildscript {
   ext {
     springBootVersion            = '2.0.3.RELEASE'
     springfoxSwaggerVersion      = '2.8.0'
+    palantirPluginVersion        = '0.20.1'
   }
   repositories {
     mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${palantirPluginVersion}")
   }
 }
 
@@ -44,6 +47,7 @@ project(":roomboo-domain") {
 }
 
 project(":roomboo-api") {
+  apply plugin: 'com.palantir.docker'
   dependencies {
     compile(project(":roomboo-domain"))
     compile('org.springframework.boot:spring-boot-starter-actuator')
@@ -57,6 +61,14 @@ project(":roomboo-api") {
     //testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
     //testCompile('org.springframework.security:spring-security-test')
   }
+  
+   docker {
+    name "labcabrera/${jar.baseName}"
+    tags 'latest'
+    files jar.archivePath
+    buildArgs(['JAR_FILE': "${jar.archiveName}"])
+  }
+
 }
 
 

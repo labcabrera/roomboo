@@ -1,5 +1,6 @@
 = Roomboo
 
-== Introduction
+== Introducción
 
-API para la reserva de salas.
+Aplicación para la reserva de salas de reuniones.
+

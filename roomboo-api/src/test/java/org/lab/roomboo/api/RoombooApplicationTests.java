@@ -1,4 +1,4 @@
-package org.lab.roomboo;
+package org.lab.roomboo.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
