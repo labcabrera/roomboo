@@ -6,11 +6,14 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.hateoas.RoomResource;
 import org.lab.roomboo.domain.exception.RoomNotFoundException;
+import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -40,11 +43,19 @@ public class RoomController {
 	@ApiOperation(value = "Room search")
 	@GetMapping
 	public ResponseEntity<Resources<RoomResource>> find( // @formatter:off
+			@RequestParam(value = "buildingId", required = false) String buildingId,
 			@RequestParam(value = "p", defaultValue = "0") Integer page,
 			@RequestParam(value = "s", defaultValue = "10") Integer size) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
-		List<RoomResource> collection = roomRepository.findAll(pageable).stream().map(RoomResource::new)
+
+		Room exampleEntity = new Room();
+		if (StringUtils.isNotBlank(buildingId)) {
+			exampleEntity.setBuilding(Building.builder().id(buildingId).build());
+		}
+		Example<Room> example = Example.of(exampleEntity);
+
+		List<RoomResource> collection = roomRepository.findAll(example, pageable).stream().map(RoomResource::new)
 			.collect(Collectors.toList());
 		Resources<RoomResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));

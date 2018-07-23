@@ -5,10 +5,14 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.model.hateoas.BuildingResource;
 import org.lab.roomboo.domain.exception.BuildingNotFoundException;
+import org.lab.roomboo.domain.model.Building;
+import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,16 +38,25 @@ public class BuildingController {
 	@ApiOperation(value = "Room search")
 	@GetMapping
 	public ResponseEntity<Resources<BuildingResource>> find( // @formatter:off
-			@RequestParam(value = "p", defaultValue = "0") Integer page,
-			@RequestParam(value = "s", defaultValue = "10") Integer size) { // @formatter:on
+			@RequestParam(value = "companyId", required = false) String companyId,
+			@RequestParam(value = "p", defaultValue = "0", required = false) Integer page,
+			@RequestParam(value = "s", defaultValue = "10", required = false) Integer size) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.ASC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
-		List<BuildingResource> collection = buildingRepository.findAll(pageable).stream().map(BuildingResource::new)
-			.collect(Collectors.toList());
+
+		Building exampleEntity = new Building();
+		if (StringUtils.isNotBlank(companyId)) {
+			exampleEntity.setCompany(Company.builder().id(companyId).build());
+		}
+		Example<Building> example = Example.of(exampleEntity);
+
+		List<BuildingResource> collection = buildingRepository.findAll(example, pageable).stream()
+			.map(BuildingResource::new).collect(Collectors.toList());
 		Resources<BuildingResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "owners"));
+		resources.add(new Link(fromController(CompanyController.class).build().toString(), "companies"));
 		return ResponseEntity.ok(resources);
 	}
 
