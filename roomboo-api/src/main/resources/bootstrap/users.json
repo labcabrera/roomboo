@@ -1,0 +1,48 @@
+[
+	{
+		"username": "admin",
+		"password": "admin",
+		"email": "admin@roomboo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"roles": [
+			"ADMIN"
+		]
+	},
+	{
+		"username": "roomboo",
+		"password": "roomboo",
+		"email": "roomboo@roomboo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"roles": [
+			"ADMIN"
+		]
+	},
+	{
+		"username": "alice",
+		"password": "alice",
+		"email": "alice@roomboo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"roles": [
+			"OPERATOR"
+		]
+	},
+	{
+		"username": "bob",
+		"password": "bob",
+		"email": "bob@roomboo.org",
+		"activation": "2020-01-01T00:00:00.000",
+		"roles": [
+			"OPERATOR"
+		]
+	},
+	{
+		"username": "carol",
+		"password": "carol",
+		"email": "carol@roomboo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"expiration": "2012-01-01T00:00:00.000",
+		"roles": [
+			"OPERATOR"
+		]
+	}
+]

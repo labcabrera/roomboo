@@ -22,7 +22,7 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.Assert;
 
@@ -97,7 +97,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime expirationDate = now.plusMinutes(expiration);
 		ZoneId zoneId = ZoneId.systemDefault();
-		String username = ((User) auth.getPrincipal()).getUsername();
+		String username = ((UserDetails) auth.getPrincipal()).getUsername();
 		List<String> roles = auth.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList());
 		String token = Jwts.builder() //@formatter:off
 			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))

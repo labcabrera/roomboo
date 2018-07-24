@@ -1,19 +1,17 @@
 package org.lab.roomboo.api.config;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.lab.roomboo.api.security.MongoUserDetailService;
+import org.lab.roomboo.domain.repository.ApiUserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -34,17 +32,8 @@ public class WebConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	UserDetailsService userDetailsService(BCryptPasswordEncoder passwordEncoder) {
-		log.debug("Creating user detail service");
-
-		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-		User alice = new User("admin", passwordEncoder.encode("admin"),
-			Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-		User bob = new User("operator", passwordEncoder.encode("operator"),
-			Arrays.asList(new SimpleGrantedAuthority("ROLE_OPERATOR")));
-		manager.createUser(alice);
-		manager.createUser(bob);
-		return manager;
+	UserDetailsService userDetailsService(ApiUserRepository apiUserRepository) {
+		return new MongoUserDetailService(apiUserRepository);
 	}
 
 	@Bean

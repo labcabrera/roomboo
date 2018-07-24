@@ -33,6 +33,7 @@ subprojects {
 project(":roomboo-domain") {
   dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+    compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.projectlombok:lombok')
     compile('org.apache.commons:commons-lang3')
     testCompile('org.springframework.boot:spring-boot-starter-test')
