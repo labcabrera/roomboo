@@ -2,7 +2,7 @@ buildscript {
   ext {
     springBootVersion            = '2.0.3.RELEASE'
     springfoxSwaggerVersion      = '2.8.0'
-    jsonwebtokenVersion          = '0.9.0'
+    jsonwebtokenVersion          = '0.9.1'
     palantirPluginVersion        = '0.20.1'
   }
   repositories {
@@ -16,6 +16,7 @@ buildscript {
 }
 
 subprojects {
+
   apply plugin: 'java'
   apply plugin: 'eclipse'
   apply plugin: 'org.springframework.boot'
@@ -79,8 +80,7 @@ project(":roomboo-api") {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     //testCompile('org.springframework.security:spring-security-test')
   }
-  
-   docker {
+  docker {
     name "labcabrera/${jar.baseName}"
     tags 'latest'
     files jar.archivePath
