@@ -2,6 +2,7 @@ buildscript {
   ext {
     springBootVersion            = '2.0.3.RELEASE'
     springfoxSwaggerVersion      = '2.8.0'
+    jsonwebtokenVersion          = '0.9.0'
     palantirPluginVersion        = '0.20.1'
   }
   repositories {
@@ -46,14 +47,31 @@ project(":roomboo-domain") {
   }
 }
 
+project(":roomboo-jwt") {
+  dependencies {
+    compile(project(":roomboo-domain"))
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("io.jsonwebtoken:jjwt:${jsonwebtokenVersion}")
+  }
+  jar {
+    enabled = true
+  }
+  bootJar {
+    classifier = 'boot'
+    // workaround to create a simple java library instead of a spring boot jar
+    mainClassName = 'org.lab.roomboo.Dummy'
+  }
+}
+
 project(":roomboo-api") {
   apply plugin: 'com.palantir.docker'
   dependencies {
     compile(project(":roomboo-domain"))
+    compile(project(":roomboo-jwt"))
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-hateoas')
-    //compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-web')    
+    compile('org.springframework.boot:spring-boot-starter-web')
     compile("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
     compile("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
     

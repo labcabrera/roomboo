@@ -1,4 +1,14 @@
+app:
+  env:
+    jwt:
+      authorization:
+        path: /auth
+      secret: changeit
+      expiration: 1
+
 spring:
+  application:
+    name: roomboo
   data:
     mongodb:
       uri: mongodb://localhost/roomboo
@@ -10,10 +20,6 @@ management:
     web:
       exposure:
         include: '*'
-
-
-
-
 
 logging:
   level:
