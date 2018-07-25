@@ -31,14 +31,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
 	private final Integer expiration;
 	private final String secret;
 	private final String issuer;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, Environment env) {
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, Environment env) {
 		this.authenticationManager = authenticationManager;
 		this.expiration = env.getProperty("app.env.jwt.expiration", Integer.class);
 		this.secret = env.getProperty("app.env.jwt.secret");

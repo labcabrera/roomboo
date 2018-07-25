@@ -25,11 +25,11 @@ import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 	private final String secret;
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager, Environment env) {
+	public JwtAuthorizationFilter(AuthenticationManager authManager, Environment env) {
 		super(authManager);
 		this.secret = env.getProperty("app.env.jwt.secret");
 	}

@@ -1,7 +1,7 @@
 package org.lab.roomboo.api.config;
 
-import org.lab.roomboo.jwt.JWTAuthenticationFilter;
-import org.lab.roomboo.jwt.JWTAuthorizationFilter;
+import org.lab.roomboo.jwt.JwtAuthenticationFilter;
+import org.lab.roomboo.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private String[] SWAGGER_RESOURCES = new String[] { "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**",
+		"/webjars/**" };
+
 	@Autowired
 	private Environment env;
 
@@ -32,15 +35,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 
 	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception { //@formatter:off
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		log.debug("Configuring security");
 		String authorizationPath = env.getProperty("app.env.jwt.authorization.path");
 		AuthenticationManager authenticationManager = authenticationManager();
-		
-		JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(authenticationManager(), env);
+
+		JwtAuthenticationFilter authenticationFilter = new JwtAuthenticationFilter(authenticationManager(), env);
 		authenticationFilter.setFilterProcessesUrl(authorizationPath);
-				
-		httpSecurity
+
+		//@formatter:off
+		httpSecurity 
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
@@ -49,13 +53,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf()
 				.disable()
 			.authorizeRequests()
+				.antMatchers(SWAGGER_RESOURCES).permitAll()
 				.antMatchers(HttpMethod.POST, authorizationPath).permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.addFilter(authenticationFilter)
-			.addFilter(new JWTAuthorizationFilter(authenticationManager, env));
-
-	} //@formatter:on
+			.addFilter(new JwtAuthorizationFilter(authenticationManager, env));
+		//@formatter:on
+	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {

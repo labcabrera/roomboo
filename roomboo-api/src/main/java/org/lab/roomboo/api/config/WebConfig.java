@@ -17,10 +17,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Configuration
-@Slf4j
-@EnableWebMvc
+//@Configuration
+//@EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Slf4j
 public class WebConfig implements WebMvcConfigurer {
 
 	@Override
@@ -31,14 +31,5 @@ public class WebConfig implements WebMvcConfigurer {
 		converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
 	}
 
-	@Bean
-	UserDetailsService userDetailsService(ApiUserRepository apiUserRepository) {
-		return new MongoUserDetailService(apiUserRepository);
-	}
-
-	@Bean
-	BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 
 }
