@@ -1,7 +1,7 @@
 spring:
   profiles:
     #active: local
-    active: local,unsecured
+    active: local,unsecured,gmail-enabled
   application:
     name: roomboo
   jackson:
@@ -32,14 +32,7 @@ app:
     initialization:
       force: false
     mail:
-      enabled: false
-      smtp:
-        username: ${ENV_MAIL_USER:undefined@gmail.com}
-        password: ${ENV_MAIL_PASSWORD:undefined}
-        host: smtp.gmail.com
-        port: 587
-        debug: true
-      
+      enabled: false      
 ---
 spring:
   profiles: local
@@ -51,6 +44,20 @@ spring:
   profiles: unsecured
   autoconfigure:
     exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+---
+spring:
+  profiles: gmail-enabled
+app:
+  env:
+    mail:
+      enabled: true
+      smtp:
+        username: ${ENV_MAIL_USERNAME:undefined}
+        password: ${ENV_MAIL_PASSWORD:undefined}
+        host: smtp.gmail.com
+        port: 587
+        debug: true
+
 ---
 spring:
   profiles: force-initialization

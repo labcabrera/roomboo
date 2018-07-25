@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EmailNotificationService implements BookingNotificationService {
 
+	private static final String MESSAGE_TEMPLATE = "Code: %s\nReserve: %s\nReserve identifier: %s";
+
 	@Autowired(required = false)
 	private JavaMailSender sender;
 
@@ -37,8 +39,13 @@ public class EmailNotificationService implements BookingNotificationService {
 
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setTo(owner.getEmail());
-			message.setSubject("Verification code");
-			message.setText("Code: " + reserve.getCode());
+			message.setSubject("Roomboo verification code");
+			//@formatter:off
+			message.setText(String.format("Code: %s",
+				reserve.getCode(),
+				reserve.getName(),
+				reserve.getId()));
+			//@formatter:on
 			sender.send(message);
 		}
 		catch (Exception ex) {

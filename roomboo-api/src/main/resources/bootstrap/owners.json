@@ -13,8 +13,14 @@
 	},
 	{
 		"id": "labcabrera",
-		"displayName": "Luis",
+		"displayName": "Luis Cabrera",
 		"email": "lab.cabrera@gmail.com",
+		"active": true
+	},
+	{
+		"id": "aferreira",
+		"displayName": "Alexandra Ferreira",
+		"email": "alexandracfa@gmail.com",
 		"active": true
 	},
 	{
