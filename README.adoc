@@ -72,3 +72,4 @@ obteniendo una salida similar a la siguiente:
 
 * https://github.com/labcabrera/roomboo/wiki/Montando-el-proyecto[Guia para montar el proyecto en local]
 * https://github.com/labcabrera/roomboo/wiki/Modelo-de-dominio[Modelo de la aplicación]
+* https://github.com/labcabrera/roomboo/wiki/Estructura-del-proyecto[Estructura del proyecto]
