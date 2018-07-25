@@ -1,6 +1,6 @@
 package org.lab.roomboo.api.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,12 +9,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RoomReserveSearchRequest {
-
-	private String ownerId;
+public class BookingRequest {
 
 	private String roomId;
 
-	private LocalDate date;
+	private String ownerId;
+
+	private LocalDateTime from;
+
+	private LocalDateTime to;
 
 }

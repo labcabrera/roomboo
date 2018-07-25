@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.model.hateoas.ReserveResource;
+import org.lab.roomboo.api.resources.ReserveResource;
 import org.lab.roomboo.api.service.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;

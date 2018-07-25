@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.model.hateoas.CompanyResource;
+import org.lab.roomboo.api.resources.CompanyResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.repository.CompanyRepository;
