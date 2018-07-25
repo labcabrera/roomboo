@@ -1,19 +1,14 @@
-app:
-  env:
-    jwt:
-      authorization:
-        path: /auth
-      secret: changeit
-      expiration: 180
-
 spring:
+  profiles:
+    #active: local
+    active: local-unsecured
   application:
     name: roomboo
+  jackson:
+    default-property-inclusion: non_null
   data:
     mongodb:
       uri: mongodb://localhost/roomboo
-  jackson:
-    default-property-inclusion: non_null
 
 management:
   endpoints:
@@ -26,3 +21,31 @@ logging:
     org.lab.roomboo: DEBUG
     org.springframework: INFO
     springfox: WARN
+    
+app:
+  env:
+    jwt:
+      authorization:
+        path: /auth
+      secret: changeit
+      expiration: 180
+      
+---
+spring:
+  profiles: local
+---
+spring:
+  profiles: local-unsecured
+  autoconfigure:
+    exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+---
+spring:
+  profiles: live
+logging:
+  level:
+    org.lab.roomboo: WARN
+    org.springframework: WARN
+    org.apache: WARN
+    org.mongodb: WARN
+    springfox: WARN
+    

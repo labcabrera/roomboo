@@ -41,7 +41,7 @@ public class SwaggerConfig {
 			.description(new StringBuilder()
 				.append("Roomboo API documentation.\n")
 				.append("You need to get a valid JWT token using:\n")
-				.append("<i>curl -X POST -v -u username:password http://localhost:8080/auth</i>")
+				.append("<i>curl -X POST -v -u demo:demo http://localhost:8080/auth</i>")
 				.toString())
 			.termsOfServiceUrl("")
 			.contact(new Contact("Luis Cabrera", "", "lab.cabreraO@gmail.com"))

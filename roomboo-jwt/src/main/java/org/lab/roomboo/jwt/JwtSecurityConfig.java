@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.config;
+package org.lab.roomboo.jwt;
 
 import org.lab.roomboo.jwt.JwtAuthenticationFilter;
 import org.lab.roomboo.jwt.JwtAuthorizationFilter;
@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Slf4j
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private String[] SWAGGER_RESOURCES = new String[] { "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**",
 		"/webjars/**" };
@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		log.debug("Configuring security");
+		log.debug("Configuring JWT security");
 		String authorizationPath = env.getProperty("app.env.jwt.authorization.path");
 		AuthenticationManager authenticationManager = authenticationManager();
 
