@@ -1,7 +1,7 @@
 buildscript {
   ext {
     springBootVersion            = '2.0.3.RELEASE'
-    springfoxSwaggerVersion      = '2.8.0'
+    springfoxSwaggerVersion      = '2.9.2'
     jsonwebtokenVersion          = '0.9.1'
     palantirPluginVersion        = '0.20.1'
   }
