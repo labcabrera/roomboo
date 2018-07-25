@@ -2,6 +2,8 @@ package org.lab.roomboo.api.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.BookingRequest;
 import org.lab.roomboo.api.resources.ReserveResource;
@@ -25,10 +27,10 @@ public class BookingController {
 	@Autowired
 	private BookingService bookingService;
 
-	@ApiOperation(value = "Reserve owner insert",
+	@ApiOperation(value = "Process boocking request",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
-	public ResponseEntity<ReserveResource> processRequest(@RequestBody BookingRequest request) {
+	public ResponseEntity<ReserveResource> processRequest(@RequestBody @Valid BookingRequest request) {
 		Reserve reserve = bookingService.processBookingRequest(request);
 		URI uri = MvcUriComponentsBuilder.fromController(ReserveController.class).path("/{id}")
 			.buildAndExpand(reserve.getId()).toUri();
