@@ -34,9 +34,9 @@ Argumentos:
 [options="headers"]
 |===
 |Nombre                 | Valor por defecto | Descripción
-|ENV_MONGO_HOST         | localhost         | Nombre del host de MongoDB
-|ENV_PORT               | 8080              | Puerto de la aplicación
-|SPRING_PROFILES_ACTIVE | local             | Perfil de Spring
+|ENV_MONGO_HOST         | localhost         | Nombre del host de MongoDB.
+|ENV_PORT               | 8080              | Puerto de la aplicación.
+|SPRING_PROFILES_ACTIVE | local             | Perfil de Spring.
 |===
 
 Por ejemplo, para ejecutar la aplicación en el puerto 8000 con el perfil sin seguridad ejecutaremos:
@@ -45,6 +45,26 @@ Por ejemplo, para ejecutar la aplicación en el puerto 8000 con el perfil sin se
 docker run -i -p 8000:8000 -t -e ENV_MONGO_HOST='172.17.0.2' -e ENV_PORT='8000' -e SPRING_PROFILES_ACTIVE='local,unsecured' labcabrera/roomboo-api
 ----
 
+En el caso de ejecutar la aplicación contra una imagen local de MongoDB deberemos obtener la IP que tiene utilizando el comando
+
+----
+docker network inspect ${network} 
+----
+
+obteniendo una salida similar a la siguiente:
+
+[source,json]
+----
+	"Containers": {
+	    "db94ced0c3dd621f1ef71dd648dce23c6aec5ae4adbf26e1ab98764c73122b74": {
+	        "Name": "mongo-roomboo",
+	        "EndpointID": "84fc41e50ce4f7d24d90774f5f50bc710b5250d71afb87174f0ce511cbda457d",
+	        "MacAddress": "02:42:ac:11:00:02",
+	        "IPv4Address": "172.17.0.2/16",
+	        "IPv6Address": ""
+	    }
+	},
+----
 
 == Montando el proyecto
 
