@@ -24,6 +24,8 @@ public class EmailNotificationService implements BookingNotificationService {
 	@Autowired
 	private ReserveOwnerRepository reserveOwnerRepository;
 
+	// TODO html message
+	// TODO include API token confirmation link
 	@Override
 	public void reserveCreated(Reserve reserve) {
 		if (sender == null) {
@@ -41,7 +43,7 @@ public class EmailNotificationService implements BookingNotificationService {
 			message.setTo(owner.getEmail());
 			message.setSubject("Roomboo verification code");
 			//@formatter:off
-			message.setText(String.format("Code: %s",
+			message.setText(String.format(MESSAGE_TEMPLATE,
 				reserve.getCode(),
 				reserve.getName(),
 				reserve.getId()));
