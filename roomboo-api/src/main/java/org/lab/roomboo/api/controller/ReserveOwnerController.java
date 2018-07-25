@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.hateoas.ReserveOwnerResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.ReserveOwner;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping(value = "/v1/owners", produces = "application/hal+json")
@@ -38,8 +40,8 @@ public class ReserveOwnerController {
 	@Autowired
 	private ReserveOwnerRepository reserveOwnerRepository;
 
-	// TODO pagination
-	@ApiOperation(value = "Reserve owner search")
+	@ApiOperation(value = "Reserve owner search",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<ReserveOwnerResource>> findAll( //@formatter:off
 			@RequestParam(value = "p", defaultValue = "0") Integer page,
@@ -54,14 +56,16 @@ public class ReserveOwnerController {
 		return ResponseEntity.ok(resources);
 	}
 
-	@ApiOperation(value = "Reserve owner find by id")
+	@ApiOperation(value = "Reserve owner find by id",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<ReserveOwnerResource> findById(@PathVariable("id") String id) {
 		return reserveOwnerRepository.findById(id).map(p -> ResponseEntity.ok(new ReserveOwnerResource(p)))
 			.orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, id));
 	}
 
-	@ApiOperation(value = "Reserve owner insert")
+	@ApiOperation(value = "Reserve owner insert",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<ReserveOwnerResource> save(@RequestBody ReserveOwner entity) {
 		ReserveOwner inserted = reserveOwnerRepository.save(entity);
@@ -70,7 +74,8 @@ public class ReserveOwnerController {
 		return ResponseEntity.created(uri).body(new ReserveOwnerResource(inserted));
 	}
 
-	@ApiOperation(value = "Reserve owner update")
+	@ApiOperation(value = "Reserve owner update",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PutMapping("/{id}")
 	public ResponseEntity<ReserveOwnerResource> update(@PathVariable("id") String id,
 		@RequestBody ReserveOwner entity) {
@@ -81,7 +86,8 @@ public class ReserveOwnerController {
 		return ResponseEntity.created(uri).body(resource);
 	}
 
-	@ApiOperation(value = "Reserve owner delete")
+	@ApiOperation(value = "Reserve owner delete",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") String id) {
 		return reserveOwnerRepository.findById(id).map(p -> {

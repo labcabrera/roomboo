@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.hateoas.ReserveResource;
 import org.lab.roomboo.api.service.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping(value = "/v1/calendars", produces = "application/hal+json")
@@ -27,13 +29,15 @@ public class CalendarController {
 	@Autowired
 	private ReserveService reserveService;
 
-	@ApiOperation(value = "Room calenday today")
+	@ApiOperation(value = "Room calenday today",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{roomId}/today")
 	public ResponseEntity<Resources<ReserveResource>> findToday(@PathVariable String roomId) {
 		return find(roomId, LocalDate.now());
 	}
 
-	@ApiOperation(value = "Room calendar tomorrow")
+	@ApiOperation(value = "Room calendar tomorrow",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{roomId}/tomorrow")
 	public ResponseEntity<Resources<ReserveResource>> findTomorrow(@PathVariable String roomId) {
 		return find(roomId, LocalDate.now().plusDays(1));

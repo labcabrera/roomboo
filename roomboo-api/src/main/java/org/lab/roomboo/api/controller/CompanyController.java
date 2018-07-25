@@ -5,6 +5,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.hateoas.CompanyResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Company;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping(value = "/v1/companies", produces = "application/hal+json")
@@ -32,7 +34,7 @@ public class CompanyController {
 	@Autowired
 	private CompanyRepository companyRepository;
 
-	@ApiOperation(value = "Company search")
+	@ApiOperation(value = "Company search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<CompanyResource>> find( // @formatter:off
 			@RequestParam(value = "p", defaultValue = "0") Integer page,
@@ -48,7 +50,8 @@ public class CompanyController {
 		return ResponseEntity.ok(resources);
 	}
 
-	@ApiOperation(value = "Company search by id")
+	@ApiOperation(value = "Company search by id",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyResource> findById(@PathVariable("id") String id) {
 		return companyRepository.findById(id).map(p -> ResponseEntity.ok(new CompanyResource(p)))

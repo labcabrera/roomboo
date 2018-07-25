@@ -19,6 +19,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 public class SwaggerConfig {
 
+	public static final String API_KEY_NAME = "jwtToken";
+
 	@Bean
 	public Docket api() {
 		//@formatter:off
@@ -36,7 +38,11 @@ public class SwaggerConfig {
 		//@formatter:off
 		return new ApiInfoBuilder() 
 			.title("Roomboo API")
-			.description("Roomboo API documentation.")
+			.description(new StringBuilder()
+				.append("Roomboo API documentation.\n")
+				.append("You need to get a valid JWT token using:\n")
+				.append("<i>curl -X POST -v -u username:password http://localhost:8080/auth</i>")
+				.toString())
 			.termsOfServiceUrl("")
 			.contact(new Contact("Luis Cabrera", "", "lab.cabreraO@gmail.com"))
 			.license("GNU General Public License v3.0")
@@ -47,7 +53,6 @@ public class SwaggerConfig {
 	}
 
 	private ApiKey apiKey() {
-		return new ApiKey("JWT token", "Authorization", "header");
+		return new ApiKey(API_KEY_NAME, "Authorization", "header");
 	}
-
 }

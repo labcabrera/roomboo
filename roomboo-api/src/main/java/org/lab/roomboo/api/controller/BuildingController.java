@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.hateoas.BuildingResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Building;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping(value = "/v1/buildings", produces = "application/hal+json")
@@ -35,7 +37,7 @@ public class BuildingController {
 	@Autowired
 	private BuildingRepository buildingRepository;
 
-	@ApiOperation(value = "Room search")
+	@ApiOperation(value = "Building search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<BuildingResource>> find( // @formatter:off
 			@RequestParam(value = "companyId", required = false) String companyId,
@@ -60,7 +62,8 @@ public class BuildingController {
 		return ResponseEntity.ok(resources);
 	}
 
-	@ApiOperation(value = "Building search by id")
+	@ApiOperation(value = "Building search by id",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<BuildingResource> findById(@PathVariable("id") String id) {
 		return buildingRepository.findById(id).map(p -> ResponseEntity.ok(new BuildingResource(p)))

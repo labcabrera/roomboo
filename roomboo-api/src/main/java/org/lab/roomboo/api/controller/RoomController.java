@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.hateoas.RoomResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Building;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping(value = "/v1/rooms", produces = "application/hal+json")
@@ -40,7 +42,7 @@ public class RoomController {
 	@Autowired
 	private RoomRepository roomRepository;
 
-	@ApiOperation(value = "Room search")
+	@ApiOperation(value = "Room search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<RoomResource>> find( // @formatter:off
 			@RequestParam(value = "buildingId", required = false) String buildingId,
@@ -64,14 +66,14 @@ public class RoomController {
 		return ResponseEntity.ok(resources);
 	}
 
-	@ApiOperation(value = "Room search by id")
+	@ApiOperation(value = "Room search by id", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<RoomResource> findById(@PathVariable("id") String id) {
 		return roomRepository.findById(id).map(p -> ResponseEntity.ok(new RoomResource(p)))
 			.orElseThrow(() -> new EntityNotFoundException(Room.class, id));
 	}
 
-	@ApiOperation(value = "Room insert")
+	@ApiOperation(value = "Room insert", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<RoomResource> insert(@RequestBody Room entity) {
 		Room inserted = roomRepository.save(entity);
@@ -79,7 +81,7 @@ public class RoomController {
 		return ResponseEntity.created(uri).body(new RoomResource(inserted));
 	}
 
-	@ApiOperation(value = "Room update")
+	@ApiOperation(value = "Room update", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PutMapping("/{id}")
 	public ResponseEntity<RoomResource> update(@PathVariable("id") String id, @RequestBody Room entity) {
 		entity.setId(id);
@@ -89,7 +91,7 @@ public class RoomController {
 		return ResponseEntity.created(uri).body(resource);
 	}
 
-	@ApiOperation(value = "Room delete")
+	@ApiOperation(value = "Room delete", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") String id) {
 		return roomRepository.findById(id).map(p -> {

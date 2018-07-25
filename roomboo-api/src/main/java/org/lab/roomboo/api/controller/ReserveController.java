@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.model.hateoas.ReserveResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Reserve;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 
 @RestController
 @RequestMapping(value = "/v1/reserves", produces = "application/hal+json")
@@ -36,7 +38,7 @@ public class ReserveController {
 	@Autowired
 	private ReserveRepository repository;
 
-	@ApiOperation(value = "Reserve search")
+	@ApiOperation(value = "Reserve search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<ReserveResource>> find( // @formatter:off
 			@RequestParam(value = "roomId", required = false) String roomId,
@@ -66,7 +68,8 @@ public class ReserveController {
 		return ResponseEntity.ok(resources);
 	}
 
-	@ApiOperation(value = "Reserve search by id")
+	@ApiOperation(value = "Reserve search by id",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<ReserveResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new ReserveResource(p)))

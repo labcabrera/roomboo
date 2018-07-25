@@ -4,7 +4,7 @@ app:
       authorization:
         path: /auth
       secret: changeit
-      expiration: 1
+      expiration: 180
 
 spring:
   application:
