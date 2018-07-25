@@ -15,7 +15,7 @@ public class RoombooInitializer {
 	private List<DataInitializer<?>> initializers;
 
 	public void checkDataInitialization() {
-		log.info("Loading initialization data");
+		log.info("Checking initialization data");
 		initializers.stream().filter(x -> !x.isInitialized()).forEach(x -> x.initialize());
 	}
 }
