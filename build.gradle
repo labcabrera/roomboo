@@ -113,7 +113,7 @@ project(":roomboo-api") {
   }
   docker {
     name "labcabrera/${jar.baseName}"
-    tags 'latest'
+    tags '0.2.0'
     files jar.archivePath
     buildArgs(['JAR_FILE': "${jar.archiveName}"])
   }
