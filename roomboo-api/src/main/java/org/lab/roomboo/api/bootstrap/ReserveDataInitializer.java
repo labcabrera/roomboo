@@ -1,6 +1,5 @@
-package org.lab.roomboo.api.bootstrap.impl;
+package org.lab.roomboo.api.bootstrap;
 
-import org.lab.roomboo.api.bootstrap.DataInitializer;
 import org.lab.roomboo.api.bootstrap.DataInitializer.InitializationOrder;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.repository.ReserveRepository;

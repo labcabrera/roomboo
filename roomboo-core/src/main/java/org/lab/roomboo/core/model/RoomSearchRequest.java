@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.model;
+package org.lab.roomboo.core.model;
 
 import lombok.Getter;
 import lombok.Setter;

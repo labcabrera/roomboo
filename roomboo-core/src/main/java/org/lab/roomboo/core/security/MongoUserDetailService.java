@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.security;
+package org.lab.roomboo.core.security;
 
 import org.lab.roomboo.domain.repository.ApiUserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

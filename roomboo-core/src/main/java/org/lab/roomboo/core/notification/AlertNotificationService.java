@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.notification;
+package org.lab.roomboo.core.notification;
 
 import java.time.LocalDateTime;
 

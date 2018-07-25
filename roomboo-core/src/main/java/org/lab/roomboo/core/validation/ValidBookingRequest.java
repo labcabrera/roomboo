@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.model.validation;
+package org.lab.roomboo.core.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

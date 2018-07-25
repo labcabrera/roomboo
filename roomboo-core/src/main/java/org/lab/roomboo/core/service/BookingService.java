@@ -1,9 +1,9 @@
-package org.lab.roomboo.api.service;
+package org.lab.roomboo.core.service;
 
 import java.util.List;
 
-import org.lab.roomboo.api.model.BookingRequest;
-import org.lab.roomboo.api.notification.BookingNotificationService;
+import org.lab.roomboo.core.model.BookingRequest;
+import org.lab.roomboo.core.notification.BookingNotificationService;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;

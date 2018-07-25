@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.notification;
+package org.lab.roomboo.core.notification;
 
 import org.lab.roomboo.domain.model.Reserve;
 

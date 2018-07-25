@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.service;
+package org.lab.roomboo.core.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

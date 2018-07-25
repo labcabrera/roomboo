@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.model.validation;
+package org.lab.roomboo.core.validation;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
-import org.lab.roomboo.api.model.BookingRequest;
+import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;

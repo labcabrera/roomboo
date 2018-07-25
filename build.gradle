@@ -7,7 +7,6 @@ buildscript {
   }
   repositories {
     mavenCentral()
-    maven { url "http://nexus:8080/nexus/content/groups/public/" }
     maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
@@ -28,7 +27,6 @@ subprojects {
   sourceCompatibility = 1.8
 
   repositories {
-    maven { url "http://nexus:8080/nexus/content/groups/public/" }
     mavenCentral()
   }
 }
@@ -40,6 +38,21 @@ project(":roomboo-domain") {
     compile('org.projectlombok:lombok')
     compile('org.apache.commons:commons-lang3')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+  }
+  jar {
+    enabled = true
+  }
+  bootJar {
+    classifier = 'boot'
+    // workaround to create a simple java library instead of a spring boot jar
+    mainClassName = 'org.lab.roomboo.Dummy'
+  }
+}
+
+project(":roomboo-core") {
+  dependencies {
+    compile(project(":roomboo-domain"))
+    compile('org.springframework.boot:spring-boot-starter-validation')
   }
   jar {
     enabled = true
@@ -72,6 +85,7 @@ project(":roomboo-api") {
   apply plugin: 'com.palantir.docker'
   dependencies {
     compile(project(":roomboo-domain"))
+    compile(project(":roomboo-core"))
     compile(project(":roomboo-jwt"))
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-hateoas')
@@ -88,7 +102,6 @@ project(":roomboo-api") {
     files jar.archivePath
     buildArgs(['JAR_FILE': "${jar.archiveName}"])
   }
-
 }
 
 

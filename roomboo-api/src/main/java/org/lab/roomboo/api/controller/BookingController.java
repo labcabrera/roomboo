@@ -5,9 +5,9 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.model.BookingRequest;
 import org.lab.roomboo.api.resources.ReserveResource;
-import org.lab.roomboo.api.service.BookingService;
+import org.lab.roomboo.core.model.BookingRequest;
+import org.lab.roomboo.core.service.BookingService;
 import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

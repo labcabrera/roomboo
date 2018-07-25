@@ -1,8 +1,7 @@
-package org.lab.roomboo.api.bootstrap.impl;
+package org.lab.roomboo.api.bootstrap;
 
 import java.util.List;
 
-import org.lab.roomboo.api.bootstrap.DataInitializer;
 import org.lab.roomboo.api.bootstrap.DataInitializer.InitializationOrder;
 import org.lab.roomboo.domain.model.ApiUser;
 import org.lab.roomboo.domain.repository.ApiUserRepository;

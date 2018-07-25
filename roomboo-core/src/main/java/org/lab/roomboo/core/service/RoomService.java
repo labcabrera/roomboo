@@ -1,9 +1,9 @@
-package org.lab.roomboo.api.service;
+package org.lab.roomboo.core.service;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.lab.roomboo.api.model.RoomSearchRequest;
+import org.lab.roomboo.core.model.RoomSearchRequest;
 import org.lab.roomboo.domain.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
