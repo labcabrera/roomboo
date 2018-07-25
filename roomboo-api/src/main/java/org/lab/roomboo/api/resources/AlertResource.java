@@ -18,6 +18,7 @@ public class AlertResource extends ResourceSupport {
 		this.alert = alert;
 		String id = alert.getId();
 		add(linkTo(methodOn(AlertController.class).findById(id)).withSelfRel());
+		add(linkTo(AlertController.class).withRel("alerts"));
 	}
 
 }

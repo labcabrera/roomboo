@@ -31,7 +31,15 @@ app:
       expiration: 180
     initialization:
       force: false
-
+    mail:
+      enabled: false
+      smtp:
+        username: ${ENV_MAIL_USER:undefined@gmail.com}
+        password: ${ENV_MAIL_PASSWORD:undefined}
+        host: smtp.gmail.com
+        port: 587
+        debug: true
+      
 ---
 spring:
   profiles: local

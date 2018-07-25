@@ -11,7 +11,10 @@ import org.lab.roomboo.domain.repository.ReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class BookingService {
 
 	@Autowired
@@ -36,7 +39,10 @@ public class BookingService {
 		Reserve inserted = reserveRepository.insert(reserve);
 
 		// TODO async
-		notificationServices.forEach(x -> x.reserveCreated(inserted));
+		notificationServices.forEach(x -> {
+			log.debug("Processing notification with {}", x.getClass().getSimpleName());
+			x.reserveCreated(inserted);
+		});
 
 		return inserted;
 	}

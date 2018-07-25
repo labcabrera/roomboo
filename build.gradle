@@ -81,12 +81,27 @@ project(":roomboo-jwt") {
   }
 }
 
+project(":roomboo-mail") {
+  dependencies {
+    compile(project(":roomboo-core"))
+    compile('org.springframework.boot:spring-boot-starter-mail')
+  }
+  jar {
+    enabled = true
+  }
+  bootJar {
+    classifier = 'boot'
+    // workaround to create a simple java library instead of a spring boot jar
+    mainClassName = 'org.lab.roomboo.Dummy'
+  }
+}
+
 project(":roomboo-api") {
   apply plugin: 'com.palantir.docker'
   dependencies {
-    compile(project(":roomboo-domain"))
     compile(project(":roomboo-core"))
     compile(project(":roomboo-jwt"))
+    compile(project(":roomboo-mail"))
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-hateoas')
     compile('org.springframework.boot:spring-boot-starter-web')
