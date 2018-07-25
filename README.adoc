@@ -13,10 +13,6 @@ Aplicación para la reserva de salas de reuniones.
 * JDK8+
 * MongoDB
 
-== Uso
-
-Una vez desplegada nuestra aplicación en primer lugar deberemos obtener el token JWT de acceso.
-
 == Docker
 
 La imagen de docker se puede encontrar en:
@@ -67,6 +63,13 @@ obteniendo una salida similar a la siguiente:
 	    }
 	},
 ----
+
+== Stack
+
+* Spring Boot
+* MongoDB
+* Hateoas
+* JWT
 
 == Referencias
 
