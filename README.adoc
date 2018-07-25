@@ -23,6 +23,8 @@ La imagen de docker se puede encontrar en:
 
 https://hub.docker.com/r/labcabrera/roomboo-api/
 
+Para ejecutarla simplemente tendremos que ejecutar:
+
 ----
 docker pull labcabrera/roomboo-api
 
@@ -66,6 +68,7 @@ obteniendo una salida similar a la siguiente:
 	},
 ----
 
-== Montando el proyecto
+== Referencias
 
-En la Wiki del proyecto tenemos un enlace para https://github.com/labcabrera/roomboo/wiki/Montando-el-proyecto[montar el proyecto en local].
+* https://github.com/labcabrera/roomboo/wiki/Montando-el-proyecto[Guia para montar el proyecto en local]
+* https://github.com/labcabrera/roomboo/wiki/Modelo-de-dominio[Modelo de la aplicación]
