@@ -22,3 +22,30 @@ Una vez desplegada nuestra aplicación en primer lugar deberemos obtener el toke
 La imagen de docker se puede encontrar en:
 
 https://hub.docker.com/r/labcabrera/roomboo-api/
+
+----
+docker pull labcabrera/roomboo-api
+
+docker run -i -p 8080:8080 -t labcabrera/roomboo-api
+----
+
+Argumentos:
+
+[options="headers"]
+|===
+|Nombre                 | Valor por defecto | Descripción
+|ENV_MONGO_HOST         | localhost         | Nombre del host de MongoDB
+|ENV_PORT               | 8080              | Puerto de la aplicación
+|SPRING_PROFILES_ACTIVE | local             | Perfil de Spring
+|===
+
+Por ejemplo, para ejecutar la aplicación en el puerto 8000 con el perfil sin seguridad ejecutaremos:
+
+----
+docker run -i -p 8000:8000 -t -e ENV_MONGO_HOST='172.17.0.2' -e ENV_PORT='8000' -e SPRING_PROFILES_ACTIVE='local,unsecured' labcabrera/roomboo-api
+----
+
+
+== Montando el proyecto
+
+En la Wiki del proyecto tenemos un enlace para https://github.com/labcabrera/roomboo/wiki/Montando-el-proyecto[montar el proyecto en local].
