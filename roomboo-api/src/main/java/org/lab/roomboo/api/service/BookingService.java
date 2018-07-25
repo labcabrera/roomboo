@@ -30,6 +30,7 @@ public class BookingService {
 		reserve.setRoom(Room.builder().id(request.getRoomId()).build());
 		reserve.setFrom(request.getFrom());
 		reserve.setTo(request.getTo());
+		reserve.setName(request.getName());
 		reserve.setConfirmed(false);
 		reserve.setCode(codeGenerator.randomCode());
 		Reserve inserted = reserveRepository.insert(reserve);

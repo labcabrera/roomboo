@@ -40,6 +40,10 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 				.addConstraintViolation();
 			valid = false;
 		}
+		if (StringUtils.isBlank(value.getName())) {
+			context.buildConstraintViolationWithTemplate("Required reserve name").addConstraintViolation();
+			valid = false;
+		}
 		if (value.getFrom() == null) {
 			context.buildConstraintViolationWithTemplate("Required from").addConstraintViolation();
 			valid = false;

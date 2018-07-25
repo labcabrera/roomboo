@@ -23,6 +23,9 @@ public class BookingRequest {
 	private String ownerId;
 
 	@NotNull
+	private String name;
+
+	@NotNull
 	private LocalDateTime from;
 
 	@NotNull
