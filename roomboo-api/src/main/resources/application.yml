@@ -1,14 +1,11 @@
 spring:
   profiles:
-    #active: local
-    active: local-unsecured
+    active: local
+    #active: local,unsecured,force-initialization
   application:
     name: roomboo
   jackson:
     default-property-inclusion: non_null
-  data:
-    mongodb:
-      uri: mongodb://localhost/roomboo
 
 management:
   endpoints:
@@ -21,6 +18,9 @@ logging:
     org.lab.roomboo: DEBUG
     org.springframework: INFO
     springfox: WARN
+
+server:
+  port: ${ENV_PORT:8080}
     
 app:
   env:
@@ -31,19 +31,23 @@ app:
       expiration: 180
     initialization:
       force: false
-      
+
 ---
 spring:
   profiles: local
+  data:
+    mongodb:
+      uri: mongodb://${ENV_MONGO_HOST:localhost}/roomboo
 ---
 spring:
-  profiles: local-unsecured
+  profiles: unsecured
   autoconfigure:
     exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+---
+spring:
+  profiles: force-initialization
 app:
   env:
-    jwt:
-      expiration: 1800
     initialization:
       force: true
 ---
