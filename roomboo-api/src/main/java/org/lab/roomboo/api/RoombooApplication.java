@@ -18,8 +18,6 @@ public class RoombooApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		if (!initializer.isInitialized()) {
-			initializer.initialize();
-		}
+		initializer.checkDataInitialization();
 	}
 }

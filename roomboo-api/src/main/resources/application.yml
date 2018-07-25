@@ -29,6 +29,8 @@ app:
         path: /auth
       secret: changeit
       expiration: 180
+    initialization:
+      force: false
       
 ---
 spring:
@@ -38,6 +40,12 @@ spring:
   profiles: local-unsecured
   autoconfigure:
     exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+app:
+  env:
+    jwt:
+      expiration: 1800
+    initialization:
+      force: true
 ---
 spring:
   profiles: live
