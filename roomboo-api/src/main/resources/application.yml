@@ -39,7 +39,7 @@ app:
         redirect-uri: https://www.google.com/?q=roomboo
     security:
       unsecured:
-        paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/confirmations/token/**
+        paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**
 ---
 spring:
   profiles: local

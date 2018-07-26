@@ -55,7 +55,7 @@ public class BookingController {
 	}
 
 	@ApiOperation(value = "Token confirmation")
-	@GetMapping("confirmations/token/{token}")
+	@GetMapping("/accept/{token}")
 	public void processTokenConfirmation(@PathVariable String token, HttpServletResponse response) {
 		try {
 			Reserve reserve = bookingService.processTokenConfirmation(token);
