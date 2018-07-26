@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:remove="all">Email reserve created</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<p>
+		Hola <span th:text="${username}"></span>
+	</p>
+	<p>
+		Verification code: <span th:text="${reserve.code}"></span>
+	</p>
+	<p>
+		Nombre de la reserva: <span th:text="${reserve.name}"></span>
+	</p>
+	<p>
+		Fecha de inicio: <span th:text="${reserve.from}"></span>
+	</p>
+	<p>
+		Fecha de fin: <span th:text="${reserve.to}"></span>
+	</p>
+	<p th:if="${confirmationToken != null}">
+		Puede confirmar la reserva siguiendo el siguiente link: <a th:href="${confirmationToken.url}">
+	</p>
+	<p>
+		Si usted no ha realizado la solicitud de reserva de sala puede
+		comunicarse con support@roomboo.org para notificar este incidente.
+	</p>
+</body>
+</html>
