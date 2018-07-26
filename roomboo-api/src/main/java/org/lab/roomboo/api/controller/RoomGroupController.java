@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.resources.BuildingResource;
+import org.lab.roomboo.api.resources.RoomGroupResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.model.RoomGroup;
-import org.lab.roomboo.domain.repository.BuildingRepository;
+import org.lab.roomboo.domain.repository.RoomGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
@@ -35,11 +35,11 @@ import io.swagger.annotations.Authorization;
 public class RoomGroupController {
 
 	@Autowired
-	private BuildingRepository buildingRepository;
+	private RoomGroupRepository repository;
 
 	@ApiOperation(value = "Room group search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
-	public ResponseEntity<Resources<BuildingResource>> find( // @formatter:off
+	public ResponseEntity<Resources<RoomGroupResource>> find( // @formatter:off
 			@RequestParam(value = "companyId", required = false) String companyId,
 			@RequestParam(value = "p", defaultValue = "0", required = false) Integer page,
 			@RequestParam(value = "s", defaultValue = "10", required = false) Integer size) { // @formatter:on
@@ -52,9 +52,9 @@ public class RoomGroupController {
 		}
 		Example<RoomGroup> example = Example.of(exampleEntity);
 
-		List<BuildingResource> collection = buildingRepository.findAll(example, pageable).stream()
-			.map(BuildingResource::new).collect(Collectors.toList());
-		Resources<BuildingResource> resources = new Resources<>(collection);
+		List<RoomGroupResource> collection = repository.findAll(example, pageable).stream()
+			.map(RoomGroupResource::new).collect(Collectors.toList());
+		Resources<RoomGroupResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		resources.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
@@ -65,8 +65,8 @@ public class RoomGroupController {
 	@ApiOperation(value = "Room group search by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
-	public ResponseEntity<BuildingResource> findById(@PathVariable("id") String id) {
-		return buildingRepository.findById(id).map(p -> ResponseEntity.ok(new BuildingResource(p)))
+	public ResponseEntity<RoomGroupResource> findById(@PathVariable("id") String id) {
+		return repository.findById(id).map(p -> ResponseEntity.ok(new RoomGroupResource(p)))
 			.orElseThrow(() -> new EntityNotFoundException(RoomGroup.class, id));
 	}
 

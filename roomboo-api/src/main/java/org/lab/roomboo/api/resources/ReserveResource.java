@@ -36,8 +36,8 @@ public class ReserveResource extends ResourceSupport {
 			add(linkTo(methodOn(RoomController.class).findById(roomId)).withRel("room"));
 
 			if (reserve.getRoom().getGroup() != null) {
-				String buildingId = reserve.getRoom().getGroup().getId();
-				add(linkTo(methodOn(RoomGroupController.class).findById(buildingId)).withRel("roomGroup"));
+				String roomGroupId = reserve.getRoom().getGroup().getId();
+				add(linkTo(methodOn(RoomGroupController.class).findById(roomGroupId)).withRel("roomGroup"));
 			}
 			reserve.setRoom(Room.builder().id(roomId).build());
 			add(linkTo(methodOn(CalendarController.class).findToday(roomId)).withRel("today"));

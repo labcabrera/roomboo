@@ -1,21 +1,21 @@
 [
   {
     "id": "roomGroup01",
-    "name": "Example building 1",
+    "name": "Example group 1",
     "company": {
       "id": "company01"
     }
   },
   {
     "id": "roomGroup02",
-    "name": "Example building 2",
+    "name": "Example group 2",
     "company": {
       "id": "company01"
     }
   },
   {
     "id": "roomGroup03",
-    "name": "Example building company 2",
+    "name": "Example group company 2",
     "company": {
       "id": "company02"
     }

@@ -19,7 +19,7 @@ public abstract class DataInitializer<T> {
 	public static interface InitializationOrder {
 		int ApiUser = 2000;
 		int Company = 2010;
-		int Building = 2020;
+		int RoomGroup = 2020;
 		int Room = 2030;
 		int ReserveOwner = 2040;
 		int Reserve = 2050;
