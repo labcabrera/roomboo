@@ -35,7 +35,11 @@ app:
       enabled: false      
     token:
       reserve:
-        expiration: 180
+        expiration: 1440
+        redirect-uri: https://www.google.com/?q=roomboo
+    security:
+      unsecured:
+        paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/confirmations/token/**
 ---
 spring:
   profiles: local

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
 import org.lab.roomboo.core.service.TokenGenerator;
+import org.lab.roomboo.core.service.TokenUriService;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
@@ -22,6 +23,9 @@ public class ConfirmationTokenNotificationService implements BookingNotification
 	@Autowired
 	private TokenGenerator tokenGenerator;
 
+	@Autowired
+	private TokenUriService tokenUriService;
+
 	@Value("${app.env.token.reserve.expiration:1440}")
 	private Integer tokenExpiration;
 
@@ -32,8 +36,7 @@ public class ConfirmationTokenNotificationService implements BookingNotification
 		token.setExpiration(LocalDateTime.now().plusMinutes(tokenExpiration));
 		token.setReserve(Reserve.builder().id(reserve.getId()).build());
 		token.setToken(tokenGenerator.generate());
-		token.setUrl("http://localhost/test");
-
+		tokenUriService.processUri(token);
 		tokenRepository.save(token);
 	}
 

@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface ReserveConfirmationTokenRepository extends MongoRepository<ReserveConfirmationToken, String> {
 
+	Optional<ReserveConfirmationToken> findByToken(String token);
+
 	@Query("{}")
 	Optional<ReserveConfirmationToken> findValidToken(String reserveId, LocalDateTime date);
 

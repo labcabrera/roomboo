@@ -17,8 +17,6 @@ public abstract class ConfirmationToken {
 
 	protected LocalDateTime expiration;
 
-	protected LocalDateTime processed;
-
-	protected String url;
+	protected String uri;
 
 }

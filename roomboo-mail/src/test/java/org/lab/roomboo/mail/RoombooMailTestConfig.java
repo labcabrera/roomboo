@@ -27,7 +27,7 @@ public class RoombooMailTestConfig {
 	@Bean
 	ReserveConfirmationTokenRepository reserveConfirmationTokenRepository() {
 		ReserveConfirmationToken token = new ReserveConfirmationToken();
-		token.setUrl("http://roomboo.org/reserves/confirmation/abcde");
+		token.setUri("http://roomboo.org/reserves/confirmation/abcde");
 		ReserveConfirmationTokenRepository bean = Mockito.mock(ReserveConfirmationTokenRepository.class);
 		Mockito.when(bean.findValidToken(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
 			.thenReturn(Optional.of(token));

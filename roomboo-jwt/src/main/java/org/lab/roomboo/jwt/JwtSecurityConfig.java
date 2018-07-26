@@ -1,8 +1,7 @@
 package org.lab.roomboo.jwt;
 
-import org.lab.roomboo.jwt.JwtAuthenticationFilter;
-import org.lab.roomboo.jwt.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -27,14 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private String[] SWAGGER_RESOURCES = new String[] { "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**",
-		"/webjars/**" };
-
 	@Autowired
 	private Environment env;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+
+	@Value("${app.env.security.unsecured.paths}")
+	private String unsecuredPaths;
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -55,7 +54,7 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf()
 				.disable()
 			.authorizeRequests()
-				.antMatchers(SWAGGER_RESOURCES).permitAll()
+				.antMatchers(unsecuredPaths.split(",")).permitAll()
 				.antMatchers(HttpMethod.POST, authorizationPath).permitAll()
 				.anyRequest().authenticated()
 				.and()
