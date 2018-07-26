@@ -1,42 +1,48 @@
 package org.lab.roomboo.mail;
 
+import java.util.Collections;
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+import org.thymeleaf.templateresolver.StringTemplateResolver;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @ComponentScan
+@Slf4j
 public class RoombooMailConfig {
 
-	@Value("${app.env.mail.smtp.username}")
-	private String mailUsername;
-
-	@Value("${app.env.mail.smtp.password}")
-	private String mailPassword;
-
-	@Value("${app.env.mail.smtp.host}")
-	private String smtpHost;
-
-	@Value("${app.env.mail.smtp.port}")
-	private Integer smtpPort;
-
-	@Value("${app.env.mail.smtp.debug:false}")
-	private Boolean debug;
+	private static final String EMAIL_TEMPLATE_ENCODING = "UTF-8";
 
 	@Bean
 	@ConditionalOnProperty(value = "app.env.mail.enabled", havingValue = "true", matchIfMissing = false)
-	JavaMailSender getJavaMailSender() {
+	JavaMailSender getJavaMailSender(Environment env) {
+		String smtpUsername = env.getProperty("app.env.mail.smtp.username");
+		String smtpPassword = env.getProperty("app.env.mail.smtp.password");
+		String smtpHost = env.getProperty("app.env.mail.smtp.host");
+		Integer smtpPort = env.getProperty("app.env.mail.smtp.port", Integer.class);
+		Boolean debug = env.getProperty("app.env.mail.smtp.debug", Boolean.class);
+
+		log.info("Configuring mail sender using {}:{}", smtpHost, smtpPort);
+
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost(smtpHost);
 		mailSender.setPort(smtpPort);
-		mailSender.setUsername(mailUsername);
-		mailSender.setPassword(mailPassword);
+		mailSender.setUsername(smtpUsername);
+		mailSender.setPassword(smtpPassword);
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
 		props.put("mail.smtp.auth", "true");
@@ -44,4 +50,59 @@ public class RoombooMailConfig {
 		props.put("mail.debug", String.valueOf(debug));
 		return mailSender;
 	}
+
+	@Bean
+	public ResourceBundleMessageSource emailMessageSource() {
+		final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasename("mail/MailMessages");
+		return messageSource;
+	}
+
+	@Bean
+	public TemplateEngine emailTemplateEngine() {
+		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		// Resolver for TEXT emails
+		templateEngine.addTemplateResolver(textTemplateResolver());
+		// Resolver for HTML emails (except the editable one)
+		templateEngine.addTemplateResolver(htmlTemplateResolver());
+		// Resolver for HTML editable emails (which will be treated as a String)
+		templateEngine.addTemplateResolver(stringTemplateResolver());
+		// Message source, internationalization specific to emails
+		templateEngine.setTemplateEngineMessageSource(emailMessageSource());
+		return templateEngine;
+	}
+
+	private ITemplateResolver textTemplateResolver() {
+		final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setOrder(Integer.valueOf(1));
+		templateResolver.setResolvablePatterns(Collections.singleton("text/*"));
+		templateResolver.setPrefix("/mail/");
+		templateResolver.setSuffix(".txt");
+		templateResolver.setTemplateMode(TemplateMode.TEXT);
+		templateResolver.setCharacterEncoding(EMAIL_TEMPLATE_ENCODING);
+		templateResolver.setCacheable(false);
+		return templateResolver;
+	}
+
+	private ITemplateResolver htmlTemplateResolver() {
+		final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setOrder(Integer.valueOf(2));
+		templateResolver.setResolvablePatterns(Collections.singleton("html/*"));
+		templateResolver.setPrefix("/mail/");
+		templateResolver.setSuffix(".html");
+		templateResolver.setTemplateMode(TemplateMode.HTML);
+		templateResolver.setCharacterEncoding(EMAIL_TEMPLATE_ENCODING);
+		templateResolver.setCacheable(false);
+		return templateResolver;
+	}
+
+	private ITemplateResolver stringTemplateResolver() {
+		final StringTemplateResolver templateResolver = new StringTemplateResolver();
+		templateResolver.setOrder(Integer.valueOf(3));
+		// No resolvable pattern, will simply process as a String template everything not previously matched
+		templateResolver.setTemplateMode("HTML5");
+		templateResolver.setCacheable(false);
+		return templateResolver;
+	}
+
 }

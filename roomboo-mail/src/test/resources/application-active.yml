@@ -1,0 +1,11 @@
+
+app:
+  env:
+    mail:
+      enabled: true
+      smtp:
+        username: test
+        password: test
+        host: localhost
+        port: 9999
+        debug: true
