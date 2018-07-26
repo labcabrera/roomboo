@@ -6,9 +6,8 @@ buildscript {
     palantirPluginVersion        = '0.20.1'
   }
   repositories {
-    //mavenCentral()
-    maven { url "http://nexus:8080/nexus/content/groups/public/" }
-    
+    mavenCentral()
+    //maven { url "http://nexus:8080/nexus/content/groups/public/" }
     maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
@@ -29,8 +28,8 @@ subprojects {
   sourceCompatibility = 1.8
 
   repositories {
-    //mavenCentral()
-    maven { url "http://nexus:8080/nexus/content/groups/public/" }
+    mavenCentral()
+    //maven { url "http://nexus:8080/nexus/content/groups/public/" }
   }
 }
 
