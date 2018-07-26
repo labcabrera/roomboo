@@ -5,8 +5,15 @@ image:https://api.codacy.com/project/badge/Grade/018b2390426f4138aa16f2548c75f8b
 
 == Introducción
 
-Aplicación para la reserva de salas de reuniones.
+Roomboo es una aplicación de *reserva de salas de reuniones*. Este proyecto provee de una API REST
+ofreciendo las siguientes funcionalidades:
 
+* Solicitud de una reserva de sala
+* Confirmación de una reserva
+* Cancelación de una reserva
+* Mantenimiento de entidades (empresas, edificios, salas, usuarios de la API y de la aplicación, etc).
+* Consulta de alertas
+* Envío de notificaciones
 
 == Requisitos
 
@@ -44,7 +51,11 @@ Argumentos:
 Por ejemplo, para ejecutar la aplicación en el puerto 8000 con el perfil sin seguridad ejecutaremos:
 
 ----
-docker run -i -p 8000:8000 -t -e ENV_MONGO_HOST='172.17.0.2' -e PORT='8000' -e SPRING_PROFILES_ACTIVE='local,unsecured' labcabrera/roomboo-api
+docker run -i -p 8000:8000 -t \
+  -e ENV_MONGO_HOST='172.17.0.2' \
+  -e PORT='8000' \
+  -e SPRING_PROFILES_ACTIVE='local,unsecured' \
+  labcabrera/roomboo-api
 ----
 
 En el caso de ejecutar la aplicación contra una imagen local de MongoDB deberemos obtener la IP que tiene utilizando el comando
