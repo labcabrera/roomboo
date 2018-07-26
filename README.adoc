@@ -31,16 +31,20 @@ Argumentos:
 
 [options="headers"]
 |===
-|Nombre                 | Valor por defecto | Descripción
-|ENV_MONGO_HOST         | localhost         | Nombre del host de MongoDB.
-|ENV_PORT               | 8080              | Puerto de la aplicación.
-|SPRING_PROFILES_ACTIVE | local             | Perfil de Spring.
+|Nombre                    | Valor por defecto | Descripción
+| `PORT`                   | _8080_            | Puerto de la aplicación.
+| `SPRING_PROFILES_ACTIVE` | _local_           | Perfil de Spring.
+| `ENV_MONGO_HOST`         | localhost         | Nombre del host de MongoDB.
+|`ENV_SMTP_USERNAME`       | _undefined_       | Usuario de envío de correo.
+|`ENV_SMTP_PASSWORD`       | _undefined_       | Password de envío de correo.
+|`ENV_SMTP_HOST`           | _smtp.gmail.com_  | Servidor de correo
+|`ENV_SMTP_PORT`           | _587_             |
 |===
 
 Por ejemplo, para ejecutar la aplicación en el puerto 8000 con el perfil sin seguridad ejecutaremos:
 
 ----
-docker run -i -p 8000:8000 -t -e ENV_MONGO_HOST='172.17.0.2' -e ENV_PORT='8000' -e SPRING_PROFILES_ACTIVE='local,unsecured' labcabrera/roomboo-api
+docker run -i -p 8000:8000 -t -e ENV_MONGO_HOST='172.17.0.2' -e PORT='8000' -e SPRING_PROFILES_ACTIVE='local,unsecured' labcabrera/roomboo-api
 ----
 
 En el caso de ejecutar la aplicación contra una imagen local de MongoDB deberemos obtener la IP que tiene utilizando el comando
@@ -63,6 +67,16 @@ obteniendo una salida similar a la siguiente:
 	    }
 	},
 ----
+
+== Perfiles de ejecución
+
+[options="headers"]
+|===
+|Nombre        | Descripción
+|`local`       | Perfil local de la aplicación.
+|`unsecured`   | Deshabilita la seguridad basada en JWT.
+|`mail`        | Habilita el envío de notificaciones por correo.
+|===
 
 == Stack
 

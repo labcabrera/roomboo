@@ -53,17 +53,17 @@ spring:
     exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 ---
 spring:
-  profiles: gmail-enabled
+  profiles: mail
 app:
   env:
     mail:
       enabled: true
       smtp:
-        username: ${ENV_MAIL_USERNAME:undefined}
-        password: ${ENV_MAIL_PASSWORD:undefined}
-        host: smtp.gmail.com
-        port: 587
-        debug: true
+        username: ${ENV_SMTP_USERNAME:undefined}
+        password: ${ENV_SMTP_PASSWORD:undefined}
+        host: ${ENV_SMTP_HOST:smtp.gmail.com}
+        port: ${ENV_SMTP_PORT:587}
+        debug: false
 
 ---
 spring:
