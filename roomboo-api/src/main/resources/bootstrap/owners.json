@@ -3,30 +3,38 @@
 		"id": "admin",
 		"displayName": "Admin",
 		"email": "admin@roombo.org",
-		"active": true
-	},
-	{
-		"id": "inactive",
-		"displayName": "Inactive user",
-		"email": "inactive@roombo.org",
-		"active": false
+		"activation": "2010-01-01T00:00:00.000"
 	},
 	{
 		"id": "labcabrera",
 		"displayName": "Luis Cabrera",
 		"email": "lab.cabrera@gmail.com",
-		"active": true
+		"activation": "2010-01-01T00:00:00.000"
 	},
 	{
 		"id": "aferreira",
 		"displayName": "Alexandra Ferreira",
 		"email": "alexandracfa@gmail.com",
-		"active": true
+		"activation": "2010-01-01T00:00:00.000"
 	},
 	{
 		"id": "johndoe",
 		"displayName": "John Doe",
 		"email": "john.doe@roombo.org",
-		"active": true
+		"activation": "2010-01-01T00:00:00.000"
+	},
+	{
+		"id": "test_expired",
+		"displayName": "Expired user",
+		"email": "expired@roombo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"expiration": "2012-01-01T00:00:00.000"
+	},
+	{
+		"id": "test_locked",
+		"displayName": "Locked user",
+		"email": "locked@roombo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"locked": "2012-01-01T00:00:00.000"
 	}
 ]
