@@ -24,7 +24,7 @@ public class Room {
 	private String name;
 
 	@DBRef
-	private Building building;
+	private RoomGroup group;
 
 	private RoomFeatures features;
 

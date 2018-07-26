@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resources.BuildingResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
-import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Company;
+import org.lab.roomboo.domain.model.RoomGroup;
 import org.lab.roomboo.domain.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -31,13 +31,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 
 @RestController
-@RequestMapping(value = "/v1/buildings", produces = "application/hal+json")
-public class BuildingController {
+@RequestMapping(value = "/v1/roomGroups", produces = "application/hal+json")
+public class RoomGroupController {
 
 	@Autowired
 	private BuildingRepository buildingRepository;
 
-	@ApiOperation(value = "Building search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "Room group search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<BuildingResource>> find( // @formatter:off
 			@RequestParam(value = "companyId", required = false) String companyId,
@@ -46,11 +46,11 @@ public class BuildingController {
 		Sort sort = new Sort(Sort.Direction.ASC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
 
-		Building exampleEntity = new Building();
+		RoomGroup exampleEntity = new RoomGroup();
 		if (StringUtils.isNotBlank(companyId)) {
 			exampleEntity.setCompany(Company.builder().id(companyId).build());
 		}
-		Example<Building> example = Example.of(exampleEntity);
+		Example<RoomGroup> example = Example.of(exampleEntity);
 
 		List<BuildingResource> collection = buildingRepository.findAll(example, pageable).stream()
 			.map(BuildingResource::new).collect(Collectors.toList());
@@ -62,12 +62,12 @@ public class BuildingController {
 		return ResponseEntity.ok(resources);
 	}
 
-	@ApiOperation(value = "Building search by id",
+	@ApiOperation(value = "Room group search by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<BuildingResource> findById(@PathVariable("id") String id) {
 		return buildingRepository.findById(id).map(p -> ResponseEntity.ok(new BuildingResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(Building.class, id));
+			.orElseThrow(() -> new EntityNotFoundException(RoomGroup.class, id));
 	}
 
 }

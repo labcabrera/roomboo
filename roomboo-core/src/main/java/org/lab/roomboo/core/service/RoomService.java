@@ -22,8 +22,8 @@ public class RoomService {
 
 	public Page<Room> search(RoomSearchRequest request, Pageable pageable) {
 		Query query = new Query().with(pageable);
-		if (StringUtils.isNotBlank(request.getBuildingId())) {
-			query.addCriteria(Criteria.where("building.id").is(request.getBuildingId()));
+		if (StringUtils.isNotBlank(request.getGroupId())) {
+			query.addCriteria(Criteria.where("group.id").is(request.getGroupId()));
 		}
 		if (request.getMinSize() != null) {
 			query.addCriteria(Criteria.where("features.size").gte(request.getMinSize()));

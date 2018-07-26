@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class RoomSearchRequest {
 
-	private String buildingId;
+	private String groupId;
 
 	private Integer minSize;
 

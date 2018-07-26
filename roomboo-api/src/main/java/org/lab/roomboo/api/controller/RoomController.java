@@ -10,8 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resources.RoomResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
-import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Room;
+import org.lab.roomboo.domain.model.RoomGroup;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -45,15 +45,15 @@ public class RoomController {
 	@ApiOperation(value = "Room search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<RoomResource>> find( // @formatter:off
-			@RequestParam(value = "buildingId", required = false) String buildingId,
+			@RequestParam(value = "groupId", required = false) String groupId,
 			@RequestParam(value = "p", defaultValue = "0") Integer page,
 			@RequestParam(value = "s", defaultValue = "10") Integer size) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
 
 		Room exampleEntity = new Room();
-		if (StringUtils.isNotBlank(buildingId)) {
-			exampleEntity.setBuilding(Building.builder().id(buildingId).build());
+		if (StringUtils.isNotBlank(groupId)) {
+			exampleEntity.setGroup(RoomGroup.builder().id(groupId).build());
 		}
 		Example<Room> example = Example.of(exampleEntity);
 
@@ -62,7 +62,7 @@ public class RoomController {
 		Resources<RoomResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
-		resources.add(new Link(fromController(BuildingController.class).build().toString(), "buildings"));
+		resources.add(new Link(fromController(RoomGroupController.class).build().toString(), "buildings"));
 		return ResponseEntity.ok(resources);
 	}
 

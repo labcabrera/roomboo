@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Document(collection = "buildings")
+@Document(collection = "roomGroups")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Building {
+public class RoomGroup {
 
 	private String id;
 

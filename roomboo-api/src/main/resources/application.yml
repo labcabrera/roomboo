@@ -1,7 +1,8 @@
 spring:
   profiles:
     #active: local
-    active: local,unsecured
+    #active: local,unsecured
+    active: local,unsecured,force-initialization
   application:
     name: roomboo
   jackson:

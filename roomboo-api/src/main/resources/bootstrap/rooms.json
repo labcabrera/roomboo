@@ -2,8 +2,8 @@
   {
     "id": "milankundera",
     "name": "Milan Kundera",
-    "building": {
-      "id": "building01"
+    "group": {
+      "id": "roomGroup01"
     },
     "features": {
       "size": 15,
@@ -13,8 +13,8 @@
     {
     "id": "franzkafka",
     "name": "Kranz Kafka",
-    "building": {
-      "id": "building01"
+    "group": {
+      "id": "roomGroup01"
     },
     "features": {
       "size": 30,
@@ -24,8 +24,8 @@
   {
     "id": "jamesjoyce",
     "name": "James Joyce",
-    "building": {
-      "id": "building01"
+    "group": {
+      "id": "roomGroup01"
     },
     "features": {
       "size": 20,
@@ -35,8 +35,8 @@
   {
     "id": "fiodordostoyevski",
     "name": "Fiódor Dostoyevski",
-    "building": {
-      "id": "building03"
+    "group": {
+      "id": "roomGroup03"
     },
     "features": {
       "size": 50,
