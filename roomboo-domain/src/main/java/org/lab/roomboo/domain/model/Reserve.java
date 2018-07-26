@@ -1,6 +1,7 @@
 package org.lab.roomboo.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -38,5 +39,7 @@ public class Reserve {
 	private LocalDateTime confirmed;
 
 	private String code;
+
+	private List<ReserveInvitation> invitations;
 
 }
