@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.controller.BuildingController;
 import org.lab.roomboo.api.controller.CalendarController;
 import org.lab.roomboo.api.controller.ReserveController;
-import org.lab.roomboo.api.controller.ReserveOwnerController;
+import org.lab.roomboo.api.controller.AppUserController;
 import org.lab.roomboo.api.controller.RoomController;
 import org.lab.roomboo.domain.model.Building;
 import org.lab.roomboo.domain.model.Room;
@@ -32,7 +32,7 @@ public class RoomResource extends ResourceSupport {
 		add(linkTo(methodOn(ReserveController.class).find(id, StringUtils.EMPTY, 0, 10)).withRel("reserves"));
 		add(linkTo(methodOn(CalendarController.class).findToday(id)).withRel("today"));
 		add(linkTo(methodOn(CalendarController.class).findTomorrow(id)).withRel("tomorrow"));
-		add(linkTo(ReserveOwnerController.class).withRel("rooms"));
+		add(linkTo(AppUserController.class).withRel("rooms"));
 	}
 
 }

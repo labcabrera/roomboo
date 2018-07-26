@@ -29,7 +29,7 @@ public class Reserve {
 	private Room room;
 
 	@DBRef
-	private ReserveOwner owner;
+	private AppUser user;
 
 	private LocalDateTime from;
 

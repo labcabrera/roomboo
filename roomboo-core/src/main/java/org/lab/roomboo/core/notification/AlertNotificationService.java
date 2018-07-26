@@ -7,10 +7,10 @@ import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.Alert.AlertType;
 import org.lab.roomboo.domain.model.Reserve;
-import org.lab.roomboo.domain.model.ReserveOwner;
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AlertRepository;
-import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
+import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -30,7 +30,7 @@ public class AlertNotificationService implements BookingNotificationService {
 	private AlertRepository alertRepository;
 
 	@Autowired
-	private ReserveOwnerRepository ownerRepository;
+	private AppUserRepository appUserRepository;
 
 	@Autowired
 	private RoomRepository roomRepository;
@@ -50,11 +50,11 @@ public class AlertNotificationService implements BookingNotificationService {
 	}
 
 	private Alert build(Reserve reserve) {
-		String ownerId = reserve.getOwner().getId();
-		ReserveOwner owner = ownerRepository.findById(ownerId)
-			.orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, ownerId));
+		String appUserId = reserve.getUser().getId();
+		AppUser owner = appUserRepository.findById(appUserId)
+			.orElseThrow(() -> new EntityNotFoundException(AppUser.class, appUserId));
 		String roomId = reserve.getRoom().getId();
-		Room room = roomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException(Room.class, ownerId));
+		Room room = roomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException(Room.class, appUserId));
 
 		//@formatter:off
 		return Alert.builder()

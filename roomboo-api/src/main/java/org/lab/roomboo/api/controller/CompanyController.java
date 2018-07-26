@@ -46,7 +46,7 @@ public class CompanyController {
 		Resources<CompanyResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
-		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "owners"));
+		resources.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
 		return ResponseEntity.ok(resources);
 	}
 

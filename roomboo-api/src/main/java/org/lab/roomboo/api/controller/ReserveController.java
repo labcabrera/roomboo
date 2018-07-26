@@ -9,8 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resources.ReserveResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
-import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.ReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class ReserveController {
 	@GetMapping
 	public ResponseEntity<Resources<ReserveResource>> find( // @formatter:off
 			@RequestParam(value = "roomId", required = false) String roomId,
-			@RequestParam(value = "ownerId", required = false) String ownerId,
+			@RequestParam(value = "userId", required = false) String userId,
 			@RequestParam(value = "p", defaultValue = "0", required = false) Integer page,
 			@RequestParam(value = "s", defaultValue = "10", required = false) Integer size) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.DESC, "from");
@@ -52,8 +52,8 @@ public class ReserveController {
 		if (StringUtils.isNotBlank(roomId)) {
 			exampleEntity.setRoom(Room.builder().id(roomId).build());
 		}
-		if (StringUtils.isNotBlank(ownerId)) {
-			exampleEntity.setOwner(ReserveOwner.builder().id(ownerId).build());
+		if (StringUtils.isNotBlank(userId)) {
+			exampleEntity.setUser(AppUser.builder().id(userId).build());
 		}
 		Example<Reserve> example = Example.of(exampleEntity);
 
@@ -63,8 +63,8 @@ public class ReserveController {
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(ReserveController.class).build().toString(), "reserves"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
-		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "owners"));
-		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "calendar"));
+		resources.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
+		resources.add(new Link(fromController(AppUserController.class).build().toString(), "calendar"));
 		return ResponseEntity.ok(resources);
 	}
 

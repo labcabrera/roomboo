@@ -8,11 +8,11 @@ import javax.mail.internet.MimeMessage;
 import org.lab.roomboo.core.notification.BookingNotificationService;
 import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
-import org.lab.roomboo.domain.model.ReserveOwner;
+import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
-import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -37,7 +37,7 @@ public class EmailNotificationService implements BookingNotificationService {
 	private TemplateEngine templateEngine;
 
 	@Autowired
-	private ReserveOwnerRepository reserveOwnerRepository;
+	private AppUserRepository appUserRepository;
 
 	@Autowired
 	private ReserveConfirmationTokenRepository tokenRepository;
@@ -50,9 +50,9 @@ public class EmailNotificationService implements BookingNotificationService {
 			return;
 		}
 		try {
-			String ownerId = reserve.getOwner().getId();
-			ReserveOwner owner = reserveOwnerRepository.findById(ownerId)
-				.orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, ownerId));
+			String appUserId = reserve.getUser().getId();
+			AppUser owner = appUserRepository.findById(appUserId)
+				.orElseThrow(() -> new EntityNotFoundException(AppUser.class, appUserId));
 			ReserveConfirmationToken token = tokenRepository.findValidToken(reserve.getId(), LocalDateTime.now())
 				.orElseGet(null);
 
@@ -71,9 +71,6 @@ public class EmailNotificationService implements BookingNotificationService {
 			message.setText(htmlContent, true);
 
 			sender.send(mimeMessage);
-
-			System.out.println(htmlContent);
-			System.out.println();
 		}
 		catch (Exception ex) {
 			log.error("Mail notification error", ex);

@@ -18,7 +18,7 @@ public class ApiUserDataInitializer extends DataInitializer<ApiUser> {
 	private PasswordEncoder passwordEncoder;
 
 	public ApiUserDataInitializer(ApiUserRepository repository) {
-		super(ApiUser.class, repository, "bootstrap/users.json");
+		super(ApiUser.class, repository, "bootstrap/api-users.json");
 	}
 
 	@Override

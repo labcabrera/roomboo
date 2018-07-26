@@ -61,7 +61,7 @@ public class RoomController {
 			.collect(Collectors.toList());
 		Resources<RoomResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
-		resources.add(new Link(fromController(ReserveOwnerController.class).build().toString(), "owners"));
+		resources.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
 		resources.add(new Link(fromController(BuildingController.class).build().toString(), "buildings"));
 		return ResponseEntity.ok(resources);
 	}

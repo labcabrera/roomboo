@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.notification.BookingNotificationService;
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
-import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.ReserveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class BookingService {
 	public Reserve processBookingRequest(BookingRequest request) {
 		// // TODO check dates
 		Reserve reserve = new Reserve();
-		reserve.setOwner(ReserveOwner.builder().id(request.getOwnerId()).build());
+		reserve.setUser(AppUser.builder().id(request.getUserId()).build());
 		reserve.setRoom(Room.builder().id(request.getRoomId()).build());
 		reserve.setFrom(request.getFrom());
 		reserve.setTo(request.getTo());

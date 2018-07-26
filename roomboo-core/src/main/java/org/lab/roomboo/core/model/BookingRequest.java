@@ -16,7 +16,7 @@ public class BookingRequest {
 
 	private String roomId;
 
-	private String ownerId;
+	private String userId;
 
 	private String name;
 

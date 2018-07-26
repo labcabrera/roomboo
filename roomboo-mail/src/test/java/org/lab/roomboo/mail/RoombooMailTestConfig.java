@@ -2,10 +2,10 @@ package org.lab.roomboo.mail;
 
 import java.util.Optional;
 
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
-import org.lab.roomboo.domain.model.ReserveOwner;
+import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
-import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +17,9 @@ import org.springframework.context.annotation.Import;
 public class RoombooMailTestConfig {
 
 	@Bean
-	ReserveOwnerRepository reserveOwnerRepository() {
-		ReserveOwner owner = ReserveOwner.builder().id("1").displayName("Test name").email("test@localhost.org")
-			.build();
-		ReserveOwnerRepository bean = Mockito.mock(ReserveOwnerRepository.class);
+	AppUserRepository appUserRepository() {
+		AppUser owner = AppUser.builder().id("1").displayName("Test name").email("test@localhost.org").build();
+		AppUserRepository bean = Mockito.mock(AppUserRepository.class);
 		Mockito.when(bean.findById("1")).thenReturn(Optional.of(owner));
 		return bean;
 	}

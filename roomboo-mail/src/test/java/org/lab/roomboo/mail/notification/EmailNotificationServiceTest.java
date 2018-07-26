@@ -9,8 +9,8 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
-import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.mail.RoombooMailTestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +46,7 @@ public class EmailNotificationServiceTest {
 			.code("ABCDEF")
 			.from(LocalDateTime.now())
 			.to(LocalDateTime.now().plusHours(1))
-			.owner(ReserveOwner.builder().id("1").build())
+			.user(AppUser.builder().id("1").displayName("Dummy username").build())
 			.build();
 		//@formatter:on
 

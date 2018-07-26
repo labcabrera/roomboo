@@ -3,13 +3,13 @@ package org.lab.roomboo.api.resources;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import org.lab.roomboo.api.controller.AppUserController;
 import org.lab.roomboo.api.controller.BuildingController;
 import org.lab.roomboo.api.controller.CalendarController;
 import org.lab.roomboo.api.controller.ReserveController;
-import org.lab.roomboo.api.controller.ReserveOwnerController;
 import org.lab.roomboo.api.controller.RoomController;
+import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
-import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.model.Room;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -25,11 +25,12 @@ public class ReserveResource extends ResourceSupport {
 		String id = reserve.getId();
 		add(linkTo(methodOn(ReserveController.class).findById(id)).withSelfRel());
 
-		if (reserve.getOwner() != null) {
-			String ownerId = reserve.getOwner().getId();
-			add(linkTo(methodOn(ReserveOwnerController.class).findById(ownerId)).withRel("owner"));
-			reserve.setOwner(ReserveOwner.builder().id(ownerId).build());
+		if (reserve.getUser() != null) {
+			String ownerId = reserve.getUser().getId();
+			add(linkTo(methodOn(AppUserController.class).findById(ownerId)).withRel("owner"));
+			reserve.setUser(AppUser.builder().id(ownerId).build());
 		}
+
 		if (reserve.getRoom() != null) {
 			String roomId = reserve.getRoom().getId();
 			add(linkTo(methodOn(RoomController.class).findById(roomId)).withRel("room"));
@@ -42,6 +43,7 @@ public class ReserveResource extends ResourceSupport {
 			add(linkTo(methodOn(CalendarController.class).findToday(roomId)).withRel("today"));
 			add(linkTo(methodOn(CalendarController.class).findTomorrow(roomId)).withRel("tomorrow"));
 		}
+
 		add(linkTo(ReserveController.class).withRel("reserves"));
 	}
 

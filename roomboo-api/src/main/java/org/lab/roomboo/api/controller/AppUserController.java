@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resources.ReserveOwnerResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
-import org.lab.roomboo.domain.model.ReserveOwner;
-import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
+import org.lab.roomboo.domain.model.AppUser;
+import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,11 +34,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 
 @RestController
-@RequestMapping(value = "/v1/owners", produces = "application/hal+json")
-public class ReserveOwnerController {
+@RequestMapping(value = "/v1/users", produces = "application/hal+json")
+public class AppUserController {
 
 	@Autowired
-	private ReserveOwnerRepository reserveOwnerRepository;
+	private AppUserRepository repository;
 
 	@ApiOperation(value = "Reserve owner search",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
@@ -48,8 +48,8 @@ public class ReserveOwnerController {
 			@RequestParam(value = "s", defaultValue = "10") Integer size) { //@formatter:on
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
-		List<ReserveOwnerResource> collection = reserveOwnerRepository.findAll(pageable).stream()
-			.map(ReserveOwnerResource::new).collect(Collectors.toList());
+		List<ReserveOwnerResource> collection = repository.findAll(pageable).stream().map(ReserveOwnerResource::new)
+			.collect(Collectors.toList());
 		Resources<ReserveOwnerResource> resources = new Resources<>(collection);
 		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
 		resources.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
@@ -60,15 +60,15 @@ public class ReserveOwnerController {
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<ReserveOwnerResource> findById(@PathVariable("id") String id) {
-		return reserveOwnerRepository.findById(id).map(p -> ResponseEntity.ok(new ReserveOwnerResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, id));
+		return repository.findById(id).map(p -> ResponseEntity.ok(new ReserveOwnerResource(p)))
+			.orElseThrow(() -> new EntityNotFoundException(AppUser.class, id));
 	}
 
 	@ApiOperation(value = "Reserve owner insert",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
-	public ResponseEntity<ReserveOwnerResource> save(@RequestBody ReserveOwner entity) {
-		ReserveOwner inserted = reserveOwnerRepository.save(entity);
+	public ResponseEntity<ReserveOwnerResource> save(@RequestBody AppUser entity) {
+		AppUser inserted = repository.save(entity);
 		URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId())
 			.toUri();
 		return ResponseEntity.created(uri).body(new ReserveOwnerResource(inserted));
@@ -77,10 +77,9 @@ public class ReserveOwnerController {
 	@ApiOperation(value = "Reserve owner update",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PutMapping("/{id}")
-	public ResponseEntity<ReserveOwnerResource> update(@PathVariable("id") String id,
-		@RequestBody ReserveOwner entity) {
+	public ResponseEntity<ReserveOwnerResource> update(@PathVariable("id") String id, @RequestBody AppUser entity) {
 		entity.setId(id);
-		reserveOwnerRepository.save(entity);
+		repository.save(entity);
 		ReserveOwnerResource resource = new ReserveOwnerResource(entity);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		return ResponseEntity.created(uri).body(resource);
@@ -90,10 +89,10 @@ public class ReserveOwnerController {
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") String id) {
-		return reserveOwnerRepository.findById(id).map(p -> {
-			reserveOwnerRepository.deleteById(id);
+		return repository.findById(id).map(p -> {
+			repository.deleteById(id);
 			return ResponseEntity.noContent().build();
-		}).orElseThrow(() -> new EntityNotFoundException(ReserveOwner.class, id));
+		}).orElseThrow(() -> new EntityNotFoundException(AppUser.class, id));
 	}
 
 }
