@@ -2,6 +2,7 @@ package org.lab.roomboo.core.notification;
 
 import java.time.LocalDateTime;
 
+import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.Alert.AlertType;
@@ -12,11 +13,14 @@ import org.lab.roomboo.domain.repository.AlertRepository;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Order(NotificationOrder.AlertCreation)
 @Slf4j
 public class AlertNotificationService implements BookingNotificationService {
 
@@ -31,6 +35,10 @@ public class AlertNotificationService implements BookingNotificationService {
 	@Autowired
 	private RoomRepository roomRepository;
 
+	/**
+	 * Asynchronously generates an alert record associated with the reservation request.
+	 */
+	@Async
 	@Override
 	public void reserveCreated(Reserve reserve) {
 		try {

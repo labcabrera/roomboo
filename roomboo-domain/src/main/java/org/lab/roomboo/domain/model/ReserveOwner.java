@@ -1,5 +1,7 @@
 package org.lab.roomboo.domain.model;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +26,10 @@ public class ReserveOwner {
 
 	private String displayName;
 
-	private Boolean active;
+	private LocalDateTime activation;
+
+	private LocalDateTime expiration;
+
+	private LocalDateTime locked;
 
 }

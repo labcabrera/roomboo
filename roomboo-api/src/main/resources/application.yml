@@ -1,7 +1,7 @@
 spring:
   profiles:
     #active: local
-    active: local,unsecured,gmail-enabled
+    active: local,unsecured
   application:
     name: roomboo
   jackson:
@@ -33,6 +33,9 @@ app:
       force: false
     mail:
       enabled: false      
+    token:
+      reserve:
+        expiration: 180
 ---
 spring:
   profiles: local

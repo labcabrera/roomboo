@@ -35,7 +35,7 @@ public class BookingService {
 		reserve.setTo(request.getTo());
 		reserve.setName(request.getName());
 		reserve.setConfirmed(false);
-		reserve.setCode(codeGenerator.randomCode());
+		reserve.setCode(codeGenerator.generate());
 		Reserve inserted = reserveRepository.insert(reserve);
 
 		// TODO async

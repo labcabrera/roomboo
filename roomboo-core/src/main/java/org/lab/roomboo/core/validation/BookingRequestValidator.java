@@ -22,28 +22,45 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 	@Override
 	public boolean isValid(BookingRequest value, ConstraintValidatorContext context) {
 		boolean valid = true;
-		if (StringUtils.isBlank(value.getRoomId())) {
-			context.buildConstraintViolationWithTemplate("Required roomId").addConstraintViolation();
-			valid = false;
-		}
-		else if (!roomRepository.findById(value.getRoomId()).isPresent()) {
-			context.buildConstraintViolationWithTemplate("Invalid roomId " + value.getRoomId())
-				.addConstraintViolation();
-			valid = false;
-		}
-		if (StringUtils.isBlank(value.getOwnerId())) {
-			context.buildConstraintViolationWithTemplate("Required ownerId").addConstraintViolation();
-			valid = false;
-		}
-		else if (!ownerRepository.findById(value.getOwnerId()).isPresent()) {
-			context.buildConstraintViolationWithTemplate("Invalid ownerId " + value.getOwnerId())
-				.addConstraintViolation();
-			valid = false;
-		}
+		valid &= validateRoom(value, context);
+		valid &= validateOwner(value, context);
+		valid &= validateDates(value, context);
 		if (StringUtils.isBlank(value.getName())) {
 			context.buildConstraintViolationWithTemplate("Required reserve name").addConstraintViolation();
 			valid = false;
 		}
+		return valid;
+	}
+
+	private boolean validateRoom(BookingRequest value, ConstraintValidatorContext context) {
+		if (StringUtils.isBlank(value.getRoomId())) {
+			context.buildConstraintViolationWithTemplate("Required roomId").addConstraintViolation();
+			return false;
+		}
+		if (!roomRepository.findById(value.getRoomId()).isPresent()) {
+			context.buildConstraintViolationWithTemplate("Invalid roomId " + value.getRoomId())
+				.addConstraintViolation();
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateOwner(BookingRequest value, ConstraintValidatorContext context) {
+		if (StringUtils.isBlank(value.getOwnerId())) {
+			context.buildConstraintViolationWithTemplate("Required ownerId").addConstraintViolation();
+			return false;
+		}
+		if (!ownerRepository.findById(value.getOwnerId()).isPresent()) {
+			context.buildConstraintViolationWithTemplate("Invalid ownerId " + value.getOwnerId())
+				.addConstraintViolation();
+			return false;
+		}
+		// TODO check owner active/non-lock/non-expired
+		return true;
+	}
+
+	private boolean validateDates(BookingRequest value, ConstraintValidatorContext context) {
+		boolean valid = true;
 		if (value.getFrom() == null) {
 			context.buildConstraintViolationWithTemplate("Required from").addConstraintViolation();
 			valid = false;

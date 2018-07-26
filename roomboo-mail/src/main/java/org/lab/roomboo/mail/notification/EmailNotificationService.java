@@ -6,6 +6,7 @@ import java.util.Locale;
 import javax.mail.internet.MimeMessage;
 
 import org.lab.roomboo.core.notification.BookingNotificationService;
+import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
@@ -13,8 +14,10 @@ import org.lab.roomboo.domain.model.ReserveOwner;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
 import org.lab.roomboo.domain.repository.ReserveOwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,6 +25,8 @@ import org.thymeleaf.context.Context;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Order(NotificationOrder.EmailCreation)
+
 @Slf4j
 public class EmailNotificationService implements BookingNotificationService {
 
@@ -37,8 +42,7 @@ public class EmailNotificationService implements BookingNotificationService {
 	@Autowired
 	private ReserveConfirmationTokenRepository tokenRepository;
 
-	// TODO html message
-	// TODO include API token confirmation link
+	@Async
 	@Override
 	public void reserveCreated(Reserve reserve) {
 		if (sender == null) {

@@ -1,37 +1,16 @@
 package org.lab.roomboo.domain.model;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Document(collection = "companies")
+@Document(collection = "tokenReserveConfirmation")
 @Getter
 @Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class ReserveConfirmationToken {
-
-	private String id;
+public class ReserveConfirmationToken extends ConfirmationToken {
 
 	@DBRef
-	private Reserve reserve;
-
-	private LocalDateTime created;
-
-	private LocalDateTime expiration;
-
-	private LocalDateTime processed;
-
-	private String url;
-
+	protected Reserve reserve;
 }

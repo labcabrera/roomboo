@@ -52,6 +52,7 @@ public class RoombooMailConfig {
 	}
 
 	@Bean
+	@ConditionalOnProperty(value = "app.env.mail.enabled", havingValue = "true", matchIfMissing = false)
 	public ResourceBundleMessageSource emailMessageSource() {
 		final ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setBasename("mail/MailMessages");
@@ -59,6 +60,7 @@ public class RoombooMailConfig {
 	}
 
 	@Bean
+	@ConditionalOnProperty(value = "app.env.mail.enabled", havingValue = "true", matchIfMissing = false)
 	public TemplateEngine emailTemplateEngine() {
 		final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		// Resolver for TEXT emails
@@ -99,7 +101,6 @@ public class RoombooMailConfig {
 	private ITemplateResolver stringTemplateResolver() {
 		final StringTemplateResolver templateResolver = new StringTemplateResolver();
 		templateResolver.setOrder(Integer.valueOf(3));
-		// No resolvable pattern, will simply process as a String template everything not previously matched
 		templateResolver.setTemplateMode("HTML5");
 		templateResolver.setCacheable(false);
 		return templateResolver;

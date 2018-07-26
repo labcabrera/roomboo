@@ -4,10 +4,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReserveCodeGenerator {
+public class TokenGenerator {
 
 	public String generate() {
-		return RandomStringUtils.randomNumeric(6);
+		return RandomStringUtils.randomAlphanumeric(64);
 	}
-
 }
