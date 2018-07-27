@@ -13,7 +13,7 @@ public class TokenUriServiceImpl implements TokenUriService {
 
 	@Override
 	public void processUri(ReserveConfirmationToken token) {
-		URI uri = MvcUriComponentsBuilder.fromController(BookingController.class).path("/confirmations/token/{token}")
+		URI uri = MvcUriComponentsBuilder.fromController(BookingController.class).path("/accept/{token}")
 			.buildAndExpand(token.getToken()).toUri();
 		token.setUri(uri.toString());
 	}
