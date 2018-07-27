@@ -35,6 +35,7 @@ app:
       reserve:
         expiration: 1440
         redirect-uri: https://www.google.com/?q=roomboo
+        cancelation-redirect-uri: https://www.google.com/?q=roomboo%20cancelled
     security:
       unsecured:
         paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**
@@ -71,7 +72,7 @@ app:
         password: ${ENV_SMTP_PASSWORD:undefined}
         host: ${ENV_SMTP_HOST:smtp.gmail.com}
         port: ${ENV_SMTP_PORT:587}
-        debug: false
+        debug: true
 
 --- # Load initial data on application start
 

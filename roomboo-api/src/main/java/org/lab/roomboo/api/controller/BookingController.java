@@ -38,6 +38,9 @@ public class BookingController {
 	@Value("${app.env.token.reserve.redirect-uri:}")
 	private String confirmationRedirectUri;
 
+	@Value("${app.env.token.reserve.cancelation-redirect-uri:}")
+	private String cancelationRedirectUri;
+
 	@ApiOperation(value = "Process booking request",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
@@ -61,7 +64,7 @@ public class BookingController {
 	public void processTokenConfirmation(@PathVariable String token, HttpServletResponse response) {
 		try {
 			Reserve reserve = bookingService.processReserveConfirmationByToken(token);
-			String redirectUri = buildRedirectUri(reserve);
+			String redirectUri = buildRedirectUri(reserve, confirmationRedirectUri);
 			log.debug("Confirmation redirect: {}", redirectUri);
 			response.sendRedirect(redirectUri);
 		}
@@ -70,12 +73,30 @@ public class BookingController {
 			log.trace("Confirmation error", ex);
 		}
 		catch (IOException ex) {
-			log.error("Redirection error", ex);
+			log.error("Confirmation redirection error", ex);
 		}
 	}
 
-	private String buildRedirectUri(Reserve reserve) {
-		StringBuilder sb = new StringBuilder(confirmationRedirectUri);
+	@ApiOperation(value = "Token cancelation")
+	@GetMapping("/decline/{token}")
+	public void processTokenCancelation(@PathVariable String token, HttpServletResponse response) {
+		try {
+			Reserve reserve = bookingService.processReserveCancelationByToken(token);
+			String redirectUri = buildRedirectUri(reserve, cancelationRedirectUri);
+			log.debug("Cancelation redirect: {}", redirectUri);
+			response.sendRedirect(redirectUri);
+		}
+		catch (ReserveConfirmationException ex) {
+			log.warn("Invalid token cancelation: " + ex.getMessage());
+			log.trace("Confirmation cancelation", ex);
+		}
+		catch (IOException ex) {
+			log.error("Cancelation redirection error", ex);
+		}
+	}
+
+	private String buildRedirectUri(Reserve reserve, String baseUrl) {
+		StringBuilder sb = new StringBuilder(baseUrl);
 		if (!confirmationRedirectUri.contains("?")) {
 			sb.append("?");
 		}

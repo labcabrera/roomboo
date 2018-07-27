@@ -19,6 +19,9 @@ public class ReserveInvitation {
 
 	private String target;
 
-	private LocalDateTime confirmation;
+	// TODO avoid serialization
+	private String token;
+
+	private LocalDateTime confirmed;
 
 }

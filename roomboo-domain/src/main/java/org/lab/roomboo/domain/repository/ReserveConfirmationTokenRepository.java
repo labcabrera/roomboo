@@ -11,7 +11,7 @@ public interface ReserveConfirmationTokenRepository extends MongoRepository<Rese
 
 	Optional<ReserveConfirmationToken> findByToken(String token);
 
-	@Query("{}")
-	Optional<ReserveConfirmationToken> findValidToken(String reserveId, LocalDateTime date);
+	@Query("{ 'reserve.id' : ?0, 'created' : { '$gte': ?1 } }")
+	Optional<ReserveConfirmationToken> findByReserveId(String reserveId, LocalDateTime creation);
 
 }

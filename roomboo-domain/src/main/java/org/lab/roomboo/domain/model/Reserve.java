@@ -36,8 +36,10 @@ public class Reserve {
 
 	private LocalDateTime to;
 
+	private LocalDateTime created;
+
 	private LocalDateTime confirmed;
-	
+
 	private LocalDateTime cancelled;
 
 	private String code;

@@ -49,6 +49,7 @@ public class BookingService {
 		reserve.setRoom(Room.builder().id(request.getRoomId()).build());
 		reserve.setFrom(request.getFrom());
 		reserve.setTo(request.getTo());
+		reserve.setCreated(LocalDateTime.now());
 		reserve.setName(request.getName());
 		reserve.setCode(codeGenerator.generate());
 		Reserve inserted = reserveRepository.insert(reserve);
@@ -82,6 +83,20 @@ public class BookingService {
 		return processReserveConfirmation(reserveId);
 	}
 
+	public Reserve processReserveCancelationByToken(String token) {
+		ReserveConfirmationToken tokenEntity = tokenRepository.findByToken(token).orElse(null);
+		if (tokenEntity == null) {
+			throw new ReserveConfirmationException("Invalid token");
+		}
+		if (tokenEntity.getExpiration().isBefore(LocalDateTime.now())) {
+			throw new ReserveConfirmationException("Token expired");
+		}
+		Reserve reserve = processReserveCancelation(tokenEntity.getReserve().getId());
+		reserveRepository.save(reserve);
+		tokenRepository.delete(tokenEntity);
+		return reserve;
+	}
+
 	private Reserve processReserveConfirmation(String reserveId) {
 		Reserve reserve = reserveRepository.findById(reserveId).orElse(null);
 		if (reserve == null) {
@@ -100,6 +115,18 @@ public class BookingService {
 			throw new ReserveConfirmationException("Room is not available at that time");
 		}
 		reserve.setConfirmed(LocalDateTime.now());
+		return reserveRepository.save(reserve);
+	}
+
+	private Reserve processReserveCancelation(String reserveId) {
+		Reserve reserve = reserveRepository.findById(reserveId).orElse(null);
+		if (reserve == null) {
+			throw new ReserveConfirmationException("Invalid token reserve");
+		}
+		if (reserve.getConfirmed() != null) {
+			throw new ReserveConfirmationException("Reserve already confirmed");
+		}
+		reserve.setCancelled(LocalDateTime.now());
 		return reserveRepository.save(reserve);
 	}
 

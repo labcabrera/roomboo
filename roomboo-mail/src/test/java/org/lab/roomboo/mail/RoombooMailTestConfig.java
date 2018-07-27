@@ -1,4 +1,4 @@
-package org.lab.roomboo.test.mail;
+package org.lab.roomboo.mail;
 
 import java.util.Optional;
 
@@ -28,9 +28,10 @@ public class RoombooMailTestConfig {
 	@Bean
 	ReserveConfirmationTokenRepository reserveConfirmationTokenRepository() {
 		ReserveConfirmationToken token = new ReserveConfirmationToken();
-		token.setUri("http://roomboo.org/reserves/confirmation/abcde");
+		token.setConfirmationUri("http://todo/accept");
+		token.setCancelationUri("http://todo/decline");
 		ReserveConfirmationTokenRepository bean = Mockito.mock(ReserveConfirmationTokenRepository.class);
-		Mockito.when(bean.findValidToken(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
+		Mockito.when(bean.findByReserveId(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
 			.thenReturn(Optional.of(token));
 		return bean;
 	}

@@ -1,6 +1,5 @@
 package org.lab.roomboo.mail.notification;
 
-import java.time.LocalDateTime;
 import java.util.Locale;
 
 import javax.mail.internet.MimeMessage;
@@ -8,6 +7,7 @@ import javax.mail.internet.MimeMessage;
 import org.lab.roomboo.core.notification.BookingNotificationService;
 import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
+import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Order(NotificationOrder.EmailCreation)
-
 @Slf4j
 public class EmailNotificationService implements BookingNotificationService {
 
@@ -50,11 +49,14 @@ public class EmailNotificationService implements BookingNotificationService {
 			return;
 		}
 		try {
+			// TODO check not already confirmed/cancelled
+
 			String appUserId = reserve.getUser().getId();
 			AppUser owner = appUserRepository.findById(appUserId)
 				.orElseThrow(() -> new EntityNotFoundException(AppUser.class, appUserId));
-			ReserveConfirmationToken token = tokenRepository.findValidToken(reserve.getId(), LocalDateTime.now())
-				.orElseGet(null);
+
+			ReserveConfirmationToken token = tokenRepository.findByReserveId(reserve.getId(), reserve.getCreated())
+				.orElseThrow(() -> new RoombooException("Can not recover confirmation token"));
 
 			log.info("Sending booking notification mail");
 
@@ -62,7 +64,7 @@ public class EmailNotificationService implements BookingNotificationService {
 			context.setVariable("username", owner.getDisplayName());
 			context.setVariable("reserve", reserve);
 			context.setVariable("confirmationToken", token);
-			final String htmlContent = templateEngine.process("html/email-reserve-created.html", context);
+			final String htmlContent = templateEngine.process("mail-reserve-created", context);
 
 			MimeMessage mimeMessage = sender.createMimeMessage();
 			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -71,6 +73,7 @@ public class EmailNotificationService implements BookingNotificationService {
 			message.setText(htmlContent, true);
 
 			sender.send(mimeMessage);
+			log.debug("Send confirmation email");
 		}
 		catch (Exception ex) {
 			log.error("Mail notification error", ex);
