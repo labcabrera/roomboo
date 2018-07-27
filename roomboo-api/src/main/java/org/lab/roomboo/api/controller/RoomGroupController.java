@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.resources.RoomGroupResource;
+import org.lab.roomboo.api.resource.RoomGroupResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.model.RoomGroup;

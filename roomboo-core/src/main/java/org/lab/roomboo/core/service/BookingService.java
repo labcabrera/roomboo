@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.lab.roomboo.core.component.ReserveCodeGenerator;
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.notification.BookingNotificationService;
 import org.lab.roomboo.domain.exception.ReserveConfirmationException;

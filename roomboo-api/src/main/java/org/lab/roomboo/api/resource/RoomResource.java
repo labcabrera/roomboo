@@ -1,4 +1,4 @@
-package org.lab.roomboo.api.resources;
+package org.lab.roomboo.api.resource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -33,7 +33,8 @@ public class RoomResource extends ResourceSupport {
 			room.setGroup(RoomGroup.builder().id(groupId).build());
 		}
 
-		add(linkTo(methodOn(ReserveController.class).find(id, StringUtils.EMPTY, 0, 10)).withRel("reserves"));
+		add(linkTo(methodOn(ReserveController.class).find(id, StringUtils.EMPTY, false, false, 0, 10))
+			.withRel("roomReserves"));
 		add(linkTo(methodOn(CalendarController.class).findToday(id)).withRel("today"));
 		add(linkTo(methodOn(CalendarController.class).findTomorrow(id)).withRel("tomorrow"));
 		add(linkTo(AppUserController.class).withRel("users"));

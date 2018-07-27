@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.resources.ReserveResource;
+import org.lab.roomboo.api.resource.ReserveResource;
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.service.BookingService;
 import org.lab.roomboo.domain.exception.ReserveConfirmationException;
@@ -84,7 +84,6 @@ public class BookingController {
 		}
 		sb.append("reserveId=").append(reserve.getId());
 		return sb.toString();
-
 	}
 
 }

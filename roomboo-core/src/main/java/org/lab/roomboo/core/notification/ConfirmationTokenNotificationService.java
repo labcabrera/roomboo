@@ -2,8 +2,8 @@ package org.lab.roomboo.core.notification;
 
 import java.time.LocalDateTime;
 
+import org.lab.roomboo.core.component.TokenGenerator;
 import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
-import org.lab.roomboo.core.service.TokenGenerator;
 import org.lab.roomboo.core.service.TokenUriService;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;

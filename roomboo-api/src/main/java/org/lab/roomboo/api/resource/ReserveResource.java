@@ -1,13 +1,11 @@
-package org.lab.roomboo.api.resources;
+package org.lab.roomboo.api.resource;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.lab.roomboo.api.controller.AppUserController;
-import org.lab.roomboo.api.controller.CalendarController;
 import org.lab.roomboo.api.controller.ReserveController;
 import org.lab.roomboo.api.controller.RoomController;
-import org.lab.roomboo.api.controller.RoomGroupController;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.Room;
@@ -34,14 +32,7 @@ public class ReserveResource extends ResourceSupport {
 		if (reserve.getRoom() != null) {
 			String roomId = reserve.getRoom().getId();
 			add(linkTo(methodOn(RoomController.class).findById(roomId)).withRel("room"));
-
-			if (reserve.getRoom().getGroup() != null) {
-				String roomGroupId = reserve.getRoom().getGroup().getId();
-				add(linkTo(methodOn(RoomGroupController.class).findById(roomGroupId)).withRel("roomGroup"));
-			}
 			reserve.setRoom(Room.builder().id(roomId).build());
-			add(linkTo(methodOn(CalendarController.class).findToday(roomId)).withRel("today"));
-			add(linkTo(methodOn(CalendarController.class).findTomorrow(roomId)).withRel("tomorrow"));
 		}
 
 		add(linkTo(ReserveController.class).withRel("reserves"));

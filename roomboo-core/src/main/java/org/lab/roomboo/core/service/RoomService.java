@@ -3,7 +3,7 @@ package org.lab.roomboo.core.service;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.lab.roomboo.core.model.RoomSearchRequest;
+import org.lab.roomboo.core.model.RoomSearchOptions;
 import org.lab.roomboo.domain.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,15 +20,15 @@ public class RoomService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	public Page<Room> search(RoomSearchRequest request, Pageable pageable) {
+	public Page<Room> findPageable(RoomSearchOptions options, Pageable pageable) {
 		Query query = new Query().with(pageable);
-		if (StringUtils.isNotBlank(request.getGroupId())) {
-			query.addCriteria(Criteria.where("group.id").is(request.getGroupId()));
+		if (StringUtils.isNotBlank(options.getGroupId())) {
+			query.addCriteria(Criteria.where("group.id").is(options.getGroupId()));
 		}
-		if (request.getMinSize() != null) {
-			query.addCriteria(Criteria.where("features.size").gte(request.getMinSize()));
+		if (options.getMinSize() != null) {
+			query.addCriteria(Criteria.where("features.size").gte(options.getMinSize()));
 		}
-		if (request.getVideoRequired() != null && request.getVideoRequired()) {
+		if (options.getVideoRequired() != null && options.getVideoRequired()) {
 			query.addCriteria(Criteria.where("features.video").is(Boolean.TRUE));
 		}
 		List<Room> list = mongoTemplate.find(query, Room.class);

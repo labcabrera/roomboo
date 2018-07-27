@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.resources.AlertResource;
+import org.lab.roomboo.api.resource.AlertResource;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.repository.AlertRepository;

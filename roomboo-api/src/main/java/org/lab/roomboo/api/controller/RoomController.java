@@ -4,26 +4,26 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
-import org.lab.roomboo.api.resources.RoomResource;
-import org.lab.roomboo.api.resources.RoomStatusResource;
+import org.lab.roomboo.api.resource.RoomResource;
+import org.lab.roomboo.api.resource.RoomStatusResource;
+import org.lab.roomboo.api.resource.assembler.RoomResourceAssembler;
+import org.lab.roomboo.core.model.RoomSearchOptions;
 import org.lab.roomboo.core.service.ReserveService;
+import org.lab.roomboo.core.service.RoomService;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.Room;
-import org.lab.roomboo.domain.model.RoomGroup;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,33 +44,34 @@ import io.swagger.annotations.Authorization;
 public class RoomController {
 
 	@Autowired
+	private RoomService roomService;
+
+	@Autowired
 	private RoomRepository repository;
 
 	@Autowired
 	private ReserveService reserveService;
 
+	@Autowired
+	private RoomResourceAssembler roomResourceAssembler;
+
+	@Autowired
+	private PagedResourcesAssembler<Room> assembler;
+
 	@ApiOperation(value = "Room search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
-	public ResponseEntity<Resources<RoomResource>> find( // @formatter:off
+	public ResponseEntity<PagedResources<RoomResource>> find( // @formatter:off
 			@RequestParam(value = "groupId", required = false) String groupId,
-			@RequestParam(value = "p", defaultValue = "0") Integer page,
-			@RequestParam(value = "s", defaultValue = "10") Integer size) { // @formatter:on
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "10") Integer size
+			) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
-
-		Room exampleEntity = new Room();
-		if (StringUtils.isNotBlank(groupId)) {
-			exampleEntity.setGroup(RoomGroup.builder().id(groupId).build());
-		}
-		Example<Room> example = Example.of(exampleEntity);
-
-		List<RoomResource> collection = repository.findAll(example, pageable).stream().map(RoomResource::new)
-			.collect(Collectors.toList());
-		Resources<RoomResource> resources = new Resources<>(collection);
-		resources.add(new Link(ServletUriComponentsBuilder.fromCurrentRequest().build().toUriString(), "self"));
-		resources.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
-		resources.add(new Link(fromController(RoomGroupController.class).build().toString(), "roomGroups"));
-		return ResponseEntity.ok(resources);
+		RoomSearchOptions options = RoomSearchOptions.builder().groupId(groupId).build();
+		Page<Room> currentPage = roomService.findPageable(options, pageable);
+		PagedResources<RoomResource> pr = assembler.toResource(currentPage, roomResourceAssembler);
+		pr.add(new Link(fromController(RoomGroupController.class).build().toString(), "roomGroups"));
+		return ResponseEntity.ok(pr);
 	}
 
 	@ApiOperation(value = "Room search by id", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })

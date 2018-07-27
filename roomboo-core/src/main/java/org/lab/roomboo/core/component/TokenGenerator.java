@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.service;
+package org.lab.roomboo.core.component;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
