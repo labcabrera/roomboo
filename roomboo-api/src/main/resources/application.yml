@@ -4,7 +4,7 @@ spring:
     active: local,unsecured
     #active: local,unsecured,force-initialization
   application:
-    name: roomboo
+    name: roomboo-api
   jackson:
     default-property-inclusion: non_null
 
@@ -16,9 +16,11 @@ management:
 
 logging:
   level:
-    org.lab.roomboo: DEBUG
-    org.springframework: INFO
-    springfox: WARN
+    root: ${LOG_LEVEL:DEBUG}
+    org.lab.roomboo: ${LOG_LEVEL:DEBUG}
+  file: ${LOG_FILE:/var/log/roomboo/${spring.application.name}.log}
+  file.max-size: 1Mb
+  file.max-history: 25
 
 server:
   port: ${PORT:8080}
@@ -42,17 +44,20 @@ app:
       unsecured:
         paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**
 ---
+
 spring:
   profiles: local
   data:
     mongodb:
       uri: mongodb://${ENV_MONGO_HOST:localhost}/roomboo
 ---
+
 spring:
   profiles: unsecured
   autoconfigure:
     exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 ---
+
 spring:
   profiles: mail
 app:
@@ -67,20 +72,12 @@ app:
         debug: false
 
 ---
+
 spring:
   profiles: force-initialization
 app:
   env:
     initialization:
       force: true
----
-spring:
-  profiles: live
-logging:
-  level:
-    org.lab.roomboo: WARN
-    org.springframework: WARN
-    org.apache: WARN
-    org.mongodb: WARN
-    springfox: WARN
+
     
