@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.lab.roomboo.core.model.ReserveSearchOptions;
 import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,19 +26,18 @@ public class ReserveService {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	public Page<Reserve> findPaginated(String roomId, String userId, boolean includeUnconfirmed,
-		boolean includeCancelled, Pageable pageable) {
+	public Page<Reserve> findPaginated(ReserveSearchOptions options, Pageable pageable) {
 		Query query = new Query().with(pageable);
-		if (StringUtils.isNotBlank(roomId)) {
-			query.addCriteria(Criteria.where("room.id").is(roomId));
+		if (StringUtils.isNotBlank(options.getRoomId())) {
+			query.addCriteria(Criteria.where("room.id").is(options.getRoomId()));
 		}
-		if (StringUtils.isNotBlank(userId)) {
-			query.addCriteria(Criteria.where("user.id").is(userId));
+		if (StringUtils.isNotBlank(options.getUserId())) {
+			query.addCriteria(Criteria.where("user.id").is(options.getUserId()));
 		}
-		if (!includeUnconfirmed) {
+		if (!options.isIncludeUnconfirmed()) {
 			query.addCriteria(Criteria.where("confirmed").ne(null));
 		}
-		if (!includeCancelled) {
+		if (!options.isIncludeUnconfirmed()) {
 			query.addCriteria(Criteria.where("cancelled").is(null));
 		}
 		List<Reserve> list = mongoTemplate.find(query, Reserve.class);
