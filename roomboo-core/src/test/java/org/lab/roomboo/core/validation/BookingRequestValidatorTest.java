@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lab.roomboo.core.model.BookingRequest;
+import org.lab.roomboo.core.service.ReserveService;
 import org.lab.roomboo.core.validation.BookingRequestValidatorTest.BookingRequestValidatorTestConfig;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Room;
@@ -133,6 +134,12 @@ public class BookingRequestValidatorTest {
 			Mockito.when(mock.findById("userExpired")).thenReturn(
 				Optional.of(AppUser.builder().id("userLoked").activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
 					.expiration(LocalDateTime.parse("2010-02-01T00:00:00.000")).build()));
+			return mock;
+		}
+
+		@Bean
+		ReserveService ReserveService() {
+			ReserveService mock = Mockito.mock(ReserveService.class);
 			return mock;
 		}
 
