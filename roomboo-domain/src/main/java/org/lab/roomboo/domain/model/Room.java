@@ -1,5 +1,7 @@
 package org.lab.roomboo.domain.model;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,5 +29,7 @@ public class Room {
 	private RoomGroup group;
 
 	private RoomFeatures features;
+
+	private LocalDateTime locked;
 
 }

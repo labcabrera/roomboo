@@ -8,6 +8,7 @@ import javax.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.domain.model.AppUser;
+import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,13 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 			context.buildConstraintViolationWithTemplate("Required roomId").addConstraintViolation();
 			return false;
 		}
-		if (!roomRepository.findById(value.getRoomId()).isPresent()) {
+		Room room = roomRepository.findById(value.getRoomId()).orElse(null);
+		if (room == null) {
 			context.buildConstraintViolationWithTemplate("Invalid room identifier").addConstraintViolation();
+			return false;
+		}
+		if (room.getLocked() != null && room.getLocked().isBefore(LocalDateTime.now())) {
+			context.buildConstraintViolationWithTemplate("Room locked").addConstraintViolation();
 			return false;
 		}
 		return true;

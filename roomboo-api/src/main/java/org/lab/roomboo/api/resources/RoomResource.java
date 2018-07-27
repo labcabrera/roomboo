@@ -23,12 +23,16 @@ public class RoomResource extends ResourceSupport {
 	public RoomResource(Room room) {
 		this.room = room;
 		String id = room.getId();
+
 		add(linkTo(methodOn(RoomController.class).findById(id)).withSelfRel());
+		add(linkTo(methodOn(RoomController.class).status(id)).withRel("status"));
+
 		if (room.getGroup() != null) {
 			String groupId = room.getGroup().getId();
 			add(linkTo(methodOn(RoomGroupController.class).findById(groupId)).withRel("roomGroup"));
 			room.setGroup(RoomGroup.builder().id(groupId).build());
 		}
+
 		add(linkTo(methodOn(ReserveController.class).find(id, StringUtils.EMPTY, 0, 10)).withRel("reserves"));
 		add(linkTo(methodOn(CalendarController.class).findToday(id)).withRel("today"));
 		add(linkTo(methodOn(CalendarController.class).findTomorrow(id)).withRel("tomorrow"));

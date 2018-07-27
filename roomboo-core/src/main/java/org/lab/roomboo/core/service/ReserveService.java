@@ -3,6 +3,7 @@ package org.lab.roomboo.core.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,35 @@ public class ReserveService {
 		query.addCriteria(Criteria.where("room.id").is(roomId));
 		query.addCriteria(Criteria.where("from").gte(t0).lte(t1));
 		if (log.isDebugEnabled()) {
-			log.debug("Reserve date query: {}", query);
+			log.debug("Reserve find at date query: {}", query);
 		}
 		return mongoTemplate.find(query, Reserve.class);
+	}
+
+	public Optional<Reserve> findAtDateTime(String roomId, LocalDateTime dateTime) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("room.id").is(roomId));
+		query.addCriteria(Criteria.where("from").lte(dateTime));
+		query.addCriteria(Criteria.where("to").gte(dateTime));
+		query.addCriteria(Criteria.where("confirmed").ne(null));
+		query.addCriteria(Criteria.where("cancelled").is(null));
+		if (log.isDebugEnabled()) {
+			log.debug("Reserve find at datetime query: {}", query);
+		}
+		Reserve reserve = mongoTemplate.findOne(query, Reserve.class);
+		return Optional.ofNullable(reserve);
+	}
+
+	public Optional<Reserve> findNext(String roomId, LocalDateTime dateTime) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("room.id").is(roomId));
+		query.addCriteria(Criteria.where("from").gte(dateTime));
+		query.addCriteria(Criteria.where("confirmed").ne(null));
+		query.addCriteria(Criteria.where("cancelled").is(null));
+		if (log.isDebugEnabled()) {
+			log.debug("Reserve find next query: {}", query);
+		}
+		return Optional.ofNullable(mongoTemplate.findOne(query, Reserve.class));
 	}
 
 }
