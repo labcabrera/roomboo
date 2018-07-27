@@ -22,11 +22,9 @@ ofreciendo las siguientes funcionalidades:
 
 == Docker
 
-La imagen de docker se puede encontrar en:
+La imagen docker de la api es https://hub.docker.com/r/labcabrera/roomboo-api/[labcabrera/roomboo-api].
 
-https://hub.docker.com/r/labcabrera/roomboo-api/
-
-Para ejecutarla simplemente tendremos que ejecutar:
+Para arrancar el contenedor simplemente tendremos que ejecutar:
 
 ----
 docker pull labcabrera/roomboo-api
@@ -44,8 +42,8 @@ Argumentos:
 | `ENV_MONGO_HOST`         | localhost         | Nombre del host de MongoDB.
 |`ENV_SMTP_USERNAME`       | _undefined_       | Usuario de envío de correo.
 |`ENV_SMTP_PASSWORD`       | _undefined_       | Password de envío de correo.
-|`ENV_SMTP_HOST`           | _smtp.gmail.com_  | Servidor de correo
-|`ENV_SMTP_PORT`           | _587_             |
+|`ENV_SMTP_HOST`           | _smtp.gmail.com_  | Servidor de correo.
+|`ENV_SMTP_PORT`           | _587_             | Puerto del servidor de correo.
 |===
 
 Por ejemplo, para ejecutar la aplicación en el puerto 8000 con el perfil sin seguridad ejecutaremos:
