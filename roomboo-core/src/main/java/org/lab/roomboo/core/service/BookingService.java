@@ -2,6 +2,7 @@ package org.lab.roomboo.core.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.notification.BookingNotificationService;
@@ -12,6 +13,7 @@ import org.lab.roomboo.domain.model.ReserveConfirmationToken;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
 import org.lab.roomboo.domain.repository.ReserveRepository;
+import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 public class BookingService {
 
 	@Autowired
+	private ReserveService reserveService;
+
+	@Autowired
 	private ReserveRepository reserveRepository;
+
+	@Autowired
+	private RoomRepository roomRepository;
 
 	@Autowired
 	private ReserveCodeGenerator codeGenerator;
@@ -74,14 +82,21 @@ public class BookingService {
 	}
 
 	private Reserve processReserveConfirmation(String reserveId) {
-		// TODO check dates
-		// TODO check room not locked
 		Reserve reserve = reserveRepository.findById(reserveId).orElse(null);
 		if (reserve == null) {
 			throw new ReserveConfirmationException("Invalid token reserve");
 		}
 		if (reserve.getConfirmed() != null) {
 			throw new ReserveConfirmationException("Reserve already confirmed");
+		}
+		Room room = roomRepository.findById(reserve.getRoom().getId())
+			.orElseThrow(() -> new ReserveConfirmationException("Invalid room"));
+		if (room.getLocked() != null && room.getLocked().isBefore(LocalDateTime.now())) {
+			throw new ReserveConfirmationException("Room is locked");
+		}
+		Optional<Reserve> check = reserveService.findInRange(room.getId(), reserve.getFrom(), reserve.getTo());
+		if (check.isPresent()) {
+			throw new ReserveConfirmationException("Room is not available at that time");
 		}
 		reserve.setConfirmed(LocalDateTime.now());
 		return reserveRepository.save(reserve);
