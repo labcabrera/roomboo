@@ -10,23 +10,19 @@ import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.hateoas.ResourceSupport;
 
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 @Getter
-@Setter
-@ToString
-public class ReserveOwnerResource extends ResourceSupport {
+public class AppUserResource extends ResourceSupport {
 
-	private final AppUser reserveOwner;
+	private final AppUser appUser;
 
-	public ReserveOwnerResource(AppUser reserveOwner) {
-		this.reserveOwner = reserveOwner;
-		String id = reserveOwner.getId();
+	public AppUserResource(AppUser appUser) {
+		this.appUser = appUser;
+		String id = appUser.getId();
 		add(linkTo(methodOn(AppUserController.class).findById(id)).withSelfRel());
-		add(linkTo(AppUserController.class).withRel("owners"));
+		add(linkTo(AppUserController.class).withRel("users"));
 		add(linkTo(methodOn(ReserveController.class).find(StringUtils.EMPTY, id, false, false, 0, 10))
-			.withRel("reserves"));
+			.withRel("userReserves"));
 	}
 
 }

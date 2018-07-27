@@ -25,7 +25,7 @@ public class ReserveResource extends ResourceSupport {
 
 		if (reserve.getUser() != null) {
 			String ownerId = reserve.getUser().getId();
-			add(linkTo(methodOn(AppUserController.class).findById(ownerId)).withRel("owner"));
+			add(linkTo(methodOn(AppUserController.class).findById(ownerId)).withRel("user"));
 			reserve.setUser(AppUser.builder().id(ownerId).build());
 		}
 

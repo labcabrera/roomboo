@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.validation;
+package org.lab.roomboo.test.core.validation;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -12,11 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.service.ReserveService;
-import org.lab.roomboo.core.validation.BookingRequestValidatorTest.BookingRequestValidatorTestConfig;
+import org.lab.roomboo.core.validation.BookingRequestValidator;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
+import org.lab.roomboo.test.core.validation.BookingRequestValidatorTest.BookingRequestValidatorTestConfig;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

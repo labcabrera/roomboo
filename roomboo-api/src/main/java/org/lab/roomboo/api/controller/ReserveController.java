@@ -60,7 +60,7 @@ public class ReserveController {
 		Page<Reserve> currentPage = reserveService.findPaginated(options, pageable);
 		PagedResources<ReserveResource> pr = assembler.toResource(currentPage, reserveResourceAssembler);
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
-		pr.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
+		pr.add(new Link(fromController(AppUserController.class).build().toString(), "users"));
 		return ResponseEntity.ok(pr);
 	}
 
