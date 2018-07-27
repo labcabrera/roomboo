@@ -1,22 +1,17 @@
 spring:
   profiles:
     #active: local
-    active: local,unsecured
+    active: local,unsecured,actuator
     #active: local,unsecured,force-initialization
   application:
     name: roomboo-api
   jackson:
     default-property-inclusion: non_null
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
 
 logging:
   level:
-    root: ${LOG_LEVEL:DEBUG}
+    root: ${LOG_LEVEL:INFO}
     org.lab.roomboo: ${LOG_LEVEL:DEBUG}
   file: ${LOG_FILE:/var/log/roomboo/${spring.application.name}.log}
   file.max-size: 1Mb
@@ -32,8 +27,8 @@ app:
         path: /auth
       secret: changeit
       expiration: 180
-    initialization:
-      force: false
+    reserve:
+      minuteMultiplier: 15
     mail:
       enabled: false      
     token:
@@ -43,6 +38,11 @@ app:
     security:
       unsecured:
         paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**
+    contact:
+      email: support@roomboo.org
+    initialization:
+      force: false
+
 ---
 
 spring:
@@ -50,13 +50,15 @@ spring:
   data:
     mongodb:
       uri: mongodb://${ENV_MONGO_HOST:localhost}/roomboo
----
+
+--- # Disables JWT security
 
 spring:
   profiles: unsecured
   autoconfigure:
     exclude: org.lab.roomboo.jwt.RoombooJwtAutoconfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
----
+
+--- # Enables email confirmation support
 
 spring:
   profiles: mail
@@ -71,7 +73,7 @@ app:
         port: ${ENV_SMTP_PORT:587}
         debug: false
 
----
+--- # Load initial data on application start
 
 spring:
   profiles: force-initialization
@@ -80,4 +82,13 @@ app:
     initialization:
       force: true
 
+--- # Enables all actuator endpoints
+
+spring:
+  profiles: actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
     
