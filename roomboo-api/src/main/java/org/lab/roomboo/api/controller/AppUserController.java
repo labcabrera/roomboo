@@ -48,8 +48,7 @@ public class AppUserController {
 	@Autowired
 	private PagedResourcesAssembler<AppUser> assembler;
 
-	@ApiOperation(value = "Reserve owner search",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "App user search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<Resources<AppUserResource>> findAll( //@formatter:off
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -62,7 +61,7 @@ public class AppUserController {
 		return ResponseEntity.ok(pr);
 	}
 
-	@ApiOperation(value = "Reserve owner find by id",
+	@ApiOperation(value = "App user find by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<AppUserResource> findById(@PathVariable("id") String id) {
@@ -70,8 +69,7 @@ public class AppUserController {
 			.orElseThrow(() -> new EntityNotFoundException(AppUser.class, id));
 	}
 
-	@ApiOperation(value = "Reserve owner insert",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "App user insert", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<AppUserResource> save(@RequestBody AppUser entity) {
 		AppUser inserted = repository.save(entity);
@@ -80,8 +78,7 @@ public class AppUserController {
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));
 	}
 
-	@ApiOperation(value = "Reserve owner update",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "App user update", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PutMapping("/{id}")
 	public ResponseEntity<AppUserResource> update(@PathVariable("id") String id, @RequestBody AppUser entity) {
 		entity.setId(id);
@@ -91,8 +88,7 @@ public class AppUserController {
 		return ResponseEntity.created(uri).body(resource);
 	}
 
-	@ApiOperation(value = "Reserve owner delete",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "App user delete", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> {
