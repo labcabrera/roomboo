@@ -12,6 +12,7 @@ import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 public class BookingRequestValidator implements ConstraintValidator<ValidBookingRequest, BookingRequest> {
 
@@ -20,6 +21,9 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 
 	@Autowired
 	private AppUserRepository ownerRepository;
+
+	@Value("${app.env.reserve.minuteMultiplier:15}")
+	private Integer minuteMultiplier;
 
 	@Override
 	public boolean isValid(BookingRequest value, ConstraintValidatorContext context) {
@@ -66,11 +70,11 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 			context.buildConstraintViolationWithTemplate("User is not active").addConstraintViolation();
 			return false;
 		}
-		if (user.getLocked() != null && user.getLocked().isAfter(now)) {
+		if (user.getLocked() != null && user.getLocked().isBefore(now)) {
 			context.buildConstraintViolationWithTemplate("User is locked").addConstraintViolation();
 			return false;
 		}
-		if (user.getExpiration() != null && user.getExpiration().isAfter(now)) {
+		if (user.getExpiration() != null && user.getExpiration().isBefore(now)) {
 			context.buildConstraintViolationWithTemplate("User is expired").addConstraintViolation();
 			return false;
 		}
@@ -79,30 +83,51 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 
 	private boolean validateDates(BookingRequest value, ConstraintValidatorContext context) {
 		boolean valid = true;
-		if (value.getFrom() == null) {
+		final LocalDateTime from = value.getFrom();
+		final LocalDateTime to = value.getTo();
+		final LocalDateTime now = LocalDateTime.now();
+
+		if (from == null) {
 			context.buildConstraintViolationWithTemplate("Required from").addConstraintViolation();
 			valid = false;
 		}
-		else if (value.getFrom().isBefore(LocalDateTime.now())) {
+		else if (from.isBefore(now)) {
 			context.buildConstraintViolationWithTemplate("Start date must be after the current date")
 				.addConstraintViolation();
 			valid = false;
 		}
-		if (value.getTo() == null) {
+		else if (!isValidDate(from)) {
+			context.buildConstraintViolationWithTemplate("Invalid date").addConstraintViolation();
+			valid = false;
+		}
+		if (to == null) {
 			context.buildConstraintViolationWithTemplate("Required to").addConstraintViolation();
 			valid = false;
 		}
-		else if (value.getTo().isBefore(LocalDateTime.now())) {
+		else if (to.isBefore(now)) {
 			context.buildConstraintViolationWithTemplate("End date must be after the current date")
 				.addConstraintViolation();
 			valid = false;
 		}
-		if (value.getFrom() != null && value.getTo() != null && value.getFrom().isAfter(value.getTo())) {
+		if (from != null && to != null && from.isAfter(to)) {
 			context.buildConstraintViolationWithTemplate("Start date can not be after end date")
 				.addConstraintViolation();
 			valid = false;
 		}
 		return valid;
+	}
+
+	private boolean isValidDate(LocalDateTime dateTime) {
+		if (dateTime.getMinute() % minuteMultiplier != 0) {
+			return false;
+		}
+		if (dateTime.getSecond() != 0) {
+			return false;
+		}
+		if (dateTime.getNano() != 0) {
+			return false;
+		}
+		return true;
 	}
 
 }
