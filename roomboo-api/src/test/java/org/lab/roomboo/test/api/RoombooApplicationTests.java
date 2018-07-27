@@ -1,4 +1,4 @@
-package org.lab.roomboo.api;
+package org.lab.roomboo.test.api;
 
 import org.junit.Ignore;
 import org.junit.Test;

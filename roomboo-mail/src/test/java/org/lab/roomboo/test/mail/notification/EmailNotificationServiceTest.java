@@ -1,4 +1,4 @@
-package org.lab.roomboo.mail.notification;
+package org.lab.roomboo.test.mail.notification;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
-import org.lab.roomboo.mail.RoombooMailTestConfig;
+import org.lab.roomboo.mail.notification.EmailNotificationService;
+import org.lab.roomboo.test.mail.RoombooMailTestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
