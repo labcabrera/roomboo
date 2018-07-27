@@ -1,13 +1,16 @@
 package org.lab.roomboo.core.validation;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.core.model.BookingRequest;
+import org.lab.roomboo.core.service.ReserveService;
 import org.lab.roomboo.domain.model.AppUser;
+import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
@@ -22,6 +25,9 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 	@Autowired
 	private AppUserRepository ownerRepository;
 
+	@Autowired
+	private ReserveService reserveService;
+
 	@Value("${app.env.reserve.minuteMultiplier:15}")
 	private Integer minuteMultiplier;
 
@@ -31,6 +37,7 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 		valid &= validateRoom(value, context);
 		valid &= validateAppUser(value, context);
 		valid &= validateDates(value, context);
+		valid &= validateReseveDates(value, context);
 		if (StringUtils.isBlank(value.getName())) {
 			context.buildConstraintViolationWithTemplate("Required reserve name").addConstraintViolation();
 			valid = false;
@@ -115,6 +122,18 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 			valid = false;
 		}
 		return valid;
+	}
+
+	private boolean validateReseveDates(BookingRequest value, ConstraintValidatorContext context) {
+		if (value.getFrom() != null || value.getTo() != null && StringUtils.isNotEmpty(value.getRoomId())) {
+			Optional<Reserve> optional = reserveService.findInRange(value.getRoomId(), value.getFrom(), value.getTo());
+			if (optional.isPresent()) {
+				context.buildConstraintViolationWithTemplate("Room is not available at that time")
+					.addConstraintViolation();
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private boolean isValidDate(LocalDateTime dateTime) {

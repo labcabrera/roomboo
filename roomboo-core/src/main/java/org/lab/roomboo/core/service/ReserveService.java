@@ -47,6 +47,18 @@ public class ReserveService {
 		return Optional.ofNullable(reserve);
 	}
 
+	public Optional<Reserve> findInRange(String roomId, LocalDateTime from, LocalDateTime to) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("room.id").is(roomId));
+		query.addCriteria(Criteria.where("to").gt(from).orOperator(Criteria.where("from").lte(to)));
+		query.addCriteria(Criteria.where("confirmed").ne(null));
+		query.addCriteria(Criteria.where("cancelled").is(null));
+		if (log.isDebugEnabled()) {
+			log.debug("Reserve find in range query: {}", query);
+		}
+		return Optional.ofNullable(mongoTemplate.findOne(query, Reserve.class));
+	}
+
 	public Optional<Reserve> findNext(String roomId, LocalDateTime dateTime) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("room.id").is(roomId));

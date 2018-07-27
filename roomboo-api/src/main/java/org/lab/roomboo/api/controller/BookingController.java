@@ -10,7 +10,7 @@ import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resources.ReserveResource;
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.service.BookingService;
-import org.lab.roomboo.domain.exception.TokenConfirmationException;
+import org.lab.roomboo.domain.exception.ReserveConfirmationException;
 import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,21 +49,23 @@ public class BookingController {
 	}
 
 	@ApiOperation(value = "Code confirmation", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
-	@PostMapping("confirmations/code/{code}")
-	public ResponseEntity<?> processCodeConfirmation(@PathVariable String code) {
-		return null;
+	@PostMapping("accept/{reserveId}/{code}")
+	public ResponseEntity<ReserveResource> processCodeConfirmation(@PathVariable("reserveId") String reserveId,
+		@PathVariable("code") String code) {
+		Reserve reserve = bookingService.processCodeReserveConfirmationByCode(reserveId, code);
+		return ResponseEntity.ok(new ReserveResource(reserve));
 	}
 
 	@ApiOperation(value = "Token confirmation")
 	@GetMapping("/accept/{token}")
 	public void processTokenConfirmation(@PathVariable String token, HttpServletResponse response) {
 		try {
-			Reserve reserve = bookingService.processTokenConfirmation(token);
+			Reserve reserve = bookingService.processReserveConfirmationByToken(token);
 			String redirectUri = buildRedirectUri(reserve);
-			log.debug("Redirect: {}", redirectUri);
+			log.debug("Confirmation redirect: {}", redirectUri);
 			response.sendRedirect(redirectUri);
 		}
-		catch (TokenConfirmationException ex) {
+		catch (ReserveConfirmationException ex) {
 			log.warn("Invalid token confirmation: " + ex.getMessage());
 			log.trace("Confirmation error", ex);
 		}

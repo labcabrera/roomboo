@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.notification.BookingNotificationService;
-import org.lab.roomboo.domain.exception.TokenConfirmationException;
+import org.lab.roomboo.domain.exception.ReserveConfirmationException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
@@ -50,26 +50,41 @@ public class BookingService {
 		return inserted;
 	}
 
-	public Reserve processTokenConfirmation(String token) {
+	public Reserve processReserveConfirmationByToken(String token) {
 		ReserveConfirmationToken tokenEntity = tokenRepository.findByToken(token).orElse(null);
-		LocalDateTime now = LocalDateTime.now();
 		if (tokenEntity == null) {
-			throw new TokenConfirmationException("Invalid token");
+			throw new ReserveConfirmationException("Invalid token");
 		}
-		if (tokenEntity.getExpiration().isBefore(now)) {
-			throw new TokenConfirmationException("Token expired");
+		if (tokenEntity.getExpiration().isBefore(LocalDateTime.now())) {
+			throw new ReserveConfirmationException("Token expired");
 		}
-		Reserve reserve = reserveRepository.findById(tokenEntity.getReserve().getId()).orElse(null);
-		if (reserve == null) {
-			throw new TokenConfirmationException("Invalid token reserve");
-		}
-		if (reserve.getConfirmed() != null) {
-			throw new TokenConfirmationException("Reserve already confirmed");
-		}
-		reserve.setConfirmed(now);
+		Reserve reserve = processReserveConfirmation(tokenEntity.getReserve().getId());
 		reserveRepository.save(reserve);
 		tokenRepository.delete(tokenEntity);
 		return reserve;
+	}
+
+	public Reserve processCodeReserveConfirmationByCode(String reserveId, String code) {
+		Reserve reserve = reserveRepository.findById(reserveId)
+			.orElseThrow(() -> new ReserveConfirmationException("Invalid reserve identifier"));
+		if (!reserve.getCode().equals(code)) {
+			throw new ReserveConfirmationException("Invalid code");
+		}
+		return processReserveConfirmation(reserveId);
+	}
+
+	private Reserve processReserveConfirmation(String reserveId) {
+		// TODO check dates
+		// TODO check room not locked
+		Reserve reserve = reserveRepository.findById(reserveId).orElse(null);
+		if (reserve == null) {
+			throw new ReserveConfirmationException("Invalid token reserve");
+		}
+		if (reserve.getConfirmed() != null) {
+			throw new ReserveConfirmationException("Reserve already confirmed");
+		}
+		reserve.setConfirmed(LocalDateTime.now());
+		return reserveRepository.save(reserve);
 	}
 
 }
