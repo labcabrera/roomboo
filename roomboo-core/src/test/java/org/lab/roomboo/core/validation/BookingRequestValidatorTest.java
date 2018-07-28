@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import org.lab.roomboo.domain.repository.RoomRepository;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,6 +98,30 @@ public class BookingRequestValidatorTest {
 		Assert.assertFalse(result.isEmpty());
 	}
 
+	@Test
+	public void validateNullName() {
+		BookingRequest request = buildEntity();
+		request.setName(null);
+		Set<ConstraintViolation<BookingRequest>> result = validator.validate(request);
+		Assert.assertFalse(result.isEmpty());
+	}
+
+	@Test
+	public void validateEmptyName() {
+		BookingRequest request = buildEntity();
+		request.setName(StringUtils.EMPTY);
+		Set<ConstraintViolation<BookingRequest>> result = validator.validate(request);
+		Assert.assertFalse(result.isEmpty());
+	}
+
+	@Test
+	public void validateNullFrom() {
+		BookingRequest request = buildEntity();
+		request.setFrom(null);
+		Set<ConstraintViolation<BookingRequest>> result = validator.validate(request);
+		Assert.assertFalse(result.isEmpty());
+	}
+
 	private BookingRequest buildEntity() {
 		//@formatter:off
 		return BookingRequest.builder()
@@ -138,6 +164,7 @@ public class BookingRequestValidatorTest {
 		}
 
 		@Bean
+		@ConditionalOnMissingBean
 		ReserveService ReserveService() {
 			ReserveService mock = Mockito.mock(ReserveService.class);
 			return mock;

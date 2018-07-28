@@ -81,10 +81,13 @@ obteniendo una salida similar a la siguiente:
 
 [options="headers"]
 |===
-|Nombre        | Descripción
-|`local`       | Perfil local de la aplicación.
-|`unsecured`   | Deshabilita la seguridad basada en JWT.
-|`mail`        | Habilita el envío de notificaciones por correo.
+| Nombre                 | Descripción
+| `local`                | Perfil local de la aplicación.
+| `unsecured`            | Deshabilita la seguridad basada en JWT.
+| `mail`                 | Habilita el envío de notificaciones por correo.
+| `force-initialization` | Elimina todos los datos presentes en la aplicación y carga el juego
+                           inicial de datos de ejemplo.
+| `actuator`             | Habilita todos los endpoints de Spring Boot Actuator.
 |===
 
 == Stack

@@ -38,52 +38,44 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 		valid &= validateAppUser(value, context);
 		valid &= validateDates(value, context);
 		valid &= validateReseveDates(value, context);
-		if (StringUtils.isBlank(value.getName())) {
-			context.buildConstraintViolationWithTemplate("Required reserve name").addConstraintViolation();
-			valid = false;
-		}
 		return valid;
 	}
 
 	private boolean validateRoom(BookingRequest value, ConstraintValidatorContext context) {
-		if (StringUtils.isBlank(value.getRoomId())) {
-			context.buildConstraintViolationWithTemplate("Required roomId").addConstraintViolation();
-			return false;
-		}
-		Room room = roomRepository.findById(value.getRoomId()).orElse(null);
-		if (room == null) {
-			context.buildConstraintViolationWithTemplate("Invalid room identifier").addConstraintViolation();
-			return false;
-		}
-		if (room.getLocked() != null && room.getLocked().isBefore(LocalDateTime.now())) {
-			context.buildConstraintViolationWithTemplate("Room locked").addConstraintViolation();
-			return false;
+		if (StringUtils.isNotBlank(value.getRoomId())) {
+			Room room = roomRepository.findById(value.getRoomId()).orElse(null);
+			if (room == null) {
+				context.buildConstraintViolationWithTemplate("Invalid room identifier").addConstraintViolation();
+				return false;
+			}
+			if (room.getLocked() != null && room.getLocked().isBefore(LocalDateTime.now())) {
+				context.buildConstraintViolationWithTemplate("Room locked").addConstraintViolation();
+				return false;
+			}
 		}
 		return true;
 	}
 
 	private boolean validateAppUser(BookingRequest value, ConstraintValidatorContext context) {
-		if (StringUtils.isBlank(value.getUserId())) {
-			context.buildConstraintViolationWithTemplate("Required user").addConstraintViolation();
-			return false;
-		}
-		AppUser user = ownerRepository.findById(value.getUserId()).orElse(null);
-		if (user == null) {
-			context.buildConstraintViolationWithTemplate("Invalid user identifier").addConstraintViolation();
-			return false;
-		}
-		LocalDateTime now = LocalDateTime.now();
-		if (user.getActivation() == null || user.getActivation().isAfter(now)) {
-			context.buildConstraintViolationWithTemplate("User is not active").addConstraintViolation();
-			return false;
-		}
-		if (user.getLocked() != null && user.getLocked().isBefore(now)) {
-			context.buildConstraintViolationWithTemplate("User is locked").addConstraintViolation();
-			return false;
-		}
-		if (user.getExpiration() != null && user.getExpiration().isBefore(now)) {
-			context.buildConstraintViolationWithTemplate("User is expired").addConstraintViolation();
-			return false;
+		if (StringUtils.isNotBlank(value.getUserId())) {
+			AppUser user = ownerRepository.findById(value.getUserId()).orElse(null);
+			if (user == null) {
+				context.buildConstraintViolationWithTemplate("Invalid user identifier").addConstraintViolation();
+				return false;
+			}
+			LocalDateTime now = LocalDateTime.now();
+			if (user.getActivation() == null || user.getActivation().isAfter(now)) {
+				context.buildConstraintViolationWithTemplate("User is not active").addConstraintViolation();
+				return false;
+			}
+			if (user.getLocked() != null && user.getLocked().isBefore(now)) {
+				context.buildConstraintViolationWithTemplate("User is locked").addConstraintViolation();
+				return false;
+			}
+			if (user.getExpiration() != null && user.getExpiration().isBefore(now)) {
+				context.buildConstraintViolationWithTemplate("User is expired").addConstraintViolation();
+				return false;
+			}
 		}
 		return true;
 	}
@@ -92,28 +84,12 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 		boolean valid = true;
 		final LocalDateTime from = value.getFrom();
 		final LocalDateTime to = value.getTo();
-		final LocalDateTime now = LocalDateTime.now();
-
-		if (from == null) {
-			context.buildConstraintViolationWithTemplate("Required from").addConstraintViolation();
+		if (from != null && !isValidDate(from)) {
+			context.buildConstraintViolationWithTemplate("Invalid start date").addConstraintViolation();
 			valid = false;
 		}
-		else if (from.isBefore(now)) {
-			context.buildConstraintViolationWithTemplate("Start date must be after the current date")
-				.addConstraintViolation();
-			valid = false;
-		}
-		else if (!isValidDate(from)) {
-			context.buildConstraintViolationWithTemplate("Invalid date").addConstraintViolation();
-			valid = false;
-		}
-		if (to == null) {
-			context.buildConstraintViolationWithTemplate("Required to").addConstraintViolation();
-			valid = false;
-		}
-		else if (to.isBefore(now)) {
-			context.buildConstraintViolationWithTemplate("End date must be after the current date")
-				.addConstraintViolation();
+		if (to != null && !isValidDate(to)) {
+			context.buildConstraintViolationWithTemplate("Invalid end date").addConstraintViolation();
 			valid = false;
 		}
 		if (from != null && to != null && from.isAfter(to)) {

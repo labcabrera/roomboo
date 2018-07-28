@@ -7,6 +7,7 @@ import java.net.URI;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.AppUserResource;
 import org.lab.roomboo.api.resource.assembler.AppUserResourceAssembler;
+import org.lab.roomboo.core.service.AppUserService;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.repository.AppUserRepository;
@@ -20,6 +21,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,9 @@ import io.swagger.annotations.Authorization;
 @RestController
 @RequestMapping(value = "/v1/users", produces = "application/hal+json")
 public class AppUserController {
+
+	@Autowired
+	private AppUserService appUserService;
 
 	@Autowired
 	private AppUserRepository repository;
@@ -69,10 +74,12 @@ public class AppUserController {
 			.orElseThrow(() -> new EntityNotFoundException(AppUser.class, id));
 	}
 
-	@ApiOperation(value = "App user insert", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "Register new app user",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
-	public ResponseEntity<AppUserResource> save(@RequestBody AppUser entity) {
-		AppUser inserted = repository.save(entity);
+	public ResponseEntity<AppUserResource> save( //@formatter:off
+			@Validated(AppUser.ValidationScope.Register.class) @RequestBody AppUser entity) { //@formatter:on
+		AppUser inserted = appUserService.register(entity);
 		URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId())
 			.toUri();
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));
