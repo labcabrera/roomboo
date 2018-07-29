@@ -4,9 +4,12 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.AppUserResource;
 import org.lab.roomboo.api.resource.assembler.AppUserResourceAssembler;
+import org.lab.roomboo.core.model.AppUserRegisterRequest;
 import org.lab.roomboo.core.service.AppUserService;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.AppUser;
@@ -21,7 +24,6 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,8 +80,8 @@ public class AppUserController {
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<AppUserResource> save( //@formatter:off
-			@Validated(AppUser.ValidationScope.Register.class) @RequestBody AppUser entity) { //@formatter:on
-		AppUser inserted = appUserService.register(entity);
+			@Valid @RequestBody AppUserRegisterRequest userRegister) { //@formatter:on
+		AppUser inserted = appUserService.register(userRegister);
 		URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId())
 			.toUri();
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));
