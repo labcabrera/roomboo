@@ -36,6 +36,8 @@ app:
         expiration: 1440
         redirect-uri: https://www.google.com/?q=roomboo
         cancelation-redirect-uri: https://www.google.com/?q=roomboo%20cancelled
+      user-register:
+        expiration: 1440
     security:
       unsecured:
         paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**

@@ -1,8 +1,9 @@
-package org.lab.roomboo.core.notification;
+package org.lab.roomboo.core.notification.impl;
 
 import java.time.LocalDateTime;
 
-import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
+import org.lab.roomboo.core.notification.ReserveCreatedProcessor;
+import org.lab.roomboo.core.notification.ReserveCreatedProcessor.NotificationOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.Alert.AlertType;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Order(NotificationOrder.AlertCreation)
 @Slf4j
-public class AlertNotificationService implements BookingNotificationService {
+public class ReserveCreatedAlertProcessor implements ReserveCreatedProcessor {
 
 	private final static String TEMPLATE_CREATED = "User %s created reserve '%s' (id: %s)\nRoom: %s\nStart :%s\nEnd: %s";
 

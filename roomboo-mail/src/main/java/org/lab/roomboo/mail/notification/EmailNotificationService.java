@@ -4,8 +4,8 @@ import java.util.Locale;
 
 import javax.mail.internet.MimeMessage;
 
-import org.lab.roomboo.core.notification.BookingNotificationService;
-import org.lab.roomboo.core.notification.BookingNotificationService.NotificationOrder;
+import org.lab.roomboo.core.notification.ReserveCreatedProcessor;
+import org.lab.roomboo.core.notification.ReserveCreatedProcessor.NotificationOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Order(NotificationOrder.EmailCreation)
 @Slf4j
-public class EmailNotificationService implements BookingNotificationService {
+public class EmailNotificationService implements ReserveCreatedProcessor {
 
 	@Autowired(required = false)
 	private JavaMailSender sender;

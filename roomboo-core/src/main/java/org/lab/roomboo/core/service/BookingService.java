@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.lab.roomboo.core.component.ReserveCodeGenerator;
 import org.lab.roomboo.core.model.BookingRequest;
-import org.lab.roomboo.core.notification.BookingNotificationService;
+import org.lab.roomboo.core.notification.ReserveCreatedProcessor;
 import org.lab.roomboo.domain.exception.ReserveConfirmationException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
@@ -40,7 +40,7 @@ public class BookingService {
 	private ReserveConfirmationTokenRepository tokenRepository;
 
 	@Autowired
-	private List<BookingNotificationService> notificationServices;
+	private List<ReserveCreatedProcessor> notificationServices;
 
 	public Reserve processBookingRequest(BookingRequest request) {
 		// // TODO check dates
