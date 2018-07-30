@@ -4,8 +4,7 @@ import java.util.Locale;
 
 import javax.mail.internet.MimeMessage;
 
-import org.lab.roomboo.core.notification.ReserveCreatedProcessor;
-import org.lab.roomboo.core.notification.ReserveCreatedProcessor.NotificationOrder;
+import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
@@ -14,6 +13,7 @@ import org.lab.roomboo.domain.model.ReserveConfirmationToken;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -25,9 +25,9 @@ import org.thymeleaf.context.Context;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Order(NotificationOrder.EmailCreation)
+@Order(ReserveCreatedEvent.EventOrder.EmailCreation)
 @Slf4j
-public class EmailNotificationService implements ReserveCreatedProcessor {
+public class EmailNotificationService implements ApplicationListener<ReserveCreatedEvent> {
 
 	@Autowired(required = false)
 	private JavaMailSender sender;
@@ -43,14 +43,14 @@ public class EmailNotificationService implements ReserveCreatedProcessor {
 
 	@Async
 	@Override
-	public void reserveCreated(Reserve reserve) {
+	public void onApplicationEvent(ReserveCreatedEvent event) {
 		if (sender == null) {
 			log.debug("Email module is disabled.");
 			return;
 		}
+		Reserve reserve = event.getReserve();
 		try {
 			// TODO check not already confirmed/cancelled
-
 			String appUserId = reserve.getUser().getId();
 			AppUser owner = appUserRepository.findById(appUserId)
 				.orElseThrow(() -> new EntityNotFoundException(AppUser.class, appUserId));

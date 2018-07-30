@@ -1,12 +1,11 @@
 package org.lab.roomboo.core.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.lab.roomboo.core.component.ReserveCodeGenerator;
 import org.lab.roomboo.core.model.BookingRequest;
-import org.lab.roomboo.core.notification.ReserveCreatedProcessor;
+import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.exception.ReserveConfirmationException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
@@ -16,12 +15,10 @@ import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
 import org.lab.roomboo.domain.repository.ReserveRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class BookingService {
 
 	@Autowired
@@ -40,7 +37,7 @@ public class BookingService {
 	private ReserveConfirmationTokenRepository tokenRepository;
 
 	@Autowired
-	private List<ReserveCreatedProcessor> notificationServices;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	public Reserve processBookingRequest(BookingRequest request) {
 		// // TODO check dates
@@ -52,11 +49,9 @@ public class BookingService {
 		reserve.setCreated(LocalDateTime.now());
 		reserve.setName(request.getName());
 		reserve.setCode(codeGenerator.generate());
+
 		Reserve inserted = reserveRepository.insert(reserve);
-		notificationServices.forEach(x -> {
-			log.debug("Processing notification with {}", x.getClass().getSimpleName());
-			x.reserveCreated(inserted);
-		});
+		applicationEventPublisher.publishEvent(new ReserveCreatedEvent(this, reserve));
 		return inserted;
 	}
 

@@ -10,10 +10,10 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.mail.RoombooMailTestConfig;
-import org.lab.roomboo.mail.notification.EmailNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -53,8 +53,7 @@ public class EmailNotificationServiceTest {
 			.build();
 		//@formatter:on
 
-		service.reserveCreated(reserve);
-
+		service.onApplicationEvent(new ReserveCreatedEvent(this, reserve));
 		greenMail.waitForIncomingEmail(1);
 
 		MimeMessage[] receivedMessages = greenMail.getReceivedMessages();

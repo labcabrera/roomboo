@@ -1,13 +1,13 @@
 package org.lab.roomboo.core.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.lab.roomboo.core.model.AppUserRegisterRequest;
-import org.lab.roomboo.core.notification.UserCreatedProcessor;
+import org.lab.roomboo.core.model.event.AppUserCreatedEvent;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class AppUserService {
 	private AppUserRepository repository;
 
 	@Autowired
-	private List<UserCreatedProcessor> processors;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	public AppUser register(AppUserRegisterRequest request) {
 		log.debug("Creating new app user");
@@ -34,9 +34,7 @@ public class AppUserService {
 		//@formatter:on
 
 		AppUser inserted = repository.insert(entity);
-		processors.forEach(x -> {
-			x.process(entity);
-		});
+		applicationEventPublisher.publishEvent(new AppUserCreatedEvent(this, inserted));
 		return inserted;
 	}
 

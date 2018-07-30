@@ -1,19 +1,20 @@
-package org.lab.roomboo.core.notification.impl;
+package org.lab.roomboo.core.model.event.listener;
 
 import java.time.LocalDateTime;
 
-import org.lab.roomboo.core.notification.ReserveCreatedProcessor;
-import org.lab.roomboo.core.notification.ReserveCreatedProcessor.NotificationOrder;
+import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
+import org.lab.roomboo.core.model.event.ReserveCreatedEvent.EventOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.Alert.AlertType;
-import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.AppUser;
+import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AlertRepository;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,9 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Order(NotificationOrder.AlertCreation)
+@Order(EventOrder.AlertCreation)
 @Slf4j
-public class ReserveCreatedAlertProcessor implements ReserveCreatedProcessor {
+public class ReserveCreatedAlertProcessor implements ApplicationListener<ReserveCreatedEvent> {
 
 	private final static String TEMPLATE_CREATED = "User %s created reserve '%s' (id: %s)\nRoom: %s\nStart :%s\nEnd: %s";
 
@@ -41,13 +42,16 @@ public class ReserveCreatedAlertProcessor implements ReserveCreatedProcessor {
 	 */
 	@Async
 	@Override
-	public void reserveCreated(Reserve reserve) {
+	public void onApplicationEvent(ReserveCreatedEvent event) {
 		try {
-			alertRepository.save(build(reserve));
+			alertRepository.save(build(event.getReserve()));
 		}
 		catch (Exception ex) {
 			log.error("Notification error", ex);
 		}
+	}
+
+	public void reserveCreated(Reserve reserve) {
 	}
 
 	private Alert build(Reserve reserve) {
@@ -55,7 +59,8 @@ public class ReserveCreatedAlertProcessor implements ReserveCreatedProcessor {
 		AppUser owner = appUserRepository.findById(appUserId)
 			.orElseThrow(() -> new EntityNotFoundException(AppUser.class, appUserId));
 		String roomId = reserve.getRoom().getId();
-		Room room = roomRepository.findById(roomId).orElseThrow(() -> new EntityNotFoundException(Room.class, appUserId));
+		Room room = roomRepository.findById(roomId)
+			.orElseThrow(() -> new EntityNotFoundException(Room.class, appUserId));
 
 		//@formatter:off
 		return Alert.builder()
