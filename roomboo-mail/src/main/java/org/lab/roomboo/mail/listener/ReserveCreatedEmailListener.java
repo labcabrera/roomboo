@@ -1,7 +1,8 @@
-package org.lab.roomboo.mail.notification;
+package org.lab.roomboo.mail.listener;
 
 import java.util.Locale;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
@@ -18,16 +19,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Order(ReserveCreatedEvent.EventOrder.EmailCreation)
+@Component
+@Order(ReserveCreatedEvent.EventOrder.EmailNotification)
 @Slf4j
-public class EmailNotificationService implements ApplicationListener<ReserveCreatedEvent> {
+public class ReserveCreatedEmailListener implements ApplicationListener<ReserveCreatedEvent> {
 
 	@Autowired(required = false)
 	private JavaMailSender sender;
@@ -64,20 +65,23 @@ public class EmailNotificationService implements ApplicationListener<ReserveCrea
 			context.setVariable("username", owner.getDisplayName());
 			context.setVariable("reserve", reserve);
 			context.setVariable("confirmationToken", token);
-			final String htmlContent = templateEngine.process("mail-reserve-created", context);
+			String htmlContent = templateEngine.process("mail-reserve-created", context);
 
-			MimeMessage mimeMessage = sender.createMimeMessage();
-			MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-			message.setTo(owner.getEmail());
-			message.setSubject("Roomboo verification code");
-			message.setText(htmlContent, true);
-
-			sender.send(mimeMessage);
+			sendHtmlMessage("Roomboo verification code", htmlContent, owner.getEmail());
 			log.debug("Send confirmation email");
 		}
 		catch (Exception ex) {
 			log.error("Mail notification error", ex);
 		}
+	}
+
+	private void sendHtmlMessage(String subject, String body, String to) throws MessagingException {
+		MimeMessage mimeMessage = sender.createMimeMessage();
+		MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(body, true);
+		sender.send(mimeMessage);
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.lab.roomboo.mail.notification;
+package org.lab.roomboo.mail.listener;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +14,7 @@ import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.mail.RoombooMailTestConfig;
+import org.lab.roomboo.mail.listener.ReserveCreatedEmailListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -34,7 +35,7 @@ public class EmailNotificationServiceTest {
 	public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.ALL);
 
 	@Autowired
-	private EmailNotificationService service;
+	private ReserveCreatedEmailListener service;
 
 	@Test
 	public void test() throws MessagingException {

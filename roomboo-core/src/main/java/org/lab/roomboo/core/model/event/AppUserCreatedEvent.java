@@ -12,6 +12,7 @@ public class AppUserCreatedEvent extends ApplicationEvent {
 	public interface EventOrder {
 		int Token = 1000;
 		int Alert = 2000;
+		int EmailNotification = 3000;
 	}
 
 	private final AppUser user;

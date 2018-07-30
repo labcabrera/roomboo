@@ -10,9 +10,9 @@ import lombok.Getter;
 public class ReserveCreatedEvent extends ApplicationEvent {
 
 	public interface EventOrder {
-		int TokenCreation = 1010;
-		int AlertCreation = 1020;
-		int EmailCreation = 1030;
+		int TokenCreation = 1000;
+		int AlertCreation = 2000;
+		int EmailNotification = 3000;
 	}
 
 	private final Reserve reserve;
