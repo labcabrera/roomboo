@@ -26,7 +26,7 @@ public class RoomGroupResource extends ResourceSupport {
 			add(linkTo(methodOn(CompanyController.class).findById(companyId)).withRel("company"));
 			roomGroup.setCompany(Company.builder().id(companyId).build());
 		}
-		add(linkTo(methodOn(RoomController.class).find(id, 0, 10)).withRel("rooms"));
+		add(linkTo(methodOn(RoomController.class).find("groupId==" + id, 0, 10)).withRel("rooms"));
 		add(linkTo(RoomGroupController.class).withRel("roomGroups"));
 	}
 

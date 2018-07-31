@@ -6,6 +6,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
+import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.RoomResource;
 import org.lab.roomboo.api.resource.RoomStatusResource;
 import org.lab.roomboo.api.resource.assembler.RoomResourceAssembler;
@@ -61,13 +62,14 @@ public class RoomController {
 	@ApiOperation(value = "Room search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<PagedResources<RoomResource>> find( // @formatter:off
-			@RequestParam(value = "groupId", required = false) String groupId,
+			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size
 			) { // @formatter:on
+		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
-		RoomSearchOptions options = RoomSearchOptions.builder().groupId(groupId).build();
+		RoomSearchOptions options = RoomSearchOptions.builder().groupId(queryDsl.get("groupId")).build();
 		Page<Room> currentPage = roomService.findPageable(options, pageable);
 		PagedResources<RoomResource> pr = assembler.toResource(currentPage, roomResourceAssembler);
 		pr.add(new Link(fromController(RoomGroupController.class).build().toString(), "roomGroups"));

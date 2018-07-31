@@ -42,6 +42,7 @@ public class CompanyController {
 	@ApiOperation(value = "Company search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<PagedResources<CompanyResource>> find( // @formatter:off
+			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.ASC, "name");

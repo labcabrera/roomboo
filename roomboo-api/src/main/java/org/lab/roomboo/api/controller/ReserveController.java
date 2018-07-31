@@ -3,6 +3,7 @@ package org.lab.roomboo.api.controller;
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromController;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
+import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.ReserveResource;
 import org.lab.roomboo.api.resource.assembler.ReserveResourceAssembler;
 import org.lab.roomboo.core.model.ReserveSearchOptions;
@@ -47,16 +48,22 @@ public class ReserveController {
 	@ApiOperation(value = "Reserve search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<PagedResources<ReserveResource>> find( // @formatter:off
-			@RequestParam(value = "roomId", required = false) String roomId,
-			@RequestParam(value = "userId", required = false) String userId,
-			@RequestParam(value = "includeUnconfirmed", required = false, defaultValue = "false") boolean includeUnconfirmed,
-			@RequestParam(value = "includeCancelled", required = false, defaultValue = "false") boolean includeCancelled,
+			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0", required = false) int page,
 			@RequestParam(value = "size", defaultValue = "10", required = false) int size) { // @formatter:on
+
+		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
+		//@formatter:off
+		ReserveSearchOptions options = ReserveSearchOptions.builder()
+			.roomId(queryDsl.get("roomId"))
+			.userId(queryDsl.get("userId"))
+			.includeUnconfirmed(queryDsl.get("includeUnconfirmed", Boolean.class, false))
+			.includeCancelled(queryDsl.get("includeCancelled", Boolean.class, false))
+			.build();
+		//@formatter:on
+
 		Sort sort = new Sort(Sort.Direction.DESC, "from");
 		Pageable pageable = PageRequest.of(page, size, sort);
-		ReserveSearchOptions options = ReserveSearchOptions.builder().roomId(roomId).userId(userId)
-			.includeUnconfirmed(includeUnconfirmed).includeCancelled(includeCancelled).build();
 		Page<Reserve> currentPage = reserveService.findPaginated(options, pageable);
 		PagedResources<ReserveResource> pr = assembler.toResource(currentPage, reserveResourceAssembler);
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));

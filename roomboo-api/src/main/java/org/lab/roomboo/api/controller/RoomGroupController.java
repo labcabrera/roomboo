@@ -4,6 +4,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
+import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.RoomGroupResource;
 import org.lab.roomboo.api.resource.assembler.RoomGroupResourceAssembler;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
@@ -45,18 +46,22 @@ public class RoomGroupController {
 	@ApiOperation(value = "Room group search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
 	public ResponseEntity<PagedResources<RoomGroupResource>> find( // @formatter:off
-			@RequestParam(value = "companyId", required = false) String companyId,
+			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
 			@RequestParam(value = "size", defaultValue = "10", required = false) Integer size) { // @formatter:on
-		Sort sort = new Sort(Sort.Direction.ASC, "name");
-		Pageable pageable = PageRequest.of(page, size, sort);
 
+		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
+
+		// TODO
+		String companyId = queryDsl.get("companyId");
 		RoomGroup exampleEntity = new RoomGroup();
 		if (StringUtils.isNotBlank(companyId)) {
 			exampleEntity.setCompany(Company.builder().id(companyId).build());
 		}
 		Example<RoomGroup> example = Example.of(exampleEntity);
 
+		Sort sort = new Sort(Sort.Direction.ASC, "name");
+		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<RoomGroup> currentPage = repository.findAll(example, pageable);
 		PagedResources<RoomGroupResource> pr = assembler.toResource(currentPage, roomGroupResourceAssembler);
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));

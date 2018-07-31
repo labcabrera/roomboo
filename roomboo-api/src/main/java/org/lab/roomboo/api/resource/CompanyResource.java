@@ -19,7 +19,7 @@ public class CompanyResource extends ResourceSupport {
 		this.company = company;
 		String id = company.getId();
 		add(linkTo(methodOn(CompanyController.class).findById(id)).withSelfRel());
-		add(linkTo(methodOn(RoomGroupController.class).find(id, 0, 10)).withRel("roomGroups"));
+		add(linkTo(methodOn(RoomGroupController.class).find("companyId==" + id, 0, 10)).withRel("roomGroups"));
 		add(linkTo(CompanyController.class).withRel("companies"));
 	}
 
