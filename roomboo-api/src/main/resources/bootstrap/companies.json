@@ -1,10 +1,12 @@
 [
-  {
-    "id": "company01",
-    "name": "Demo company"
-  },
-  {
-    "id": "company02",
-    "name": "Company example 2"
-  }
+	{
+		"id": "roombooCompanyDemo01",
+		"name": "Roomboo Demo Company 1",
+		"description": "Example of company for demo purpose"
+	},
+	{
+		"id": "roombooCompanyDemo02",
+		"name": "Roomboo Demo Company 2",
+		"description": "Example of company for demo purpose"
+	}
 ]

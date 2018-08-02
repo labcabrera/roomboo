@@ -1,23 +1,23 @@
 [
-  {
-    "id": "roomGroup01",
-    "name": "Example group 1",
-    "company": {
-      "id": "company01"
-    }
-  },
-  {
-    "id": "roomGroup02",
-    "name": "Example group 2",
-    "company": {
-      "id": "company01"
-    }
-  },
-  {
-    "id": "roomGroup03",
-    "name": "Example group company 2",
-    "company": {
-      "id": "company02"
-    }
-  }
+	{
+		"id": "roomGroup01",
+		"name": "Main room group for Demo Company 1",
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
+	},
+	{
+		"id": "roomGroup02",
+		"name": "Secondary room group for Demo Company 1",
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
+	},
+	{
+		"id": "roomGroup03",
+		"name": "Room group for Demo Company 2",
+		"company": {
+			"id": "roombooCompanyDemo02"
+		}
+	}
 ]

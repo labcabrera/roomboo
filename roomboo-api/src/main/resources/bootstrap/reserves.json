@@ -4,7 +4,7 @@
 		"room": {
 			"id": "milankundera"
 		},
-		"owner": {
+		"user": {
 			"id": "labcabrera"
 		},
 		"from": "2018-07-23T10:00:00.000",
@@ -18,7 +18,7 @@
 		"room": {
 			"id": "milankundera"
 		},
-		"owner": {
+		"user": {
 			"id": "labcabrera"
 		},
 		"from": "2018-07-23T14:00:00.000",
@@ -32,7 +32,7 @@
 		"room": {
 			"id": "jamesjoyce"
 		},
-		"owner": {
+		"user": {
 			"id": "labcabrera"
 		},
 		"from": "2018-07-20T14:00:00.000",
@@ -45,7 +45,7 @@
 		"room": {
 			"id": "jamesjoyce"
 		},
-		"owner": {
+		"user": {
 			"id": "johndoe"
 		},
 		"from": "2018-07-20T11:00:00.000",
@@ -58,7 +58,7 @@
 		"room": {
 			"id": "milankundera"
 		},
-		"owner": {
+		"user": {
 			"id": "labcabrera"
 		},
 		"from": "2018-07-24T09:00:00.000",
@@ -72,7 +72,7 @@
 		"room": {
 			"id": "milankundera"
 		},
-		"owner": {
+		"user": {
 			"id": "labcabrera"
 		},
 		"from": "2018-07-24T14:00:00.000",

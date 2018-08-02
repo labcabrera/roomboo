@@ -29,7 +29,9 @@ public class ApiUser implements UserDetails {
 	private LocalDateTime locked;
 	private LocalDateTime credentialsExpiration;
 	private LocalDateTime activation;
+
 	private List<String> roles;
+	private List<Company> companies;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
