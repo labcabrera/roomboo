@@ -16,15 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class DataInitializer<T> {
 
-	public static interface InitializationOrder {
-		int ApiUser = 2000;
-		int Company = 2010;
-		int RoomGroup = 2020;
-		int Room = 2030;
-		int ReserveOwner = 2040;
-		int Reserve = 2050;
-	}
-
 	@Autowired
 	protected ObjectMapper objectMapper;
 
@@ -65,6 +56,15 @@ public abstract class DataInitializer<T> {
 		catch (Exception ex) {
 			throw new RoombooException("Error reading " + resourcePath + " as JSON list of " + type.getName(), ex);
 		}
+	}
+
+	public static interface InitializationOrder {
+		int ApiUser = 2000;
+		int Company = 2010;
+		int RoomGroup = 2020;
+		int Room = 2030;
+		int ReserveOwner = 2040;
+		int Reserve = 2050;
 	}
 
 }

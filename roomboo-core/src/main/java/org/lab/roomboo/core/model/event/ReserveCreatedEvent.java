@@ -9,11 +9,7 @@ import lombok.Getter;
 @SuppressWarnings("serial")
 public class ReserveCreatedEvent extends ApplicationEvent {
 
-	public interface EventOrder {
-		int TokenCreation = 1000;
-		int AlertCreation = 2000;
-		int EmailNotification = 3000;
-	}
+
 
 	private final Reserve reserve;
 

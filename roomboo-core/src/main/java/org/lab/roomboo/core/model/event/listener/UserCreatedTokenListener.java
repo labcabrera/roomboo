@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Order(AppUserCreatedEvent.EventOrder.Token)
+@Order(EventListenerOrder.UserCreated.Token)
 @Slf4j
 public class UserCreatedTokenListener implements ApplicationListener<AppUserCreatedEvent> {
 

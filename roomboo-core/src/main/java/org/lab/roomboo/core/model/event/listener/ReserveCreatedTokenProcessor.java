@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.component.TokenGenerator;
 import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
-import org.lab.roomboo.core.model.event.ReserveCreatedEvent.EventOrder;
 import org.lab.roomboo.core.service.TokenUriService;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
@@ -16,7 +15,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 @Service
-@Order(EventOrder.TokenCreation)
+@Order(EventListenerOrder.ReserveCreated.TokenCreation)
 public class ReserveCreatedTokenProcessor implements ApplicationListener<ReserveCreatedEvent> {
 
 	@Autowired

@@ -9,12 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RoombooApplication implements CommandLineRunner {
 
+	@Autowired
+	private RoombooInitializer initializer;
+
 	public static void main(String[] args) {
 		SpringApplication.run(RoombooApplication.class, args);
 	}
-
-	@Autowired
-	private RoombooInitializer initializer;
 
 	@Override
 	public void run(String... args) throws Exception {

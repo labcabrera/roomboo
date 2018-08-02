@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
@@ -80,11 +79,9 @@ public class AppUserController {
 	@ApiOperation(value = "Register new app user",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
-	public ResponseEntity<AppUserResource> save( //@formatter:off
-			@Valid @RequestBody AppUserRegisterRequest userRegister) { //@formatter:on
+	public ResponseEntity<AppUserResource> save(@Valid @RequestBody AppUserRegisterRequest userRegister) {
 		AppUser inserted = appUserService.register(userRegister);
-		URI uri = MvcUriComponentsBuilder.fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId())
-			.toUri();
+		URI uri = fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId()).toUri();
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));
 	}
 

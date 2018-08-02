@@ -122,6 +122,14 @@ public class BookingRequestValidatorTest {
 		Assert.assertFalse(result.isEmpty());
 	}
 
+	@Test
+	public void validateNullTo() {
+		BookingRequest request = buildEntity();
+		request.setTo(null);
+		Set<ConstraintViolation<BookingRequest>> result = validator.validate(request);
+		Assert.assertFalse(result.isEmpty());
+	}
+
 	private BookingRequest buildEntity() {
 		//@formatter:off
 		return BookingRequest.builder()
@@ -165,7 +173,7 @@ public class BookingRequestValidatorTest {
 
 		@Bean
 		@ConditionalOnMissingBean
-		ReserveService ReserveService() {
+		ReserveService reserveService() {
 			ReserveService mock = Mockito.mock(ReserveService.class);
 			return mock;
 		}

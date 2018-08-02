@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Order(AppUserCreatedEvent.EventOrder.Alert)
+@Order(EventListenerOrder.UserCreated.Alert)
 @Slf4j
 public class UserCreatedAlertListener implements ApplicationListener<AppUserCreatedEvent> {
 

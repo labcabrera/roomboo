@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
+import org.lab.roomboo.core.model.event.listener.EventListenerOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
@@ -26,7 +27,7 @@ import org.thymeleaf.context.Context;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Order(ReserveCreatedEvent.EventOrder.EmailNotification)
+@Order(EventListenerOrder.ReserveCreated.EmailNotification)
 @Slf4j
 public class ReserveCreatedEmailListener implements ApplicationListener<ReserveCreatedEvent> {
 

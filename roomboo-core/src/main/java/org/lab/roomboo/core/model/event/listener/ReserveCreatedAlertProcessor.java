@@ -3,7 +3,6 @@ package org.lab.roomboo.core.model.event.listener;
 import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
-import org.lab.roomboo.core.model.event.ReserveCreatedEvent.EventOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.Alert.AlertType;
@@ -22,7 +21,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Order(EventOrder.AlertCreation)
+@Order(EventListenerOrder.ReserveCreated.AlertCreation)
 @Slf4j
 public class ReserveCreatedAlertProcessor implements ApplicationListener<ReserveCreatedEvent> {
 
