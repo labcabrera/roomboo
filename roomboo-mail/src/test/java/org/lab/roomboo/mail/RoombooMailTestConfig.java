@@ -6,7 +6,7 @@ import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
-import org.lab.roomboo.mail.RoombooMailConfig;
+import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +34,12 @@ public class RoombooMailTestConfig {
 		Mockito.when(bean.findByReserveId(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
 			.thenReturn(Optional.of(token));
 		return bean;
+	}
+
+	@Bean
+	UserConfirmationTokenRepository userConfirmationTokenRepository() {
+		UserConfirmationTokenRepository mock = Mockito.mock(UserConfirmationTokenRepository.class);
+		return mock;
 	}
 
 }
