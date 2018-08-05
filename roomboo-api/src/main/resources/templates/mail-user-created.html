@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:remove="all">User confirmation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<p>
+		Hola <span th:text="${user.displayName}">.</span>
+	</p>
+	<p>
+		Enlace de confirmación: <a th:href="${token.confirmationUri}">link</a>.
+	</p>
+	<p>
+		Si usted no ha realizado la solicitud de reserva de sala puede
+		comunicarse con <a href="mailto:support@roomboo.org?Subject=User%20report" target="_top">support@roomboo.org</a> para reportar
+		el problema.
+	</p>
+</body>
+</html>

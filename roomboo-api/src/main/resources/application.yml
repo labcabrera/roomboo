@@ -1,8 +1,7 @@
 spring:
   profiles:
-    #active: local
-    active: local,unsecured,actuator
-    #active: local,unsecured,force-initialization
+    active: local,mail,force-initialization
+    #active: local,unsecured
   application:
     name: roomboo-api
   jackson:
@@ -34,13 +33,14 @@ app:
     token:
       reserve:
         expiration: 1440
-        redirect-uri: https://www.google.com/?q=roomboo
+        redirect-uri: https://www.google.com/?q=reserveConfirmedOk
         cancelation-redirect-uri: https://www.google.com/?q=roomboo%20cancelled
       user-register:
         expiration: 1440
+        redirect-uri: https://www.google.com/?q=userCreatedOk
     security:
       unsecured:
-        paths: /swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**
+        paths: '/swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**,/v1/users/accept/**'
     contact:
       email: support@roomboo.org
     initialization:
@@ -70,8 +70,8 @@ app:
     mail:
       enabled: true
       smtp:
-        username: ${ENV_SMTP_USERNAME:undefined}
-        password: ${ENV_SMTP_PASSWORD:undefined}
+        username: ${ENV_SMTP_USERNAME:}
+        password: ${ENV_SMTP_PASSWORD:}
         host: ${ENV_SMTP_HOST:smtp.gmail.com}
         port: ${ENV_SMTP_PORT:587}
         debug: true
