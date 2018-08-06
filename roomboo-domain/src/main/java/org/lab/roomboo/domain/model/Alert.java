@@ -27,7 +27,7 @@ public class Alert {
 
 	private String id;
 
-	private AlertType type;
+	private AlertType alertType;
 
 	private String subject;
 

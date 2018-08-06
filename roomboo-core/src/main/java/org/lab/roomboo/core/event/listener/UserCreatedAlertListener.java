@@ -29,7 +29,7 @@ public class UserCreatedAlertListener implements ApplicationListener<AppUserCrea
 		//@formatter:off
 		Alert alert = Alert.builder()
 			.created(LocalDateTime.now())
-			.type(AlertType.INFO)
+			.alertType(AlertType.INFO)
 			.subject("User created")
 			.message(String.format("Created user %s", event.getUser().getEmail()))
 			.build();

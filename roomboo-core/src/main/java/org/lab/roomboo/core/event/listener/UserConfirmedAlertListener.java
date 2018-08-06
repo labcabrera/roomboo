@@ -28,7 +28,7 @@ public class UserConfirmedAlertListener implements ApplicationListener<AppUserCo
 		//@formatter:off
 		Alert alert = Alert.builder()
 			.created(LocalDateTime.now())
-			.type(AlertType.INFO)
+			.alertType(AlertType.INFO)
 			.subject("User confirmed")
 			.message(String.format("Confirmed user %s", event.getUser().getEmail()))
 			.build();

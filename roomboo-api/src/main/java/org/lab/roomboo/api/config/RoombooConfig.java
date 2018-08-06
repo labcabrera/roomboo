@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-@EnableMongoRepositories("org.lab.roomboo.domain.repository")
 @EnableAsync
 @EnableScheduling
 @Import({ RoombooCoreConfig.class, RoombooMailConfig.class })

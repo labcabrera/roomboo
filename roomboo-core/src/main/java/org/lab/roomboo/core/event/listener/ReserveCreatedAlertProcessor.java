@@ -63,7 +63,7 @@ public class ReserveCreatedAlertProcessor implements ApplicationListener<Reserve
 
 		//@formatter:off
 		return Alert.builder()
-			.type(AlertType.INFO)
+			.alertType(AlertType.INFO)
 			.created(LocalDateTime.now())
 			.subject("Reserve created")
 			.message(String.format(TEMPLATE_CREATED,
