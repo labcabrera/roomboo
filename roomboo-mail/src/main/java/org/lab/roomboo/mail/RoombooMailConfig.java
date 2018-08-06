@@ -2,6 +2,8 @@ package org.lab.roomboo.mail;
 
 import java.util.Properties;
 
+import org.lab.roomboo.mail.listener.ReserveCreatedEmailListener;
+import org.lab.roomboo.mail.listener.UserCreatedEmailListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -39,5 +41,17 @@ public class RoombooMailConfig {
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.debug", String.valueOf(debug));
 		return mailSender;
+	}
+
+	@Bean
+	@ConditionalOnProperty(value = "app.env.mail.enabled", havingValue = "true", matchIfMissing = false)
+	ReserveCreatedEmailListener reserveCreatedEmailListener() {
+		return new ReserveCreatedEmailListener();
+	}
+
+	@Bean
+	@ConditionalOnProperty(value = "app.env.mail.enabled", havingValue = "true", matchIfMissing = false)
+	UserCreatedEmailListener userCreatedEmailListener() {
+		return new UserCreatedEmailListener();
 	}
 }

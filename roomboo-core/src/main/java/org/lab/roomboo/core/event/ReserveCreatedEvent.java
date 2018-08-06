@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.model.event;
+package org.lab.roomboo.core.event;
 
 import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.context.ApplicationEvent;

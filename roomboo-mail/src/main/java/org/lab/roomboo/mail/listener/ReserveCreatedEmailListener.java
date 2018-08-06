@@ -2,8 +2,8 @@ package org.lab.roomboo.mail.listener;
 
 import java.util.Locale;
 
-import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
-import org.lab.roomboo.core.model.event.listener.EventListenerOrder;
+import org.lab.roomboo.core.event.ReserveCreatedEvent;
+import org.lab.roomboo.core.event.listener.EventListenerOrder;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
@@ -14,12 +14,10 @@ import org.lab.roomboo.domain.repository.ReserveConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Component
 @Order(EventListenerOrder.ReserveCreated.EmailNotification)
 @Slf4j
 public class ReserveCreatedEmailListener extends EmailListener<ReserveCreatedEvent> {

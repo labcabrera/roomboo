@@ -1,8 +1,8 @@
-package org.lab.roomboo.core.model.event.listener;
+package org.lab.roomboo.core.event.listener;
 
 import java.time.LocalDateTime;
 
-import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
+import org.lab.roomboo.core.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.Alert.AlertType;

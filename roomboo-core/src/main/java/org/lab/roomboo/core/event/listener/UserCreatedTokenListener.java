@@ -1,9 +1,9 @@
-package org.lab.roomboo.core.model.event.listener;
+package org.lab.roomboo.core.event.listener;
 
 import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.component.TokenGenerator;
-import org.lab.roomboo.core.model.event.AppUserCreatedEvent;
+import org.lab.roomboo.core.event.AppUserCreatedEvent;
 import org.lab.roomboo.core.service.TokenUriService;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.UserConfirmationToken;

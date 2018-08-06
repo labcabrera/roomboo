@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.lab.roomboo.core.component.ReserveCodeGenerator;
+import org.lab.roomboo.core.event.ReserveCreatedEvent;
 import org.lab.roomboo.core.model.BookingRequest;
-import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.exception.ReserveConfirmationException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
@@ -40,7 +40,6 @@ public class BookingService {
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	public Reserve processBookingRequest(BookingRequest request) {
-		// // TODO check dates
 		Reserve reserve = new Reserve();
 		reserve.setUser(AppUser.builder().id(request.getUserId()).build());
 		reserve.setRoom(Room.builder().id(request.getRoomId()).build());
@@ -49,7 +48,6 @@ public class BookingService {
 		reserve.setCreated(LocalDateTime.now());
 		reserve.setName(request.getName());
 		reserve.setCode(codeGenerator.generate());
-
 		Reserve inserted = reserveRepository.insert(reserve);
 		applicationEventPublisher.publishEvent(new ReserveCreatedEvent(this, reserve));
 		return inserted;

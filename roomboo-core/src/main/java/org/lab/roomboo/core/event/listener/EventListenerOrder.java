@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.model.event.listener;
+package org.lab.roomboo.core.event.listener;
 
 public interface EventListenerOrder {
 

@@ -10,7 +10,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.lab.roomboo.core.model.event.ReserveCreatedEvent;
+import org.lab.roomboo.core.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.mail.RoombooMailTestConfig;
