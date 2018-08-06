@@ -2,6 +2,7 @@ package org.lab.roomboo.core.service;
 
 import java.time.LocalDateTime;
 
+import org.lab.roomboo.core.event.AppUserConfirmedEvent;
 import org.lab.roomboo.core.event.AppUserCreatedEvent;
 import org.lab.roomboo.core.model.AppUserRegisterRequest;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
@@ -51,6 +52,7 @@ public class AppUserService {
 		user.setActivation(LocalDateTime.now());
 		repository.save(user);
 		tokenRepository.deleteById(tokenEntity.getId());
+		applicationEventPublisher.publishEvent(new AppUserConfirmedEvent(this, user));
 		return user;
 	}
 
