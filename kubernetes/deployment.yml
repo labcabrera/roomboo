@@ -69,7 +69,7 @@ kind: Deployment
 metadata: 
   name: springboot-docker
 spec: 
-  replicas: 3
+  replicas: 1
   template: 
     metadata: 
       labels: 
@@ -80,6 +80,9 @@ spec:
           name: springboot-docker
           ports: 
             - containerPort: 8080
+          env:
+          - name: ENV_MONGO_HOST
+            value: "mongo"
 ---
 apiVersion: v1
 kind: Service

@@ -1,59 +1,36 @@
 package org.lab.roomboo.core.service;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-import org.lab.roomboo.core.event.AppUserConfirmedEvent;
-import org.lab.roomboo.core.event.AppUserCreatedEvent;
-import org.lab.roomboo.core.model.AppUserRegisterRequest;
-import org.lab.roomboo.domain.exception.UserConfirmationException;
-import org.lab.roomboo.domain.exception.UserConfirmationException.ErrorType;
+import org.apache.commons.lang3.StringUtils;
+import org.lab.roomboo.core.model.AppUserSearchOptions;
 import org.lab.roomboo.domain.model.AppUser;
-import org.lab.roomboo.domain.model.UserConfirmationToken;
-import org.lab.roomboo.domain.repository.AppUserRepository;
-import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class AppUserService {
 
 	@Autowired
-	private AppUserRepository repository;
+	private MongoTemplate mongoTemplate;
 
-	@Autowired
-	private UserConfirmationTokenRepository tokenRepository;
-
-	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
-
-	public AppUser register(AppUserRegisterRequest request) {
-		log.debug("Creating new app user");
-		AppUser entity = AppUser.builder().email(request.getEmail()).displayName(request.getDisplayName())
-			.created(LocalDateTime.now()).build();
-		AppUser inserted = repository.insert(entity);
-		log.debug("Triggering AppUserCreatedEvent");
-		applicationEventPublisher.publishEvent(new AppUserCreatedEvent(this, inserted));
-		return inserted;
-	}
-
-	public AppUser processConfirmationToken(String token) {
-		UserConfirmationToken tokenEntity = tokenRepository.findByToken(token)
-			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_TOKEN));
-		String userId = tokenEntity.getUser().getId();
-		AppUser user = repository.findById(userId)
-			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_USER));
-		if (user.getActivation() != null) {
-			throw new UserConfirmationException(ErrorType.USER_ALREADY_ACTIVE);
+	public Page<AppUser> findPageable(AppUserSearchOptions options, Pageable pageable) {
+		Query query = new Query().with(pageable);
+		if (StringUtils.isNotBlank(options.getEmail())) {
+			query.addCriteria(Criteria.where("displayName").regex("^" + options.getEmail()));
 		}
-		user.setActivation(LocalDateTime.now());
-		repository.save(user);
-		tokenRepository.deleteById(tokenEntity.getId());
-		applicationEventPublisher.publishEvent(new AppUserConfirmedEvent(this, user));
-		return user;
+		if (StringUtils.isNotBlank(options.getName())) {
+			query.addCriteria(Criteria.where("displayName").regex("^" + options.getName()));
+		}
+		// TODO find by company
+		List<AppUser> list = mongoTemplate.find(query, AppUser.class);
+		return PageableExecutionUtils.getPage(list, pageable, () -> mongoTemplate.count(query, AppUser.class));
 	}
 
 }
