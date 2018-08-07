@@ -19,7 +19,7 @@ import lombok.ToString;
 public class AppUserSearchOptions {
 
 	private String name;
-	
+
 	private String email;
 
 	private String companyId;

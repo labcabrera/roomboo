@@ -32,8 +32,12 @@ public class SignUpService {
 
 	public AppUser register(AppUserRegisterRequest request) {
 		log.debug("Creating new app user");
-		AppUser entity = AppUser.builder().email(request.getEmail()).displayName(request.getDisplayName())
-			.created(LocalDateTime.now()).build();
+		AppUser entity = AppUser.builder() //@formatter:off
+			.email(request.getEmail())
+			.name(request.getName())
+			.lastName(request.getLastName())
+			.created(LocalDateTime.now())
+			.build(); //@formatter:on
 		AppUser inserted = repository.insert(entity);
 		log.debug("Triggering AppUserCreatedEvent");
 		applicationEventPublisher.publishEvent(new AppUserCreatedEvent(this, inserted));

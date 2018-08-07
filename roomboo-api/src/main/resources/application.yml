@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local,unsecured,actuator
+    active: local,unsecured,actuator,force-initialization
     #active: local,unsecured
   application:
     name: roomboo-api

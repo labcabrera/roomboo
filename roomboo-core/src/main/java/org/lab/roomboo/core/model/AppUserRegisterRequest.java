@@ -25,6 +25,10 @@ public class AppUserRegisterRequest {
 	@NotBlank
 	@Pattern(regexp = "^[\\w,\\. ]+$")
 	@Size(min = 6, max = 32)
-	private String displayName;
+	private String name;
 
+	@NotBlank
+	@Pattern(regexp = "^[\\w,\\. ]+$")
+	@Size(min = 6, max = 32)
+	private String lastName;
 }

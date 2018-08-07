@@ -19,7 +19,7 @@ public class RoombooMailTestConfig {
 
 	@Bean
 	AppUserRepository appUserRepository() {
-		AppUser owner = AppUser.builder().id("1").displayName("Test name").email("test@localhost.org").build();
+		AppUser owner = AppUser.builder().id("1").name("Name").lastName("Lastname").email("test@localhost.org").build();
 		AppUserRepository bean = Mockito.mock(AppUserRepository.class);
 		Mockito.when(bean.findById("1")).thenReturn(Optional.of(owner));
 		return bean;

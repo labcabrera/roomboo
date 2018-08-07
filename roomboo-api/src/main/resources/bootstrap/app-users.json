@@ -1,7 +1,8 @@
 [
 	{
 		"id": "labcabrera",
-		"displayName": "Luis Cabrera",
+		"name": "Luis",
+		"lastName": "Cabrera",
 		"email": "lab.cabrera@gmail.com",
 		"activation": "2010-01-01T00:00:00.000",
 		"companies": [
@@ -15,7 +16,8 @@
 	},
 	{
 		"id": "aferreira",
-		"displayName": "Alexandra Ferreira",
+		"name": "Alexandra",
+		"lastName": "Ferreira",
 		"email": "alexandracfa@gmail.com",
 		"activation": "2010-01-01T00:00:00.000",
 		"companies": [
@@ -29,7 +31,8 @@
 	},
 	{
 		"id": "johndoe",
-		"displayName": "John Doe",
+		"name": "John",
+		"lastName": "Doe",
 		"email": "john.doe@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"companies": [
@@ -40,7 +43,8 @@
 	},
 	{
 		"id": "test_expired",
-		"displayName": "Expired user",
+		"name": "Expired",
+		"lastname": "Demo",
 		"email": "expired@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"expiration": "2012-01-01T00:00:00.000",
@@ -52,7 +56,8 @@
 	},
 	{
 		"id": "test_locked",
-		"displayName": "Locked user",
+		"name": "Locked",
+		"lastName": "Test",
 		"email": "locked@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"locked": "2012-01-01T00:00:00.000",

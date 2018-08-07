@@ -67,7 +67,7 @@ public class ReserveCreatedAlertProcessor implements ApplicationListener<Reserve
 			.created(LocalDateTime.now())
 			.subject("Reserve created")
 			.message(String.format(TEMPLATE_CREATED,
-				owner.getDisplayName(),
+				owner.getCompleteName(),
 				reserve.getName(),
 				reserve.getId(),
 				room.getName(),

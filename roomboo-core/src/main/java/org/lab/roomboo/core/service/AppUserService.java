@@ -23,10 +23,12 @@ public class AppUserService {
 	public Page<AppUser> findPageable(AppUserSearchOptions options, Pageable pageable) {
 		Query query = new Query().with(pageable);
 		if (StringUtils.isNotBlank(options.getEmail())) {
-			query.addCriteria(Criteria.where("displayName").regex("^" + options.getEmail()));
+			query.addCriteria(Criteria.where("email").regex("^" + options.getEmail()));
 		}
 		if (StringUtils.isNotBlank(options.getName())) {
-			query.addCriteria(Criteria.where("displayName").regex("^" + options.getName()));
+			query.addCriteria(new Criteria().orOperator( //@formatter:off
+				Criteria.where("name").regex("^" + options.getName()),
+				Criteria.where("lastName").regex("^" + options.getName()))); //@formatter:on
 		}
 		// TODO find by company
 		List<AppUser> list = mongoTemplate.find(query, AppUser.class);

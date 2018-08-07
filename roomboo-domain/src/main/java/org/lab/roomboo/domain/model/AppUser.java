@@ -25,7 +25,9 @@ public class AppUser {
 
 	private String email;
 
-	private String displayName;
+	private String name;
+
+	private String lastName;
 
 	private LocalDateTime created;
 
@@ -36,5 +38,9 @@ public class AppUser {
 	private LocalDateTime locked;
 
 	private List<Company> companies;
+
+	public Object getCompleteName() {
+		return name + " " + lastName;
+	}
 
 }
