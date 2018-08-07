@@ -18,7 +18,10 @@ import lombok.ToString;
 @Builder
 public class AppUserSearchOptions {
 
-	private String name;
+	/**
+	 * Value used to search (case insensitive) in user name, lastName and email.
+	 */
+	private String text;
 
 	private String email;
 

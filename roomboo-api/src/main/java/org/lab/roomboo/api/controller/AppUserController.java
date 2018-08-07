@@ -63,7 +63,7 @@ public class AppUserController {
 
 		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
 		AppUserSearchOptions searchOptions = AppUserSearchOptions.builder() //@formatter:off
-			.name(queryDsl.get("name"))
+			.text(queryDsl.get("text"))
 			.email(queryDsl.get("mail"))
 			.companyId(queryDsl.get("companyId"))
 			.build(); //@formatter:off

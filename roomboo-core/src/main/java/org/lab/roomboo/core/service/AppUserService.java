@@ -17,18 +17,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppUserService {
 
+	private static final String CASE_INSENSITIVE_OPTIONS = "i";
+
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	public Page<AppUser> findPageable(AppUserSearchOptions options, Pageable pageable) {
 		Query query = new Query().with(pageable);
 		if (StringUtils.isNotBlank(options.getEmail())) {
-			query.addCriteria(Criteria.where("email").regex("^" + options.getEmail()));
+			query.addCriteria(Criteria.where("email").regex("^" + options.getEmail(), CASE_INSENSITIVE_OPTIONS));
 		}
-		if (StringUtils.isNotBlank(options.getName())) {
+		if (StringUtils.isNotBlank(options.getText())) {
+			String regex = "^" + options.getText();
 			query.addCriteria(new Criteria().orOperator( //@formatter:off
-				Criteria.where("name").regex("^" + options.getName()),
-				Criteria.where("lastName").regex("^" + options.getName()))); //@formatter:on
+				Criteria.where("name").regex(regex, CASE_INSENSITIVE_OPTIONS),
+				Criteria.where("lastName").regex(regex, CASE_INSENSITIVE_OPTIONS),
+				Criteria.where("email").regex(regex, CASE_INSENSITIVE_OPTIONS))); //@formatter:on
 		}
 		// TODO find by company
 		List<AppUser> list = mongoTemplate.find(query, AppUser.class);
