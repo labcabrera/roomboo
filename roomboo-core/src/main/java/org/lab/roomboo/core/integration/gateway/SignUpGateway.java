@@ -1,6 +1,6 @@
-package org.lab.roomboo.core.gateway;
+package org.lab.roomboo.core.integration.gateway;
 
-import org.lab.roomboo.core.model.AppUserRegisterRequest;
+import org.lab.roomboo.core.model.SignUpRequest;
 import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
@@ -12,6 +12,6 @@ import org.springframework.integration.annotation.MessagingGateway;
 public interface SignUpGateway {
 
 	@Gateway
-	AppUser signUp(AppUserRegisterRequest request);
+	AppUser signUp(SignUpRequest request);
 
 }

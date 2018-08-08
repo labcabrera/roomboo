@@ -49,8 +49,9 @@ public class CompanyController {
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Company> currentPage = companyRepository.findAll(pageable);
 		PagedResources<CompanyResource> pr = assembler.toResource(currentPage, companyResourceAssembler);
+		
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
-		pr.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
+		pr.add(new Link(fromController(AppUserController.class).build().toString(), "users"));
 		return ResponseEntity.ok(pr);
 	}
 

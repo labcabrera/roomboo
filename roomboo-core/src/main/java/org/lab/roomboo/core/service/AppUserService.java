@@ -24,6 +24,9 @@ public class AppUserService {
 
 	public Page<AppUser> findPageable(AppUserSearchOptions options, Pageable pageable) {
 		Query query = new Query().with(pageable);
+		if (StringUtils.isNotBlank(options.getCompanyId())) {
+			query.addCriteria(Criteria.where("company.id").is(options.getCompanyId()));
+		}
 		if (StringUtils.isNotBlank(options.getEmail())) {
 			query.addCriteria(Criteria.where("email").regex("^" + options.getEmail(), CASE_INSENSITIVE_OPTIONS));
 		}

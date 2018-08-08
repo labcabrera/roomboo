@@ -7,14 +7,9 @@
 		"roles": [
 			"ADMIN"
 		],
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			},
-			{
-				"id": "roombooCompanyDemo02"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"username": "roomboo",
@@ -24,14 +19,9 @@
 		"roles": [
 			"ADMIN"
 		],
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			},
-			{
-				"id": "roombooCompanyDemo02"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"username": "demo",
@@ -55,11 +45,9 @@
 		"roles": [
 			"OPERATOR"
 		],
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"username": "bob",
@@ -69,11 +57,9 @@
 		"roles": [
 			"OPERATOR"
 		],
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"username": "carol",
@@ -84,10 +70,8 @@
 		"roles": [
 			"OPERATOR"
 		],
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo02"
+		}
 	}
 ]

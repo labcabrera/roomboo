@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +32,9 @@ public class ApiUser implements UserDetails {
 	private LocalDateTime activation;
 
 	private List<String> roles;
-	private List<Company> companies;
+
+	@DBRef
+	private Company company;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

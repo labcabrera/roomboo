@@ -1,73 +1,65 @@
 package org.lab.roomboo.core.integration;
 
-import org.lab.roomboo.core.model.AppUserRegisterRequest;
-import org.lab.roomboo.core.service.AlertService;
-import org.lab.roomboo.core.service.AppUserService;
+import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
+import org.lab.roomboo.core.integration.handler.MongoHandler;
+import org.lab.roomboo.core.integration.transformer.AlertSignUpTransformer;
+import org.lab.roomboo.core.integration.transformer.SignUpAppUserTransformer;
+import org.lab.roomboo.domain.model.Alert;
+import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.channel.MessageChannels;
 import org.springframework.integration.handler.LoggingHandler.Level;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.retry.support.RetrySimulation.SleepSequence;
 
 @Configuration
 public class UserCreationFlow {
 
 	@Autowired
-	private AppUserService appUserService;
+	private AlertSignUpTransformer alertSignUpTransformer;
 
 	@Autowired
-	private AlertService alertService;
+	private SignUpAppUserTransformer signUpUserTransformer;
 
-	@Bean(name = "channel-sign-up-input")
-	MessageChannel signUpChannelIn() {
-		return MessageChannels.direct().get();
-	}
+	@Autowired
+	private MongoHandler mongoHandler;
 
-	@Bean(name = "channel-sign-up-output")
-	MessageChannel signUpChannelOut() {
-		return MessageChannels.direct().get();
-	}
-
-	@Bean(name = "channel-sign-up-error")
-	MessageChannel signUpChannelError() {
-		return MessageChannels.direct().get();
-	}
-
-	@Bean(name = "channel-notification")
-	MessageChannel userCreatedChannel() {
-		return MessageChannels.publishSubscribe("channel-notification-test").get();
-	}
-
-	//@formatter:off
 	@Bean
-	IntegrationFlow userSignUpFlow() {
-		
+	IntegrationFlow userSignUpFlow() { //@formatter:off
 		return IntegrationFlows
-			.from(signUpChannelIn())
+			.from(Channels.SignUpInput)
 			.log(Level.INFO, "Processing user sign-up")
-			.handle(AppUserRegisterRequest.class, (request, headers) -> appUserService.register(request))
-			.log(Level.INFO, "Processed user sign-up")
+			.transform(signUpUserTransformer)
+			.handle(AppUser.class, (request, headers) -> mongoHandler.save(request))
+			.log(Level.INFO, UserCreationFlow.class.getName(), m -> "Received sign-up request: " + m.getPayload())
 			.publishSubscribeChannel(c -> c.applySequence(false)
 				.subscribe(f -> f
-					.channel(userCreatedChannel())))
-			.channel(signUpChannelOut())
+					.transform(alertSignUpTransformer)
+					.channel(Channels.AlertInput))
+				.subscribe(f -> f
+					.channel(Channels.PrepareUserActivation)))
+			.channel(Channels.SignUpOutput)
 			.get();
-	}
-	//@formatter:on
+	} //@formatter:on
 
-	//@formatter:off
 	@Bean
-	IntegrationFlow notificationChannelFlow() {
+	IntegrationFlow alertNotificationFlow() { //@formatter:off
 		return IntegrationFlows
-			.from("channel-notification")
-			.log(Level.INFO, "Received message xxx")
-			//.handle(alertService.create("test", "test"))
+			.from(Channels.AlertInput)
+			.log(Level.INFO, "Received alert notification")
+			.handle(Alert.class, (request, headers) -> mongoHandler.save(request))
+			.log(Level.INFO, "Processed alert notification")
+			.get();
+	} //@formatter:on
+
+	@Bean
+	IntegrationFlow userActivationFlow() { //@formatter:off
+		return IntegrationFlows
+			.from(Channels.PrepareUserActivation)
+			.log(Level.INFO, "Received user pre-activation flow")
 			.bridge()
 			.get();
-	}
-	//@formatter:on
+	} //@formatter:on
+
 }

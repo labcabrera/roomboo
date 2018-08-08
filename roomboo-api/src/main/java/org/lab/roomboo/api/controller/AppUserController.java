@@ -54,7 +54,7 @@ public class AppUserController {
 
 	@ApiOperation(value = "App user search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
-	public ResponseEntity<Resources<AppUserResource>> findAll( //@formatter:off
+	public ResponseEntity<Resources<AppUserResource>> find( //@formatter:off
 			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size) { //@formatter:on
@@ -71,6 +71,7 @@ public class AppUserController {
 		Page<AppUser> currentPage = userService.findPageable(searchOptions, pageable);
 		PagedResources<AppUserResource> pr = assembler.toResource(currentPage, appUserResourceAssembler);
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
+		pr.add(new Link(fromController(CompanyController.class).build().toString(), "companies"));
 		return ResponseEntity.ok(pr);
 	}
 

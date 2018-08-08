@@ -10,7 +10,7 @@ import javax.validation.Valid;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.AppUserResource;
-import org.lab.roomboo.core.model.AppUserRegisterRequest;
+import org.lab.roomboo.core.model.SignUpRequest;
 import org.lab.roomboo.core.service.SignUpService;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
 import org.lab.roomboo.domain.model.AppUser;
@@ -42,7 +42,7 @@ public class SignUpController {
 	@ApiOperation(value = "Register new app user",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
-	public ResponseEntity<AppUserResource> save(@Valid @RequestBody AppUserRegisterRequest userRegister) {
+	public ResponseEntity<AppUserResource> save(@Valid @RequestBody SignUpRequest userRegister) {
 		AppUser inserted = signUpService.register(userRegister);
 		URI uri = fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId()).toUri();
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));

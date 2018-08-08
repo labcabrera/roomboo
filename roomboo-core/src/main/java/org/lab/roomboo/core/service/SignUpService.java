@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.event.AppUserConfirmedEvent;
 import org.lab.roomboo.core.event.AppUserCreatedEvent;
-import org.lab.roomboo.core.model.AppUserRegisterRequest;
+import org.lab.roomboo.core.model.SignUpRequest;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
 import org.lab.roomboo.domain.exception.UserConfirmationException.ErrorType;
 import org.lab.roomboo.domain.model.AppUser;
@@ -30,7 +30,7 @@ public class SignUpService {
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 
-	public AppUser register(AppUserRegisterRequest request) {
+	public AppUser register(SignUpRequest request) {
 		log.debug("Creating new app user");
 		AppUser entity = AppUser.builder() //@formatter:off
 			.email(request.getEmail())

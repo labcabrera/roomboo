@@ -3,6 +3,7 @@ package org.lab.roomboo.api.resource;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
+import org.lab.roomboo.api.controller.AppUserController;
 import org.lab.roomboo.api.controller.CompanyController;
 import org.lab.roomboo.api.controller.RoomGroupController;
 import org.lab.roomboo.domain.model.Company;
@@ -20,6 +21,7 @@ public class CompanyResource extends ResourceSupport {
 		String id = company.getId();
 		add(linkTo(methodOn(CompanyController.class).findById(id)).withSelfRel());
 		add(linkTo(methodOn(RoomGroupController.class).find("companyId==" + id, 0, 10)).withRel("roomGroups"));
+		add(linkTo(methodOn(AppUserController.class).find("companyId==" + id, 0, 10)).withRel("users"));
 		add(linkTo(CompanyController.class).withRel("companies"));
 	}
 

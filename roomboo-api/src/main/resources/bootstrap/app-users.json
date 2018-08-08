@@ -5,14 +5,9 @@
 		"lastName": "Cabrera",
 		"email": "lab.cabrera@gmail.com",
 		"activation": "2010-01-01T00:00:00.000",
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			},
-			{
-				"id": "roombooCompanyDemo02"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"id": "aferreira",
@@ -20,14 +15,9 @@
 		"lastName": "Ferreira",
 		"email": "alexandracfa@gmail.com",
 		"activation": "2010-01-01T00:00:00.000",
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			},
-			{
-				"id": "roombooCompanyDemo02"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"id": "johndoe",
@@ -35,11 +25,9 @@
 		"lastName": "Doe",
 		"email": "john.doe@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"id": "test_expired",
@@ -48,11 +36,9 @@
 		"email": "expired@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"expiration": "2012-01-01T00:00:00.000",
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
 	},
 	{
 		"id": "test_locked",
@@ -61,10 +47,19 @@
 		"email": "locked@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"locked": "2012-01-01T00:00:00.000",
-		"companies": [
-			{
-				"id": "roombooCompanyDemo01"
-			}
-		]
+		"company": {
+			"id": "roombooCompanyDemo01"
+		}
+	},
+	{
+		"id": "company02user",
+		"name": "Demo",
+		"lastName": "Test Company 2",
+		"email": "locked@roombo.org",
+		"activation": "2010-01-01T00:00:00.000",
+		"locked": "2012-01-01T00:00:00.000",
+		"company": {
+			"id": "roombooCompanyDemo02"
+		}
 	}
 ]

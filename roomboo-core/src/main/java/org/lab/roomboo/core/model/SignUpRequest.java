@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AppUserRegisterRequest {
+public class SignUpRequest {
 
 	@Email
 	@NotNull
