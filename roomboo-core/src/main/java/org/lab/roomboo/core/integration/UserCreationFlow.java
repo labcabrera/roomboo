@@ -1,17 +1,24 @@
 package org.lab.roomboo.core.integration;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
 import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
 import org.lab.roomboo.core.integration.handler.MongoHandler;
+import org.lab.roomboo.core.integration.router.RequestUserActivationRouter;
 import org.lab.roomboo.core.integration.transformer.AlertSignUpTransformer;
 import org.lab.roomboo.core.integration.transformer.SignUpAppUserTransformer;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.handler.GenericHandler;
 import org.springframework.integration.handler.LoggingHandler.Level;
+import org.springframework.messaging.MessageChannel;
 
 @Configuration
 public class UserCreationFlow {
@@ -25,21 +32,26 @@ public class UserCreationFlow {
 	@Autowired
 	private MongoHandler mongoHandler;
 
+	@Autowired
+	private RequestUserActivationRouter signUpConfimationRouter;
+	
+	@Qualifier(Channels.SignUpConfirmationAuto)
+	@Autowired
+	private MessageChannel channelSignUpConfirmationAuto;
+
 	@Bean
 	IntegrationFlow userSignUpFlow() { //@formatter:off
 		return IntegrationFlows
 			.from(Channels.SignUpInput)
-			.log(Level.INFO, "Processing user sign-up")
+			.log(Level.INFO, UserCreationFlow.class.getName(), m -> "Received sign-up request: " + m.getPayload())
 			.transform(signUpUserTransformer)
 			.handle(AppUser.class, (request, headers) -> mongoHandler.save(request))
-			.log(Level.INFO, UserCreationFlow.class.getName(), m -> "Received sign-up request: " + m.getPayload())
 			.publishSubscribeChannel(c -> c.applySequence(false)
 				.subscribe(f -> f
 					.transform(alertSignUpTransformer)
-					.channel(Channels.AlertInput))
-				.subscribe(f -> f
-					.channel(Channels.PrepareUserActivation)))
-			.channel(Channels.SignUpOutput)
+					.channel(Channels.AlertInput)))
+			//.channel(Channels.SignUpOutput)
+			.route(signUpConfimationRouter)
 			.get();
 	} //@formatter:on
 
@@ -54,10 +66,37 @@ public class UserCreationFlow {
 	} //@formatter:on
 
 	@Bean
-	IntegrationFlow userActivationFlow() { //@formatter:off
+	IntegrationFlow flowSignUpConfirmationAuto() { //@formatter:off
 		return IntegrationFlows
-			.from(Channels.PrepareUserActivation)
-			.log(Level.INFO, "Received user pre-activation flow")
+			.from(channelSignUpConfirmationAuto)
+			.log(Level.INFO, "Received confirmation message")
+			.handle(AppUser.class, new GenericHandler<AppUser>() {
+
+				@Override
+				public Object handle(AppUser payload, Map<String, Object> headers) {
+					payload.setActivation(LocalDateTime.now());
+					return payload;
+				}
+			})
+			.handle(AppUser.class, (request, headers) -> mongoHandler.save(request))
+			.channel(Channels.SignUpOutput)
+			.get();
+	} //@formatter:on
+
+	@Bean
+	IntegrationFlow flowSignUpConfirmationMail() { //@formatter:off
+		return IntegrationFlows
+			.from(Channels.SignUpConfirmationEmail)
+			.log(Level.INFO, "Received message")
+			.bridge()
+			.get();
+	} //@formatter:on
+
+	@Bean
+	IntegrationFlow flowSignUpError() { //@formatter:off
+		return IntegrationFlows
+			.from(Channels.SignUpError)
+			.log(Level.INFO, "Received message")
 			.bridge()
 			.get();
 	} //@formatter:on

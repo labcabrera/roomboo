@@ -23,4 +23,29 @@ public class IntegrationConfig {
 	MessageChannel channelSystemNotification() {
 		return MessageChannels.publishSubscribe(executor()).get();
 	}
+
+	@Bean(name = Channels.SignUpInput)
+	MessageChannel channelSignUpInput() {
+		return MessageChannels.direct(Channels.SignUpInput).get();
+	}
+
+	@Bean(name = Channels.SignUpOutput)
+	MessageChannel channelSignUpOutput() {
+		return MessageChannels.direct(Channels.SignUpOutput).get();
+	}
+
+	@Bean(name = Channels.SignUpError)
+	MessageChannel channelSignUpError() {
+		return MessageChannels.direct().get();
+	}
+
+	@Bean(name = Channels.SignUpConfirmationAuto)
+	MessageChannel channel001() {
+		return MessageChannels.direct(Channels.SignUpConfirmationAuto).get();
+	}
+
+	@Bean(name = Channels.SignUpConfirmationEmail)
+	MessageChannel channel002() {
+		return MessageChannels.direct().get();
+	}
 }

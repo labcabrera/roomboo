@@ -19,11 +19,8 @@ public interface RoombooIntegration {
 		 */
 		String SignUpError = "sign-up-error";
 
-		/**
-		 * Canal de entrada de los mensajes para la activacion de usuarios. Podemos tener diferentes estrategias de
-		 * activacion (por ejemplo auto-activacion, confirmacion via correo, etc).
-		 */
-		String PrepareUserActivation = "prepare-user-activation";
+		String SignUpConfirmationAuto = "sign-up-confirmation-auto";
+		String SignUpConfirmationEmail = "sign-up-confirmation-email";
 
 		/**
 		 * Canal que procesa las notificaciones del sistema.
