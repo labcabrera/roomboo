@@ -1,25 +1,23 @@
-package org.lab.roomboo.core.event.listener;
+package org.lab.roomboo.core.integration.handler;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import org.lab.roomboo.core.component.TokenGenerator;
-import org.lab.roomboo.core.event.AppUserCreatedEvent;
 import org.lab.roomboo.core.service.TokenUriService;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.UserConfirmationToken;
 import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.integration.handler.GenericHandler;
+import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Order(EventListenerOrder.UserCreated.Token)
+@Component
 @Slf4j
-public class UserCreatedTokenListener implements ApplicationListener<AppUserCreatedEvent> {
+public class UserActivationTokenHandler implements GenericHandler<AppUser> {
 
 	@Autowired
 	private UserConfirmationTokenRepository tokenRepository;
@@ -34,16 +32,18 @@ public class UserCreatedTokenListener implements ApplicationListener<AppUserCrea
 	private Integer tokenExpiration;
 
 	@Override
-	public void onApplicationEvent(AppUserCreatedEvent event) {
-		log.debug("Creating new confirmation token for user {}", event.getUser());
-		String userId = event.getUser().getId();
+	public Object handle(AppUser payload, Map<String, Object> headers) {
+		log.debug("Processing user activation token");
+
 		UserConfirmationToken token = new UserConfirmationToken();
 		token.setCreated(LocalDateTime.now());
 		token.setExpiration(LocalDateTime.now().plusMinutes(tokenExpiration));
-		token.setUser(AppUser.builder().id(userId).build());
+		token.setUser(payload);
 		token.setToken(tokenGenerator.generate());
 		tokenUriService.processUri(token);
 		tokenRepository.save(token);
-	}
 
+		return payload;
+
+	}
 }

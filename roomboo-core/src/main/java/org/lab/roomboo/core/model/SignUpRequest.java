@@ -30,11 +30,14 @@ public class SignUpRequest {
 
 	@NotBlank
 	@Pattern(regexp = "^[\\w,\\. ]+$")
-	@Size(min = 6, max = 32)
+	@Size(max = 32)
 	private String name;
 
 	@NotBlank
 	@Pattern(regexp = "^[\\w,\\. ]+$")
-	@Size(min = 6, max = 32)
+	@Size(max = 32)
 	private String lastName;
+
+	@NotBlank
+	private String companyId;
 }

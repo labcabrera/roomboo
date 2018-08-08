@@ -59,6 +59,8 @@ project(":roomboo-core") {
   dependencies {
     compile(project(":roomboo-domain"))
     compile('org.springframework.boot:spring-boot-starter-integration')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework.boot:spring-boot-starter-mail')
     testCompile('com.fasterxml.jackson.core:jackson-databind')
   }
   jar {

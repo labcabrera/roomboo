@@ -28,9 +28,20 @@ public class SignUpGatewayTest {
 	private ThreadPoolTaskExecutor executor;
 
 	@Test
-	public void test() {
+	@Ignore
+	public void testAutoConfirmation() {
 		SignUpRequest request = SignUpRequest.builder().email("lab.cabrera@gmail.com").name("Luis").lastName("Cabrera")
-			.build();
+			.companyId("roombooCompanyDemo02").build();
+		AppUser response = gateway.signUp(request);
+		System.out.println("--- Response:\n" + response + "\n---");
+		executor.setAwaitTerminationSeconds(10);
+		executor.shutdown();
+	}
+
+	@Test
+	public void testEmailConfirmation() {
+		SignUpRequest request = SignUpRequest.builder().email("lab.cabrera@gmail.com").name("Luis").lastName("Cabrera")
+			.companyId("roombooCompanyDemo01").build();
 		AppUser response = gateway.signUp(request);
 		System.out.println("--- Response:\n" + response + "\n---");
 		executor.setAwaitTerminationSeconds(10);

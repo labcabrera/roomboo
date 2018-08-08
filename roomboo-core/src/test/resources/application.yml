@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${ENV_MONGO_HOST:localhost}/roomboo

@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
+import org.lab.roomboo.domain.exception.RoombooException;
+import org.lab.roomboo.domain.model.AppUser;
+import org.lab.roomboo.domain.model.Company;
+import org.lab.roomboo.domain.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.integration.router.AbstractMessageRouter;
@@ -12,7 +16,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RequestUserActivationRouter extends AbstractMessageRouter {
+public class UserActivationRouter extends AbstractMessageRouter {
 
 	@Qualifier(Channels.SignUpConfirmationAuto)
 	@Autowired
@@ -22,10 +26,21 @@ public class RequestUserActivationRouter extends AbstractMessageRouter {
 	@Autowired
 	private MessageChannel emailConfirmationChannel;
 
+	@Autowired
+	private CompanyRepository companyRepository;
+
 	@Override
 	protected Collection<MessageChannel> determineTargetChannels(Message<?> message) {
-		// TODO check company
-		return Arrays.asList(directConfirmationChannel);
+		AppUser user = (AppUser) message.getPayload();
+		Company company = companyRepository.findById(user.getCompany().getId()).get();
+		switch (company.getSignUpActivationMode()) {
+		case AUTO:
+			return Arrays.asList(directConfirmationChannel);
+		case EMAIL:
+			return Arrays.asList(emailConfirmationChannel);
+		default:
+			throw new RoombooException("");
+		}
 	}
 
 }

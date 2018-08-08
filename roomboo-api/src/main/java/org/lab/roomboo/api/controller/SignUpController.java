@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.AppUserResource;
+import org.lab.roomboo.core.integration.gateway.SignUpGateway;
 import org.lab.roomboo.core.model.SignUpRequest;
 import org.lab.roomboo.core.service.SignUpService;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
@@ -36,14 +37,17 @@ public class SignUpController {
 	@Autowired
 	private SignUpService signUpService;
 
+	@Autowired
+	private SignUpGateway signUpGateway;
+
 	@Value("${app.env.token.user-register.redirect-uri:}")
 	private String confirmationRedirectUri;
 
 	@ApiOperation(value = "Register new app user",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
-	public ResponseEntity<AppUserResource> save(@Valid @RequestBody SignUpRequest userRegister) {
-		AppUser inserted = signUpService.register(userRegister);
+	public ResponseEntity<AppUserResource> save(@Valid @RequestBody SignUpRequest request) {
+		AppUser inserted = signUpGateway.signUp(request);
 		URI uri = fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId()).toUri();
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));
 	}

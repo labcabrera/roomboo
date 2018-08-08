@@ -3,6 +3,7 @@ package org.lab.roomboo.domain.model;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -42,6 +43,7 @@ public class Company {
 
 	private String description;
 
+	@NotNull
 	private SignUpActivationMode signUpActivationMode;
 
 }

@@ -19,11 +19,6 @@ public class IntegrationConfig {
 		return pool;
 	}
 
-	@Bean(name = Channels.AlertInput)
-	MessageChannel channelSystemNotification() {
-		return MessageChannels.publishSubscribe(executor()).get();
-	}
-
 	@Bean(name = Channels.SignUpInput)
 	MessageChannel channelSignUpInput() {
 		return MessageChannels.direct(Channels.SignUpInput).get();
@@ -44,8 +39,13 @@ public class IntegrationConfig {
 		return MessageChannels.direct(Channels.SignUpConfirmationAuto).get();
 	}
 
+	@Bean(name = Channels.AlertInput)
+	MessageChannel channelSystemNotification() {
+		return MessageChannels.publishSubscribe(executor()).get();
+	}
+
 	@Bean(name = Channels.SignUpConfirmationEmail)
 	MessageChannel channel002() {
-		return MessageChannels.direct().get();
+		return MessageChannels.publishSubscribe(executor()).get();
 	}
 }

@@ -2,11 +2,13 @@
 	{
 		"id": "roombooCompanyDemo01",
 		"name": "Roomboo Demo Company 1",
-		"description": "Example of company for demo purpose"
+		"description": "Example of company for demo purpose",
+		"signUpActivationMode": "EMAIL"
 	},
 	{
 		"id": "roombooCompanyDemo02",
 		"name": "Roomboo Demo Company 2",
-		"description": "Example of company for demo purpose"
+		"description": "Example of company for demo purpose",
+		"signUpActivationMode": "AUTO"
 	}
 ]

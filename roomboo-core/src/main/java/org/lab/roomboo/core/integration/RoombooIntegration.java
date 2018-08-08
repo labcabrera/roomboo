@@ -27,6 +27,11 @@ public interface RoombooIntegration {
 		 */
 		String AlertInput = "alert-input";
 
+		/**
+		 * Canal encargado del envio de correo.
+		 */
+		String EmailOutput = "email-output";
+
 	}
 
 }

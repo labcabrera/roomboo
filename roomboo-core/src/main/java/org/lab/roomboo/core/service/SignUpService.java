@@ -3,8 +3,6 @@ package org.lab.roomboo.core.service;
 import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.event.AppUserConfirmedEvent;
-import org.lab.roomboo.core.event.AppUserCreatedEvent;
-import org.lab.roomboo.core.model.SignUpRequest;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
 import org.lab.roomboo.domain.exception.UserConfirmationException.ErrorType;
 import org.lab.roomboo.domain.model.AppUser;
@@ -15,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class SignUpService {
 
 	@Autowired
@@ -29,20 +24,6 @@ public class SignUpService {
 
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
-
-	public AppUser register(SignUpRequest request) {
-		log.debug("Creating new app user");
-		AppUser entity = AppUser.builder() //@formatter:off
-			.email(request.getEmail())
-			.name(request.getName())
-			.lastName(request.getLastName())
-			.created(LocalDateTime.now())
-			.build(); //@formatter:on
-		AppUser inserted = repository.insert(entity);
-		log.debug("Triggering AppUserCreatedEvent");
-		applicationEventPublisher.publishEvent(new AppUserCreatedEvent(this, inserted));
-		return inserted;
-	}
 
 	public AppUser processConfirmationToken(String token) {
 		UserConfirmationToken tokenEntity = tokenRepository.findByToken(token)
