@@ -14,7 +14,6 @@ import org.lab.roomboo.core.event.ReserveCreatedEvent;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.mail.RoombooMailTestConfig;
-import org.lab.roomboo.mail.listener.ReserveCreatedEmailListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -43,16 +42,14 @@ public class EmailNotificationServiceTest {
 		GreenMail greenMail = new GreenMail(config);
 		greenMail.start();
 
-		//@formatter:off
-		Reserve reserve = Reserve.builder()
+		Reserve reserve = Reserve.builder() //@formatter:off
 			.id("12345")
 			.name("Dummy reserve name")
 			.code("ABCDEF")
 			.from(LocalDateTime.now())
 			.to(LocalDateTime.now().plusHours(1))
-			.user(AppUser.builder().id("1").displayName("Dummy username").build())
-			.build();
-		//@formatter:on
+			.user(AppUser.builder().id("1").name("Name").lastName("Lastname").build())
+			.build(); //@formatter:on
 
 		service.onApplicationEvent(new ReserveCreatedEvent(this, reserve));
 		greenMail.waitForIncomingEmail(1);

@@ -48,7 +48,7 @@ public class ReserveCreatedEmailListener extends EmailListener<ReserveCreatedEve
 			log.info("Sending booking notification mail");
 
 			Context context = new Context(Locale.getDefault());
-			context.setVariable("username", owner.getDisplayName());
+			context.setVariable("username", owner.getCompleteName());
 			context.setVariable("reserve", reserve);
 			context.setVariable("confirmationToken", token);
 			String htmlContent = templateEngine.process("mail-reserve-created", context);
