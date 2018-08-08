@@ -17,8 +17,17 @@ public class RoomFeatures {
 
 	private Integer size;
 
-	private Boolean video;
+	private Boolean videoCall;
 
 	private Boolean conferenceCall;
+	
+	private Boolean board;
+	
+	private Boolean audio;
+	
+	private Boolean projector;
+	
+	
+	
 
 }
