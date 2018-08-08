@@ -1,8 +1,8 @@
-package org.lab.roomboo.core.service;
+package org.lab.roomboo.core.integration.handler;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-import org.lab.roomboo.core.event.AppUserConfirmedEvent;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
 import org.lab.roomboo.domain.exception.UserConfirmationException.ErrorType;
 import org.lab.roomboo.domain.model.AppUser;
@@ -10,11 +10,11 @@ import org.lab.roomboo.domain.model.UserConfirmationToken;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
+import org.springframework.integration.handler.GenericHandler;
+import org.springframework.stereotype.Component;
 
-@Service
-public class SignUpService {
+@Component
+public class UserTokenConfirmationHandler implements GenericHandler<String> {
 
 	@Autowired
 	private AppUserRepository repository;
@@ -22,10 +22,8 @@ public class SignUpService {
 	@Autowired
 	private UserConfirmationTokenRepository tokenRepository;
 
-	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
-
-	public AppUser processConfirmationToken(String token) {
+	@Override
+	public Object handle(String token, Map<String, Object> headers) {
 		UserConfirmationToken tokenEntity = tokenRepository.findByToken(token)
 			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_TOKEN));
 		String userId = tokenEntity.getUser().getId();
@@ -37,7 +35,7 @@ public class SignUpService {
 		user.setActivation(LocalDateTime.now());
 		repository.save(user);
 		tokenRepository.deleteById(tokenEntity.getId());
-		applicationEventPublisher.publishEvent(new AppUserConfirmedEvent(this, user));
 		return user;
 	}
+
 }

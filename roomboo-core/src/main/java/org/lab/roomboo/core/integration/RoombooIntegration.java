@@ -22,6 +22,10 @@ public interface RoombooIntegration {
 		String SignUpConfirmationAuto = "sign-up-confirmation-auto";
 		String SignUpConfirmationEmail = "sign-up-confirmation-email";
 
+		String UserTokenConfirmationInput = "user-token-confirmation-input";
+		String UserTokenConfirmationOutput = "user-token-confirmation-output";
+		String UserTokenConfirmationError = "user-token-confirmation-error";
+		
 		/**
 		 * Canal que procesa las notificaciones del sistema.
 		 */

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class UserActivationTokenHandler implements GenericHandler<AppUser> {
+public class UserTokenGeneratorHandler implements GenericHandler<AppUser> {
 
 	@Autowired
 	private UserConfirmationTokenRepository tokenRepository;
@@ -33,7 +33,10 @@ public class UserActivationTokenHandler implements GenericHandler<AppUser> {
 
 	@Override
 	public Object handle(AppUser payload, Map<String, Object> headers) {
-		log.debug("Processing user activation token");
+		String userId = payload.getId();
+		log.debug("Generating user confirmation token for user {}", userId);
+
+		tokenRepository.deleteByUserId(userId);
 
 		UserConfirmationToken token = new UserConfirmationToken();
 		token.setCreated(LocalDateTime.now());
@@ -44,6 +47,5 @@ public class UserActivationTokenHandler implements GenericHandler<AppUser> {
 		tokenRepository.save(token);
 
 		return payload;
-
 	}
 }

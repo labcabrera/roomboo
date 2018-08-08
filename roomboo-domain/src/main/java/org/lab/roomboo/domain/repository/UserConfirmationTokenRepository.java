@@ -10,5 +10,7 @@ public interface UserConfirmationTokenRepository extends MongoRepository<UserCon
 	Optional<UserConfirmationToken> findByToken(String token);
 
 	Optional<UserConfirmationToken> findByUserId(String userId);
+	
+	void deleteByUserId(String userId);
 
 }

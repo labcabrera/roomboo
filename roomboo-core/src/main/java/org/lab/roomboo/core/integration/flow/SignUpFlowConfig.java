@@ -3,7 +3,8 @@ package org.lab.roomboo.core.integration.flow;
 import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
 import org.lab.roomboo.core.integration.handler.AppUserActivationHandler;
 import org.lab.roomboo.core.integration.handler.MongoHandler;
-import org.lab.roomboo.core.integration.handler.UserActivationTokenHandler;
+import org.lab.roomboo.core.integration.handler.UserTokenGeneratorHandler;
+import org.lab.roomboo.core.integration.handler.UserTokenConfirmationHandler;
 import org.lab.roomboo.core.integration.router.UserActivationRouter;
 import org.lab.roomboo.core.integration.transformer.AlertSignUpTransformer;
 import org.lab.roomboo.core.integration.transformer.EmailConfirmationTransformer;
@@ -35,10 +36,13 @@ public class SignUpFlowConfig {
 	private AppUserActivationHandler userActivationHandler;
 
 	@Autowired
-	private UserActivationTokenHandler userActivationTokenHandler;
+	private UserTokenGeneratorHandler userActivationTokenHandler;
 
 	@Autowired
 	private EmailConfirmationTransformer emailConfirmationTransformer;
+
+	@Autowired
+	private UserTokenConfirmationHandler userTokenConfirmationHandler;
 
 	@Bean
 	IntegrationFlow userSignUpFlow() { //@formatter:off
@@ -84,6 +88,17 @@ public class SignUpFlowConfig {
 			.handle(userActivationTokenHandler)
 			.transform(emailConfirmationTransformer)
 			.channel(Channels.EmailOutput)
+			.get();
+	} //@formatter:on
+
+	@Bean
+	IntegrationFlow flowUserTokenConfirmation() { //@formatter:off
+		return IntegrationFlows
+			.from(Channels.UserTokenConfirmationInput)
+			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received user token confirmation: " + m.getPayload())
+			.handle(userTokenConfirmationHandler)
+			//TODO alert
+			.channel(Channels.UserTokenConfirmationOutput)
 			.get();
 	} //@formatter:on
 

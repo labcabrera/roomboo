@@ -1,6 +1,5 @@
 include ":roomboo-domain",
         ":roomboo-core",
         ":roomboo-jwt",
-        ":roomboo-mail",
         ":roomboo-api"
         

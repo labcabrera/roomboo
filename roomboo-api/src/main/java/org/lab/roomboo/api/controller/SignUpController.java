@@ -12,7 +12,6 @@ import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.AppUserResource;
 import org.lab.roomboo.core.integration.gateway.SignUpGateway;
 import org.lab.roomboo.core.model.SignUpRequest;
-import org.lab.roomboo.core.service.SignUpService;
 import org.lab.roomboo.domain.exception.UserConfirmationException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 public class SignUpController {
 
 	@Autowired
-	private SignUpService signUpService;
-
-	@Autowired
 	private SignUpGateway signUpGateway;
 
 	@Value("${app.env.token.user-register.redirect-uri:}")
@@ -57,7 +53,7 @@ public class SignUpController {
 	@GetMapping("/accept/{token}")
 	public void confirmByToken(@PathVariable("token") String token, HttpServletResponse response) {
 		try {
-			AppUser user = signUpService.processConfirmationToken(token);
+			AppUser user = signUpGateway.tokenConfirmation(token);
 			String redirectUri = buildRedirectUri(user, confirmationRedirectUri);
 			log.debug("Confirmation redirect: {}", redirectUri);
 			response.sendRedirect(redirectUri);
