@@ -13,17 +13,25 @@ import org.springframework.validation.Validator;
 @Component
 public class PayloadValidatorHandler implements GenericHandler<Object> {
 
+	public static final String HEADER_PRE_VALIDATED = "x-pre-validated";
+
 	@Autowired
 	private Validator validator;
 
 	@Override
 	public Object handle(Object payload, Map<String, Object> headers) {
-		BindingResult bindingResult = new BeanPropertyBindingResult(payload, "payload");
-		validator.validate(payload, bindingResult);
-		if (bindingResult.hasErrors()) {
-			throw new RoombooValidationError("Payload validation error", bindingResult);
+		if (!isPreValidatedMessage(headers)) {
+			BindingResult bindingResult = new BeanPropertyBindingResult(payload, "payload");
+			validator.validate(payload, bindingResult);
+			if (bindingResult.hasErrors()) {
+				throw new RoombooValidationError("Payload validation error", bindingResult);
+			}
 		}
 		return payload;
+	}
+
+	private boolean isPreValidatedMessage(Map<String, Object> headers) {
+		return (Boolean) headers.getOrDefault(HEADER_PRE_VALIDATED, Boolean.FALSE);
 	}
 
 }
