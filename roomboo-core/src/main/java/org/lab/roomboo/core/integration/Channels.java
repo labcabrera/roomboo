@@ -23,6 +23,9 @@ public interface Channels {
 	String UserTokenConfirmationInput = "user-token-confirmation-input";
 	String UserTokenConfirmationOutput = "user-token-confirmation-output";
 	String UserTokenConfirmationError = "user-token-confirmation-error";
+	
+	String UserNewTokenConfirmationInput = "user-new-token-confirmation-input";
+	String UserNewTokenConfirmationOutput = "user-new-token-confirmation-output";
 
 	/**
 	 * Canal que procesa las notificaciones del sistema.

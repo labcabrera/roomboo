@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.integration;
+package org.lab.roomboo.core.signup;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.lab.roomboo.core.integration.gateway.SignUpGateway;
@@ -37,6 +37,20 @@ public abstract class SignUpTest {
 			email = "lab.cabrera-" + RandomStringUtils.randomAlphabetic(6) + "@gmail.com";
 			if (!appUserRepository.findByEmail(email, companyId).isPresent()) {
 				return email;
+			}
+		}
+	}
+
+	public void awaitTaskTermination() {
+		long check = System.currentTimeMillis() + 1000000;
+		while (System.currentTimeMillis() < check) {
+			if (executor.getActiveCount() == 0) {
+				break;
+			}
+			try {
+				Thread.sleep(500);
+			}
+			catch (InterruptedException ignore) {
 			}
 		}
 	}

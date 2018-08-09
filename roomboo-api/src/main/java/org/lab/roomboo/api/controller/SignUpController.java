@@ -67,6 +67,14 @@ public class SignUpController {
 		}
 	}
 
+	@ApiOperation(value = "App user request for a new confirmation token",
+		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@GetMapping("/{userId}/token")
+	public ResponseEntity<AppUserResource> confirmByToken(@PathVariable String userId) {
+		AppUser user = signUpGateway.confirmationTokenRequest(userId);
+		return ResponseEntity.ok(new AppUserResource(user));
+	}
+
 	private String buildRedirectUri(AppUser user, String baseUrl) {
 		StringBuilder sb = new StringBuilder(baseUrl);
 		if (!confirmationRedirectUri.contains("?")) {

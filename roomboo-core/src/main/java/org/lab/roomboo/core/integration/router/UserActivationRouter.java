@@ -15,7 +15,10 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class UserActivationRouter extends AbstractMessageRouter {
 
 	@Qualifier(Channels.SignUpConfirmationAuto)
@@ -35,8 +38,10 @@ public class UserActivationRouter extends AbstractMessageRouter {
 		Company company = companyRepository.findById(user.getCompany().getId()).get();
 		switch (company.getSignUpActivationMode()) {
 		case AUTO:
+			log.debug("Routing to auto-confirmation channel");
 			return Arrays.asList(directConfirmationChannel);
 		case EMAIL:
+			log.debug("Routing to email confirmation channel");
 			return Arrays.asList(emailConfirmationChannel);
 		default:
 			throw new RoombooException("");

@@ -19,6 +19,10 @@ public interface SignUpGateway {
 		headers = { @GatewayHeader(name = PayloadValidatorHandler.HEADER_PRE_VALIDATED, value = "true") })
 	AppUser signUpPrevalidated(SignUpRequest request);
 
+	@Gateway(requestChannel = Channels.UserNewTokenConfirmationInput,
+		replyChannel = Channels.UserNewTokenConfirmationOutput)
+	AppUser confirmationTokenRequest(String userId);
+
 	@Gateway(requestChannel = Channels.UserTokenConfirmationInput, replyChannel = Channels.UserTokenConfirmationOutput)
 	AppUser tokenConfirmation(String token);
 

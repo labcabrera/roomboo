@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.integration;
+package org.lab.roomboo.core.signup;
 
 import java.util.Optional;
 
@@ -37,8 +37,7 @@ public class SignUpAutoconfirmationTest extends SignUpTest {
 
 		Assert.assertNotNull(response.getActivation());
 
-		executor.setAwaitTerminationSeconds(10);
-		executor.shutdown();
+		awaitTaskTermination();
 	}
 
 	@Configuration
