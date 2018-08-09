@@ -8,10 +8,7 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 
 @Configuration
 @ComponentScan
-
-// @EnableIntegration
 @IntegrationComponentScan
-
 @Import(RoomboDomainConfig.class)
 public class RoombooCoreConfig {
 

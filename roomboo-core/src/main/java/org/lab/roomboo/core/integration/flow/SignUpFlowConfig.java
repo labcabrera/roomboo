@@ -10,7 +10,7 @@ import org.lab.roomboo.core.integration.transformer.EmailConfirmationTransformer
 import org.lab.roomboo.core.integration.transformer.UserActivationAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterTransformer;
-import org.lab.roomboo.core.integration.transformer.ValidationFilter;
+import org.lab.roomboo.core.integration.transformer.PayloadValidatorHandler;
 import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ import org.springframework.integration.handler.LoggingHandler.Level;
 public class SignUpFlowConfig {
 
 	@Autowired
-	private ValidationFilter validationFilter;
+	private PayloadValidatorHandler validationHandler;
 
 	@Autowired
 	private UserRegisterAlertTransformer alertSignUpTransformer;
@@ -57,7 +57,7 @@ public class SignUpFlowConfig {
 		return IntegrationFlows
 			.from(Channels.SignUpInput)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received sign-up message: " + m.getPayload())
-			.filter(validationFilter)
+			.filter(validationHandler)
 			.transform(signUpUserTransformer)
 			.handle(AppUser.class, (request, headers) -> mongoHandler.save(request))
 			.publishSubscribeChannel(c -> c.applySequence(false)

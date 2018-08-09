@@ -40,11 +40,14 @@ app:
         redirect-uri: https://www.google.com/?q=userCreatedOk
     security:
       unsecured:
-        paths: '/swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**,/v1/users/accept/**'
+        paths: '/swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/v1/booking/accept/**,/v1/sign-up/accept/**'
     contact:
       email: support@roomboo.org
     initialization:
       force: false
+    scheduler:
+      cron:
+        token-cleanup: '0 0 3 * * *'
 
 ---
 

@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.scheduler;
+package org.lab.roomboo.core.integration.handler;
 
 import java.time.LocalDateTime;
 
@@ -8,22 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class RemoveExpiredTokensExecutor {
-
-	private static final String EVERY_DAY_3_AM = "0 0 3 * * *";
+public class TokenCleanerHandler {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-	@Scheduled(cron = EVERY_DAY_3_AM)
-	public void test() {
+	public void execute() {
 		log.info("Starting scheduled task");
 		LocalDateTime now = LocalDateTime.now();
 		Query query = new Query();
