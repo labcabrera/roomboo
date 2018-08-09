@@ -1,46 +1,68 @@
 [
-  {
-    "id": "milankundera",
-    "name": "Milan Kundera",
-    "group": {
-      "id": "roomGroup01"
-    },
-    "features": {
-      "size": 15,
-      "video": "false"
-    }
-  },
-    {
-    "id": "franzkafka",
-    "name": "Kranz Kafka",
-    "group": {
-      "id": "roomGroup01"
-    },
-    "features": {
-      "size": 30,
-      "video": "true"
-    }
-  },
-  {
-    "id": "jamesjoyce",
-    "name": "James Joyce",
-    "group": {
-      "id": "roomGroup01"
-    },
-    "features": {
-      "size": 20,
-      "video": "false"
-    }
-  },
-  {
-    "id": "fiodordostoyevski",
-    "name": "Fiódor Dostoyevski",
-    "group": {
-      "id": "roomGroup03"
-    },
-    "features": {
-      "size": 50,
-      "video": "true"
-    }
-   }
+	{
+		"id": "milankundera",
+		"name": "Milan Kundera",
+		"group": {
+			"id": "roomGroup01"
+		},
+		"features": {
+			"size": 15,
+			"video": "false"
+		}
+	},
+	{
+		"id": "franzkafka",
+		"name": "Kranz Kafka",
+		"group": {
+			"id": "roomGroup01"
+		},
+		"features": {
+			"size": 30,
+			"video": "true"
+		}
+	},
+	{
+		"id": "jamesjoyce",
+		"name": "James Joyce",
+		"group": {
+			"id": "roomGroup01"
+		},
+		"features": {
+			"size": 20,
+			"video": "false"
+		}
+	},
+	{
+		"id": "nietzsche",
+		"name": "Friedrich Nietzsche",
+		"group": {
+			"id": "roomGroup02"
+		},
+		"features": {
+			"size": 20,
+			"video": "false"
+		}
+	},
+	{
+		"id": "schopenhauer",
+		"name": "Arthur Schopenhauer",
+		"group": {
+			"id": "roomGroup02"
+		},
+		"features": {
+			"size": 20,
+			"video": "false"
+		}
+	},
+	{
+		"id": "fiodordostoyevski",
+		"name": "Fiódor Dostoyevski",
+		"group": {
+			"id": "roomGroup03"
+		},
+		"features": {
+			"size": 50,
+			"video": "true"
+		}
+	}
 ]

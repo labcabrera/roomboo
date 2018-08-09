@@ -6,7 +6,7 @@
 		"email": "lab.cabrera@gmail.com",
 		"activation": "2010-01-01T00:00:00.000",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -16,7 +16,7 @@
 		"email": "alexandracfa@gmail.com",
 		"activation": "2010-01-01T00:00:00.000",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -26,7 +26,7 @@
 		"email": "john.doe@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -37,7 +37,7 @@
 		"activation": "2010-01-01T00:00:00.000",
 		"expiration": "2012-01-01T00:00:00.000",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -48,18 +48,18 @@
 		"activation": "2010-01-01T00:00:00.000",
 		"locked": "2012-01-01T00:00:00.000",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
-		"id": "company02user",
-		"name": "Demo",
-		"lastName": "Test Company 2",
+		"id": "blueCompanyUser",
+		"name": "Demo User",
+		"lastName": "Blue Company",
 		"email": "locked@roombo.org",
 		"activation": "2010-01-01T00:00:00.000",
 		"locked": "2012-01-01T00:00:00.000",
 		"company": {
-			"id": "roombooCompanyDemo02"
+			"id": "blueCompany"
 		}
 	}
 ]

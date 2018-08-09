@@ -8,7 +8,7 @@
 			"ADMIN"
 		],
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -20,7 +20,7 @@
 			"ADMIN"
 		],
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -33,7 +33,7 @@
 		],
 		"companies": [
 			{
-				"id": "roombooCompanyDemo01"
+				"id": "redCompany"
 			}
 		]
 	},
@@ -46,7 +46,7 @@
 			"OPERATOR"
 		],
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -58,7 +58,7 @@
 			"OPERATOR"
 		],
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
@@ -71,7 +71,7 @@
 			"OPERATOR"
 		],
 		"company": {
-			"id": "roombooCompanyDemo02"
+			"id": "blueCompany"
 		}
 	}
 ]

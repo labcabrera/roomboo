@@ -1,23 +1,23 @@
 [
 	{
 		"id": "roomGroup01",
-		"name": "Main room group for Demo Company 1",
+		"name": "Main room group for Red Demo Company",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
 		"id": "roomGroup02",
-		"name": "Secondary room group for Demo Company 1",
+		"name": "Secondary room group Red Demo Company",
 		"company": {
-			"id": "roombooCompanyDemo01"
+			"id": "redCompany"
 		}
 	},
 	{
 		"id": "roomGroup03",
-		"name": "Room group for Demo Company 2",
+		"name": "Blue company room group",
 		"company": {
-			"id": "roombooCompanyDemo02"
+			"id": "blueCompany"
 		}
 	}
 ]
