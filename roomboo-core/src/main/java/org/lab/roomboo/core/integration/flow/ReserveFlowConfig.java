@@ -2,9 +2,12 @@ package org.lab.roomboo.core.integration.flow;
 
 import org.lab.roomboo.core.integration.Channels;
 import org.lab.roomboo.core.integration.handler.PayloadValidatorHandler;
+import org.lab.roomboo.core.integration.handler.ReserveTokenConfirmationHandler;
+import org.lab.roomboo.core.integration.handler.ReserveTokenGeneratorHandler;
 import org.lab.roomboo.core.integration.router.ReserveConfirmationRouter;
 import org.lab.roomboo.core.integration.transformer.BookingRequestTransformer;
-import org.lab.roomboo.domain.model.AppUser;
+import org.lab.roomboo.core.integration.transformer.ReserveConfirmationEmailTransformer;
+import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +29,15 @@ public class ReserveFlowConfig {
 	private ReserveConfirmationRouter reserveConfirmationRouter;
 
 	@Autowired
+	private ReserveTokenGeneratorHandler tokenConfirmationGeneratorHandler;
+
+	@Autowired
+	private ReserveTokenConfirmationHandler tokenConfirmationHandler;
+
+	@Autowired
+	private ReserveConfirmationEmailTransformer emailTransformer;
+
+	@Autowired
 	private MongoTemplate mongoTemplate;
 
 	@Bean
@@ -35,7 +47,7 @@ public class ReserveFlowConfig {
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received sign-up message: " + m.getPayload())
 			.handle(payloadValidator)
 			.transform(bookingRequestTransformer)
-			.handle(AppUser.class, (request, headers) -> {
+			.handle(Reserve.class, (request, headers) -> {
 				mongoTemplate.save(request);
 				return request;
 			})
@@ -50,9 +62,22 @@ public class ReserveFlowConfig {
 	} //@formatter:on
 
 	@Bean
+	IntegrationFlow flowReserveConfirmationEmail() { //@formatter:off
+		return IntegrationFlows
+			.from(Channels.ReserveConfirmationEmail)
+			.log(Level.INFO, ReserveFlowConfig.class.getName(), m -> "Received email reserve confirmation message: " + m.getPayload())
+			.handle(tokenConfirmationGeneratorHandler)
+			.transform(emailTransformer)
+			.channel(Channels.EmailOutput)
+			.get();
+	} //@formatter:on
+
+	@Bean
 	IntegrationFlow flowBookingConfirmation() { //@formatter:off
 		return IntegrationFlows
 			.from(Channels.BookingTokenConfirmationInput)
+			.log(Level.INFO, ReserveFlowConfig.class.getName(), m -> "Received reserve token confirmation message: " + m.getPayload())
+			.handle(tokenConfirmationHandler)
 			.channel(Channels.BookingTokenConfirmationOutput)
 			.get();
 	} //@formatter:on

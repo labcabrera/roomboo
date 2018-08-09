@@ -49,6 +49,10 @@ public class AppUser {
 	@NotNull
 	@DBRef
 	private Company company;
+	
+	public AppUser(String id) {
+		this.id = id;
+	}
 
 	public Object getCompleteName() {
 		return name + " " + lastName;

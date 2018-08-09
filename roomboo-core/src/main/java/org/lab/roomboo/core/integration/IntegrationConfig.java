@@ -40,6 +40,16 @@ public class IntegrationConfig {
 		return MessageChannels.direct(Channels.SignUpConfirmationAuto).get();
 	}
 
+	@Bean(name = Channels.ReserveConfirmationAuto)
+	MessageChannel channelReserveConfirmationAuto() {
+		return MessageChannels.direct().get();
+	}
+
+	@Bean(name = Channels.ReserveConfirmationEmail)
+	MessageChannel channelReserveConfirmationEmail() {
+		return MessageChannels.direct().get();
+	}
+
 	@Bean(name = Channels.AlertInput)
 	MessageChannel channelSystemNotification() {
 		return MessageChannels.publishSubscribe(executor()).get();

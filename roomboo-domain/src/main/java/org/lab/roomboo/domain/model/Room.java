@@ -32,4 +32,8 @@ public class Room {
 
 	private LocalDateTime locked;
 
+	public Room(String id) {
+		this.id = id;
+	}
+
 }

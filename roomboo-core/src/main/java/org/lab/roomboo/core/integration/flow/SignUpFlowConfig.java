@@ -7,7 +7,7 @@ import org.lab.roomboo.core.integration.handler.PayloadValidatorHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenConfirmationHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenGeneratorHandler;
 import org.lab.roomboo.core.integration.router.UserActivationRouter;
-import org.lab.roomboo.core.integration.transformer.EmailConfirmationTransformer;
+import org.lab.roomboo.core.integration.transformer.UserActivationEmailTransformer;
 import org.lab.roomboo.core.integration.transformer.UserActivationAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterTransformer;
@@ -39,7 +39,7 @@ public class SignUpFlowConfig {
 	private UserTokenGeneratorHandler userActivationTokenHandler;
 
 	@Autowired
-	private EmailConfirmationTransformer emailConfirmationTransformer;
+	private UserActivationEmailTransformer emailConfirmationTransformer;
 
 	@Autowired
 	private UserTokenConfirmationHandler userTokenConfirmationHandler;

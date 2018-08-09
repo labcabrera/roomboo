@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.signup;
+package org.lab.roomboo.core.integration.signup;
 
 import java.util.Optional;
 

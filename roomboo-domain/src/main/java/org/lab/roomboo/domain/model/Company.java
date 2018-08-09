@@ -24,15 +24,12 @@ import lombok.ToString;
 @Builder
 public class Company {
 
-	/**
-	 * Establishes how to process the activation of new users.
-	 * @author lab.cabrera@gmail.com
-	 */
 	public enum SignUpActivationMode {
-	/** Registered users are automatically approved. */
-	AUTO,
-	/** New user confirmation by mail is required for new users. */
-	EMAIL
+		AUTO, EMAIL;
+	};
+
+	public enum RegisterConfirmationMode {
+		AUTO, EMAIL, CODE;
 	}
 
 	private String id;
@@ -45,5 +42,8 @@ public class Company {
 
 	@NotNull
 	private SignUpActivationMode signUpActivationMode;
+
+	@NotNull
+	private RegisterConfirmationMode registerConfirmationMode;
 
 }

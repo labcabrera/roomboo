@@ -3,12 +3,21 @@
 		"id": "redCompany",
 		"name": "Red Demo Company",
 		"description": "Roombo Company example",
-		"signUpActivationMode": "EMAIL"
+		"signUpActivationMode": "EMAIL",
+		"registerConfirmationMode": "EMAIL"
 	},
 	{
 		"id": "blueCompany",
 		"name": "Blue Demo Company",
 		"description": "Roombo Company example",
-		"signUpActivationMode": "AUTO"
+		"signUpActivationMode": "AUTO",
+		"registerConfirmationMode": "CODE"
+	},
+	{
+		"id": "orangeCompany",
+		"name": "Orange Demo Company",
+		"description": "Roombo Company example",
+		"signUpActivationMode": "AUTO",
+		"registerConfirmationMode": "AUTO"
 	}
 ]

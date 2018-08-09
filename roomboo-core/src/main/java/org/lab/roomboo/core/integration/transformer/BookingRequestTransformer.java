@@ -20,8 +20,8 @@ public class BookingRequestTransformer implements GenericTransformer<BookingRequ
 	@Override
 	public Reserve transform(BookingRequest request) {
 		Reserve reserve = new Reserve();
-		reserve.setUser(AppUser.builder().id(request.getUserId()).build());
-		reserve.setRoom(Room.builder().id(request.getRoomId()).build());
+		reserve.setUser(new AppUser(request.getUserId()));
+		reserve.setRoom(new Room(request.getRoomId()));
 		reserve.setFrom(request.getFrom());
 		reserve.setTo(request.getTo());
 		reserve.setCreated(LocalDateTime.now());

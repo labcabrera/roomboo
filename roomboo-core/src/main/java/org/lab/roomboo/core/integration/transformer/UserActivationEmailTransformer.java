@@ -14,7 +14,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Component
-public class EmailConfirmationTransformer implements GenericTransformer<AppUser, MailMessage> {
+public class UserActivationEmailTransformer implements GenericTransformer<AppUser, MailMessage> {
 
 	@Autowired
 	private UserConfirmationTokenRepository repository;

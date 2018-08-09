@@ -6,7 +6,7 @@
 </head>
 <body>
 	<p>
-		Hola <span th:text="${username}">.</span>
+		Hola <span th:text="${user.getCompleteName()}">.</span>
 	</p>
 	<p>
 		Verification code: <span th:text="${reserve.code}"></span>
@@ -20,14 +20,12 @@
 	<p>
 		Fecha de fin: <span th:text="${reserve.to}"></span>
 	</p>
-	<div th:if="${confirmationToken != null}">
 	<p>
-		Puede confirmar la reserva pulsando siguiente enlace: <a th:href="${confirmationToken.confirmationUri}">link</a>.
+		Puede confirmar la reserva pulsando siguiente enlace: <a th:href="${token.confirmationUri}">link</a>.
 	</p>
 	<p>
-		También puede cancelar la reserva pulsando el link de cancelación: <a th:href="${confirmationToken.cancelationUri}">link</a>.
+		También puede cancelar la reserva pulsando el link de cancelación: <a th:href="${token.cancelationUri}">link</a>.
 	</p>
-	</div>
 	<p>
 		Si usted no ha realizado la solicitud de reserva de sala puede
 		comunicarse con <a href="mailto:support@roomboo.org?Subject=User%20report" target="_top">support@roomboo.org</a> para reportar
