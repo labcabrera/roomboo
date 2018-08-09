@@ -19,8 +19,14 @@ public class RoomSearchOptions {
 
 	private Integer minSize;
 
-	private Boolean videoRequired;
+	private Boolean videoCallRequired;
 
-	private Boolean includeLocked;
+	private Boolean conferenceCallRequired;
+
+	private Boolean boardRequired;
+
+	private Boolean audioRequired;
+
+	private Boolean projectorRequired;
 
 }

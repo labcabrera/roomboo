@@ -36,8 +36,10 @@ public class BasicQueryDsl {
 		if (!map.containsKey(key)) {
 			return defaultValue;
 		}
-		if (Boolean.class.equals(type)) {
+		else if (Boolean.class.equals(type)) {
 			return (T) Boolean.valueOf(map.get(key));
+		} else if(Integer.class.equals(type)) {
+			return (T) Integer.valueOf(map.get(key));
 		}
 		throw new NotImplementedException("Not implemented conversion");
 	}

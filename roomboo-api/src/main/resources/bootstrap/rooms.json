@@ -7,7 +7,11 @@
 		},
 		"features": {
 			"size": 15,
-			"video": "false"
+			"videoCall": "false",
+			"conferenceCall": "false",
+			"board": "false",
+			"audio": "false",
+			"projector": "false"
 		}
 	},
 	{
@@ -17,8 +21,12 @@
 			"id": "roomGroup01"
 		},
 		"features": {
-			"size": 30,
-			"video": "true"
+			"size": 50,
+			"videoCall": "false",
+			"conferenceCall": "true",
+			"board": "false",
+			"audio": "false",
+			"projector": "false"
 		}
 	},
 	{
@@ -28,8 +36,12 @@
 			"id": "roomGroup01"
 		},
 		"features": {
-			"size": 20,
-			"video": "false"
+			"size": 75,
+			"videoCall": "true",
+			"conferenceCall": "true",
+			"board": "true",
+			"audio": "true",
+			"projector": "true"
 		}
 	},
 	{
@@ -40,7 +52,11 @@
 		},
 		"features": {
 			"size": 20,
-			"video": "false"
+			"videoCall": "false",
+			"conferenceCall": "false",
+			"board": "false",
+			"audio": "false",
+			"projector": "false"
 		}
 	},
 	{
@@ -51,7 +67,11 @@
 		},
 		"features": {
 			"size": 20,
-			"video": "false"
+			"videoCall": "false",
+			"conferenceCall": "false",
+			"board": "false",
+			"audio": "false",
+			"projector": "false"
 		}
 	},
 	{
@@ -62,7 +82,11 @@
 		},
 		"features": {
 			"size": 50,
-			"video": "true"
+			"videoCall": "false",
+			"conferenceCall": "false",
+			"board": "false",
+			"audio": "false",
+			"projector": "false"
 		}
 	}
 ]

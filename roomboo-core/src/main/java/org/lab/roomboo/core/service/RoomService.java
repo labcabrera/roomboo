@@ -25,11 +25,23 @@ public class RoomService {
 		if (StringUtils.isNotBlank(options.getGroupId())) {
 			query.addCriteria(Criteria.where("group.id").is(options.getGroupId()));
 		}
-		if (options.getMinSize() != null) {
+		if (options.getMinSize() != null && options.getMinSize() > 0) {
 			query.addCriteria(Criteria.where("features.size").gte(options.getMinSize()));
 		}
-		if (options.getVideoRequired() != null && options.getVideoRequired()) {
-			query.addCriteria(Criteria.where("features.video").is(Boolean.TRUE));
+		if (options.getVideoCallRequired() != null && options.getVideoCallRequired()) {
+			query.addCriteria(Criteria.where("features.videoCall").is(Boolean.TRUE));
+		}
+		if (options.getConferenceCallRequired() != null && options.getConferenceCallRequired()) {
+			query.addCriteria(Criteria.where("features.conferenceCall").is(Boolean.TRUE));
+		}
+		if (options.getBoardRequired() != null && options.getBoardRequired()) {
+			query.addCriteria(Criteria.where("features.board").is(Boolean.TRUE));
+		}
+		if (options.getAudioRequired() != null && options.getAudioRequired()) {
+			query.addCriteria(Criteria.where("features.audio").is(Boolean.TRUE));
+		}
+		if (options.getProjectorRequired() != null && options.getProjectorRequired()) {
+			query.addCriteria(Criteria.where("features.projector").is(Boolean.TRUE));
 		}
 		List<Room> list = mongoTemplate.find(query, Room.class);
 		return PageableExecutionUtils.getPage(list, pageable, () -> mongoTemplate.count(query, Room.class));

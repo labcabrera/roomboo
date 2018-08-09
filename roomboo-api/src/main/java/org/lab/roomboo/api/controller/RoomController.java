@@ -64,13 +64,25 @@ public class RoomController {
 	public ResponseEntity<PagedResources<RoomResource>> find( // @formatter:off
 			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "size", defaultValue = "10") Integer size
-			) { // @formatter:on
+			@RequestParam(value = "size", defaultValue = "10") Integer size) { // @formatter:on
+
 		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
-		RoomSearchOptions options = RoomSearchOptions.builder().groupId(queryDsl.get("groupId")).build();
+
+		RoomSearchOptions options = RoomSearchOptions //@formatter:off
+			.builder()
+			.groupId(queryDsl.get("groupId"))
+			.minSize(queryDsl.get("minSize", Integer.class, 0))
+			.videoCallRequired(queryDsl.get("videoCall", Boolean.class, Boolean.FALSE))
+			.conferenceCallRequired(queryDsl.get("conferenceCall", Boolean.class, Boolean.FALSE))
+			.audioRequired(queryDsl.get("audio", Boolean.class, Boolean.FALSE))
+			.boardRequired(queryDsl.get("board", Boolean.class, Boolean.FALSE))
+			.projectorRequired(queryDsl.get("projector", Boolean.class, Boolean.FALSE))
+			.build(); //@formater:on
+
 		Page<Room> currentPage = roomService.findPageable(options, pageable);
+
 		PagedResources<RoomResource> pr = assembler.toResource(currentPage, roomResourceAssembler);
 		pr.add(new Link(fromController(RoomGroupController.class).build().toString(), "roomGroups"));
 		return ResponseEntity.ok(pr);
