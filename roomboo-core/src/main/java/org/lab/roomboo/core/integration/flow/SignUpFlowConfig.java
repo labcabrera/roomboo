@@ -3,11 +3,11 @@ package org.lab.roomboo.core.integration.flow;
 import java.time.LocalDateTime;
 
 import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.handler.PayloadValidatorHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenConfirmationHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenGeneratorHandler;
 import org.lab.roomboo.core.integration.router.UserActivationRouter;
 import org.lab.roomboo.core.integration.transformer.EmailConfirmationTransformer;
-import org.lab.roomboo.core.integration.transformer.PayloadValidatorHandler;
 import org.lab.roomboo.core.integration.transformer.UserActivationAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterTransformer;
@@ -70,15 +70,6 @@ public class SignUpFlowConfig {
 			.channel(Channels.SignUpOutput)
 			.get();
 	} //@formatter:on
-
-	// @Bean
-//	IntegrationFlow flowSignUpError() { //@formatter:off
-//		return IntegrationFlows
-//			.from(Channels.SignUpError)
-//			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received sign-up error message: " + m.getPayload())
-//			.bridge()
-//			.get();
-//	} //@formatter:on
 
 	@Bean
 	IntegrationFlow flowSignUpConfirmationAuto() { //@formatter:off

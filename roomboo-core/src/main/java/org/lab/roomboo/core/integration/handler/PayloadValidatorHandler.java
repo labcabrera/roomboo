@@ -1,4 +1,4 @@
-package org.lab.roomboo.core.integration.transformer;
+package org.lab.roomboo.core.integration.handler;
 
 import java.util.Map;
 

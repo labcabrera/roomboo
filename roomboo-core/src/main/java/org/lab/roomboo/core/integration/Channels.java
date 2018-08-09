@@ -23,7 +23,7 @@ public interface Channels {
 	String UserTokenConfirmationInput = "user-token-confirmation-input";
 	String UserTokenConfirmationOutput = "user-token-confirmation-output";
 	String UserTokenConfirmationError = "user-token-confirmation-error";
-	
+
 	String UserNewTokenConfirmationInput = "user-new-token-confirmation-input";
 	String UserNewTokenConfirmationOutput = "user-new-token-confirmation-output";
 
@@ -36,5 +36,24 @@ public interface Channels {
 	 * Canal encargado del envio de correo.
 	 */
 	String EmailOutput = "email-output";
+
+	/**
+	 * Canal que procesa las solicitudes de reserva.
+	 */
+	String BookingInput = "booking-input";
+
+	/**
+	 * Canal donde se recuperan los mensajes de respuesta de las reservas.
+	 */
+	String BookingOutput = "booking-output";
+
+	String BookingTokenConfirmationInput = "booking-token-confirmation-input";
+	String BookingTokenConfirmationOutput = "booking-token-confirmation-output";
+	String BookingTokenCancelationInput = "reserve-confirmation-input";
+	String BookingTokenCancelationOutput = "reserve-confirmation-output";
+
+	String ReserveConfirmationAuto = "reserve-confirmation-auto";
+	String ReserveConfirmationEmail = "reserve-confirmation-email";
+
 
 }

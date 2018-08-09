@@ -8,8 +8,8 @@ import javax.validation.Valid;
 
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.ReserveResource;
+import org.lab.roomboo.core.integration.gateway.BookingGateway;
 import org.lab.roomboo.core.model.BookingRequest;
-import org.lab.roomboo.core.service.BookingService;
 import org.lab.roomboo.domain.exception.ReserveConfirmationException;
 import org.lab.roomboo.domain.model.Reserve;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BookingController {
 
 	@Autowired
-	private BookingService bookingService;
+	private BookingGateway bookingGateway;
 
 	@Value("${app.env.token.reserve.redirect-uri:}")
 	private String confirmationRedirectUri;
@@ -45,7 +45,7 @@ public class BookingController {
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<ReserveResource> processRequest(@RequestBody @Valid BookingRequest request) {
-		Reserve reserve = bookingService.processBookingRequest(request);
+		Reserve reserve = bookingGateway.processBookingRequest(request);
 		URI uri = MvcUriComponentsBuilder.fromController(ReserveController.class).path("/{id}")
 			.buildAndExpand(reserve.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ReserveResource(reserve));
@@ -55,15 +55,18 @@ public class BookingController {
 	@PostMapping("accept/{reserveId}/{code}")
 	public ResponseEntity<ReserveResource> processCodeConfirmation(@PathVariable("reserveId") String reserveId,
 		@PathVariable("code") String code) {
-		Reserve reserve = bookingService.processCodeReserveConfirmationByCode(reserveId, code);
-		return ResponseEntity.ok(new ReserveResource(reserve));
+		// TODO
+		throw new RuntimeException("Not implemented");
+		//
+		// Reserve reserve = bookingService.processCodeReserveConfirmationByCode(reserveId, code);
+		// return ResponseEntity.ok(new ReserveResource(reserve));
 	}
 
 	@ApiOperation(value = "Token confirmation")
 	@GetMapping("/accept/{token}")
 	public void processTokenConfirmation(@PathVariable String token, HttpServletResponse response) {
 		try {
-			Reserve reserve = bookingService.processReserveConfirmationByToken(token);
+			Reserve reserve = bookingGateway.processReserveConfirmationByToken(token);
 			String redirectUri = buildRedirectUri(reserve, confirmationRedirectUri);
 			log.debug("Confirmation redirect: {}", redirectUri);
 			response.sendRedirect(redirectUri);
@@ -81,7 +84,7 @@ public class BookingController {
 	@GetMapping("/decline/{token}")
 	public void processTokenCancelation(@PathVariable String token, HttpServletResponse response) {
 		try {
-			Reserve reserve = bookingService.processReserveCancelationByToken(token);
+			Reserve reserve = bookingGateway.processReserveCancelationByToken(token);
 			String redirectUri = buildRedirectUri(reserve, cancelationRedirectUri);
 			log.debug("Cancelation redirect: {}", redirectUri);
 			response.sendRedirect(redirectUri);
