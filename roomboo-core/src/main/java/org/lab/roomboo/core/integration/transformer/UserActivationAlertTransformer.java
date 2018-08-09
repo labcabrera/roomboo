@@ -1,0 +1,26 @@
+package org.lab.roomboo.core.integration.transformer;
+
+import java.time.LocalDateTime;
+
+import org.lab.roomboo.domain.model.Alert;
+import org.lab.roomboo.domain.model.Alert.AlertType;
+import org.lab.roomboo.domain.model.AppUser;
+import org.springframework.integration.transformer.GenericTransformer;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserActivationAlertTransformer implements GenericTransformer<AppUser, Alert> {
+
+	private static final String TEMPLATE = "User: %s. Email: %s";
+
+	@Override
+	public Alert transform(AppUser source) {
+		return Alert.builder() //@formatter:off
+			.created(LocalDateTime.now())
+			.alertType(AlertType.INFO)
+			.subject("User activation")
+			.message(String.format(TEMPLATE, source.getCompleteName(), source.getEmail()))
+			.build(); //@formatter:on
+	}
+
+}

@@ -46,11 +46,19 @@ public class SignUpEmailConfirmationTest {
 		Assume.assumeTrue(company.isPresent());
 		Assert.assertEquals(Company.SignUpActivationMode.EMAIL, company.get().getSignUpActivationMode());
 
-		SignUpRequest request = SignUpRequest.builder().email("lab.cabrera@gmail.com").name("Luis").lastName("Cabrera")
-			.companyId(company.get().getId()).build();
+		SignUpRequest request = SignUpRequest.builder() //@formatter:off
+			.email("lab.cabrera@gmail.com")
+			.name("Luis")
+			.lastName("Cabrera")
+			.companyId(company.get().getId())
+			.build(); //@formatter:on
 
 		AppUser user = gateway.signUp(request);
 		Assert.assertNull(user.getActivation());
+
+		// NOTE: wait until token is generated asynchronously
+		executor.setAwaitTerminationSeconds(10);
+		executor.shutdown();
 
 		UserConfirmationToken token = tokenRepository.findByUserId(user.getId()).get();
 
@@ -59,6 +67,8 @@ public class SignUpEmailConfirmationTest {
 
 		executor.setAwaitTerminationSeconds(10);
 		executor.shutdown();
+
+		Assert.assertFalse(tokenRepository.findByUserId(user.getId()).isPresent());
 	}
 
 	@Configuration

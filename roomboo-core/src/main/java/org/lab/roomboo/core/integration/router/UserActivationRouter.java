@@ -3,7 +3,7 @@ package org.lab.roomboo.core.integration.router;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
+import org.lab.roomboo.core.integration.Channels;
 import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Company;

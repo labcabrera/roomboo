@@ -1,6 +1,6 @@
 package org.lab.roomboo.core.integration;
 
-import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.channel.MessageChannels;
@@ -11,6 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class IntegrationConfig {
 
 	@Bean
+	@ConditionalOnMissingBean
 	ThreadPoolTaskExecutor executor() {
 		ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
 		pool.setCorePoolSize(10);

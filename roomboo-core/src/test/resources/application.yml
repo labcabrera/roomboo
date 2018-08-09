@@ -2,3 +2,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://${ENV_MONGO_HOST:localhost}/roomboo
+logging:
+  level:
+    root: WARN
+    org.lab.roomboo: DEBUG

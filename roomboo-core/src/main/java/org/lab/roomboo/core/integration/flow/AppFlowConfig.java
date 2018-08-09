@@ -1,6 +1,6 @@
 package org.lab.roomboo.core.integration.flow;
 
-import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
+import org.lab.roomboo.core.integration.Channels;
 import org.lab.roomboo.core.integration.handler.EmailSenderHandler;
 import org.lab.roomboo.core.integration.handler.MongoHandler;
 import org.lab.roomboo.domain.model.Alert;

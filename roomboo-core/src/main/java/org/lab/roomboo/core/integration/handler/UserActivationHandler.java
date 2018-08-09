@@ -8,7 +8,7 @@ import org.springframework.integration.handler.GenericHandler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppUserActivationHandler implements GenericHandler<AppUser> {
+public class UserActivationHandler implements GenericHandler<AppUser> {
 
 	@Override
 	public Object handle(AppUser payload, Map<String, Object> headers) {

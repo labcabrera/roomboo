@@ -1,14 +1,16 @@
 package org.lab.roomboo.core.integration.flow;
 
-import org.lab.roomboo.core.integration.RoombooIntegration.Channels;
-import org.lab.roomboo.core.integration.handler.AppUserActivationHandler;
+import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.handler.UserActivationHandler;
 import org.lab.roomboo.core.integration.handler.MongoHandler;
-import org.lab.roomboo.core.integration.handler.UserTokenGeneratorHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenConfirmationHandler;
+import org.lab.roomboo.core.integration.handler.UserTokenGeneratorHandler;
 import org.lab.roomboo.core.integration.router.UserActivationRouter;
-import org.lab.roomboo.core.integration.transformer.AlertSignUpTransformer;
 import org.lab.roomboo.core.integration.transformer.EmailConfirmationTransformer;
-import org.lab.roomboo.core.integration.transformer.SignUpAppUserTransformer;
+import org.lab.roomboo.core.integration.transformer.UserActivationAlertTransformer;
+import org.lab.roomboo.core.integration.transformer.UserRegisterAlertTransformer;
+import org.lab.roomboo.core.integration.transformer.UserRegisterTransformer;
+import org.lab.roomboo.core.integration.transformer.ValidationFilter;
 import org.lab.roomboo.domain.model.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,10 +23,13 @@ import org.springframework.integration.handler.LoggingHandler.Level;
 public class SignUpFlowConfig {
 
 	@Autowired
-	private AlertSignUpTransformer alertSignUpTransformer;
+	private ValidationFilter validationFilter;
 
 	@Autowired
-	private SignUpAppUserTransformer signUpUserTransformer;
+	private UserRegisterAlertTransformer alertSignUpTransformer;
+
+	@Autowired
+	private UserRegisterTransformer signUpUserTransformer;
 
 	@Autowired
 	private MongoHandler mongoHandler;
@@ -33,7 +38,7 @@ public class SignUpFlowConfig {
 	private UserActivationRouter signUpConfimationRouter;
 
 	@Autowired
-	private AppUserActivationHandler userActivationHandler;
+	private UserActivationHandler userActivationHandler;
 
 	@Autowired
 	private UserTokenGeneratorHandler userActivationTokenHandler;
@@ -44,11 +49,15 @@ public class SignUpFlowConfig {
 	@Autowired
 	private UserTokenConfirmationHandler userTokenConfirmationHandler;
 
+	@Autowired
+	private UserActivationAlertTransformer userActivationAlertTransformer;
+
 	@Bean
 	IntegrationFlow userSignUpFlow() { //@formatter:off
 		return IntegrationFlows
 			.from(Channels.SignUpInput)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received sign-up message: " + m.getPayload())
+			.filter(validationFilter)
 			.transform(signUpUserTransformer)
 			.handle(AppUser.class, (request, headers) -> mongoHandler.save(request))
 			.publishSubscribeChannel(c -> c.applySequence(false)
@@ -97,8 +106,11 @@ public class SignUpFlowConfig {
 			.from(Channels.UserTokenConfirmationInput)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received user token confirmation: " + m.getPayload())
 			.handle(userTokenConfirmationHandler)
-			//TODO alert
 			.channel(Channels.UserTokenConfirmationOutput)
+			.publishSubscribeChannel(c -> c.applySequence(false)
+				.subscribe(f -> f
+					.transform(userActivationAlertTransformer)
+					.channel(Channels.AlertInput)))
 			.get();
 	} //@formatter:on
 

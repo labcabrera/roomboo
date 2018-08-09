@@ -9,7 +9,7 @@ import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AlertSignUpTransformer implements GenericTransformer<AppUser, Alert> {
+public class UserRegisterAlertTransformer implements GenericTransformer<AppUser, Alert> {
 
 	private static final String TEMPLATE = "User: %s. Email: %s";
 

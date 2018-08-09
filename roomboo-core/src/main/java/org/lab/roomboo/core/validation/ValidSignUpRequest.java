@@ -11,11 +11,11 @@ import javax.validation.Payload;
 
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = AppUserRegisterRequestValidator.class)
+@Constraint(validatedBy = SignUpRequestValidator.class)
 @Documented
-public @interface ValidAppUserRegisterRequest {
+public @interface ValidSignUpRequest {
 
-	String message() default "Invalid user register";
+	String message() default "Invalid register data";
 
 	Class<?>[] groups() default {};
 

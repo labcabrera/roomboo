@@ -1,6 +1,6 @@
 package org.lab.roomboo.core.model;
 
-import org.lab.roomboo.core.validation.ValidAppUserRegisterRequest;
+import org.lab.roomboo.core.validation.ValidSignUpRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@ValidAppUserRegisterRequest
+@ValidSignUpRequest
 @Getter
 @Setter
 @ToString
