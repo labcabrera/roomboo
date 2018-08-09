@@ -43,7 +43,7 @@ public class SignUpController {
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<AppUserResource> save(@Valid @RequestBody SignUpRequest request) {
-		AppUser inserted = signUpGateway.signUp(request);
+		AppUser inserted = signUpGateway.signUpPrevalidated(request);
 		URI uri = fromController(getClass()).path("/{id}").buildAndExpand(inserted.getId()).toUri();
 		return ResponseEntity.created(uri).body(new AppUserResource(inserted));
 	}
