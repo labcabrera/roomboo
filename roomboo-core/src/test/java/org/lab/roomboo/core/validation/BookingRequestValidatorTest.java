@@ -149,25 +149,51 @@ public class BookingRequestValidatorTest {
 		@Bean
 		RoomRepository roomRepository() {
 			RoomRepository mock = Mockito.mock(RoomRepository.class);
-			Mockito.when(mock.findById("roomIdOk")).thenReturn(Optional.of(Room.builder().id("roomIdOk").build()));
-			Mockito.when(mock.findById("roomIdLocked")).thenReturn(Optional
-				.of(Room.builder().id("roomIdLocked").locked(LocalDateTime.parse("2010-01-01T00:00:00.000")).build()));
+			//@formatter:off
+			Mockito.when(mock.findById("roomIdOk"))
+				.thenReturn(Optional.of(Room.builder().id("roomIdOk").build()));
+			Mockito.when(mock.findById("roomIdLocked"))
+				.thenReturn(Optional.of(Room.builder().id("roomIdLocked").locked(LocalDateTime.parse("2010-01-01T00:00:00.000")).build()));
+			//@formatter:on
 			return mock;
 		}
 
 		@Bean
 		AppUserRepository appUserRepository() {
 			AppUserRepository mock = Mockito.mock(AppUserRepository.class);
-			Mockito.when(mock.findById("userIdOk")).thenReturn(Optional.of(
-				AppUser.builder().id("userIdOk").activation(LocalDateTime.parse("2010-01-01T00:00:00.000")).build()));
-			Mockito.when(mock.findById("userNotActive"))
-				.thenReturn(Optional.of(AppUser.builder().id("userNotActive").build()));
-			Mockito.when(mock.findById("userLocked")).thenReturn(
-				Optional.of(AppUser.builder().id("userLoked").activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
-					.locked(LocalDateTime.parse("2010-02-01T00:00:00.000")).build()));
-			Mockito.when(mock.findById("userExpired")).thenReturn(
-				Optional.of(AppUser.builder().id("userLoked").activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
-					.expiration(LocalDateTime.parse("2010-02-01T00:00:00.000")).build()));
+
+			//@formatter:off
+			AppUser userActive = AppUser.builder()
+				.id("userIdOk")
+				.email("test@roomboo.org")
+				.name("Test")
+				.activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
+				.build();
+			AppUser userInactive = AppUser.builder()
+				.id("userNotActive")
+				.name("Inactive")
+				.email("inactive@roomboo.org")
+				.build();
+			AppUser userLocked = AppUser.builder()
+				.id("userLoked")
+				.name("Locked")
+				.email("locked@roomboo.org")
+				.activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
+				.locked(LocalDateTime.parse("2010-02-01T00:00:00.000"))
+				.build();
+			AppUser userExpired = AppUser.builder()
+				.id("userExpired")
+				.name("Expired")
+				.email("expired@roomboo.org")
+				.activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
+				.expiration(LocalDateTime.parse("2010-02-01T00:00:00.000"))
+				.build();
+			//@formatter:on
+
+			Mockito.when(mock.findById("userIdOk")).thenReturn(Optional.of(userActive));
+			Mockito.when(mock.findById("userNotActive")).thenReturn(Optional.of(userInactive));
+			Mockito.when(mock.findById("userLocked")).thenReturn(Optional.of(userLocked));
+			Mockito.when(mock.findById("userExpired")).thenReturn(Optional.of(userExpired));
 			return mock;
 		}
 
