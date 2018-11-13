@@ -4,7 +4,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.AlertResource;
-import org.lab.roomboo.api.resource.assembler.AlertResourceAssembler;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Alert;
 import org.lab.roomboo.domain.repository.AlertRepository;
@@ -34,9 +33,6 @@ public class AlertController {
 	private AlertRepository repository;
 
 	@Autowired
-	private AlertResourceAssembler alertResourceAssembler;
-
-	@Autowired
 	private PagedResourcesAssembler<Alert> assembler;
 
 	@ApiOperation(value = "Alert search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
@@ -48,7 +44,7 @@ public class AlertController {
 		Sort sort = new Sort(Sort.Direction.DESC, "created");
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Alert> currentPage = repository.findAll(pageable);
-		PagedResources<AlertResource> pr = assembler.toResource(currentPage, alertResourceAssembler);
+		PagedResources<AlertResource> pr = assembler.toResource(currentPage, e -> new AlertResource(e));
 		pr.add(new Link(fromController(AppUserController.class).build().toString(), "users"));
 		return ResponseEntity.ok(pr);
 	}
@@ -57,6 +53,6 @@ public class AlertController {
 	@GetMapping("/{id}")
 	public ResponseEntity<AlertResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new AlertResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(Alert.class, id));
+				.orElseThrow(() -> new EntityNotFoundException(Alert.class, id));
 	}
 }

@@ -1,13 +1,12 @@
 package org.lab.roomboo.core.integration.handler;
 
-import java.util.Map;
-
 import org.springframework.integration.handler.GenericHandler;
+import org.springframework.messaging.MessageHeaders;
 
 public class ReserveTokenCancelationHandler implements GenericHandler<String> {
 
 	@Override
-	public Object handle(String payload, Map<String, Object> headers) {
+	public Object handle(String payload, MessageHeaders headers) {
 		// TODO Auto-generated method stub
 		return null;
 	}

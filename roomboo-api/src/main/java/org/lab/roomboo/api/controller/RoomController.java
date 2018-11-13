@@ -9,7 +9,6 @@ import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.RoomResource;
 import org.lab.roomboo.api.resource.RoomStatusResource;
-import org.lab.roomboo.api.resource.assembler.RoomResourceAssembler;
 import org.lab.roomboo.core.model.RoomSearchOptions;
 import org.lab.roomboo.core.service.ReserveService;
 import org.lab.roomboo.core.service.RoomService;
@@ -54,9 +53,6 @@ public class RoomController {
 	private ReserveService reserveService;
 
 	@Autowired
-	private RoomResourceAssembler roomResourceAssembler;
-
-	@Autowired
 	private PagedResourcesAssembler<Room> assembler;
 
 	@ApiOperation(value = "Room search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
@@ -70,20 +66,17 @@ public class RoomController {
 		Sort sort = new Sort(Sort.Direction.DESC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
 
-		RoomSearchOptions options = RoomSearchOptions //@formatter:off
-			.builder()
-			.groupId(queryDsl.get("groupId"))
-			.minSize(queryDsl.get("minSize", Integer.class, 0))
-			.videoCallRequired(queryDsl.get("videoCall", Boolean.class, Boolean.FALSE))
-			.conferenceCallRequired(queryDsl.get("conferenceCall", Boolean.class, Boolean.FALSE))
-			.audioRequired(queryDsl.get("audio", Boolean.class, Boolean.FALSE))
-			.boardRequired(queryDsl.get("board", Boolean.class, Boolean.FALSE))
-			.projectorRequired(queryDsl.get("projector", Boolean.class, Boolean.FALSE))
-			.build(); //@formater:on
+		RoomSearchOptions options = RoomSearchOptions // @formatter:off
+				.builder().groupId(queryDsl.get("groupId")).minSize(queryDsl.get("minSize", Integer.class, 0))
+				.videoCallRequired(queryDsl.get("videoCall", Boolean.class, Boolean.FALSE))
+				.conferenceCallRequired(queryDsl.get("conferenceCall", Boolean.class, Boolean.FALSE))
+				.audioRequired(queryDsl.get("audio", Boolean.class, Boolean.FALSE))
+				.boardRequired(queryDsl.get("board", Boolean.class, Boolean.FALSE))
+				.projectorRequired(queryDsl.get("projector", Boolean.class, Boolean.FALSE)).build(); // @formater:on
 
 		Page<Room> currentPage = roomService.findPageable(options, pageable);
 
-		PagedResources<RoomResource> pr = assembler.toResource(currentPage, roomResourceAssembler);
+		PagedResources<RoomResource> pr = assembler.toResource(currentPage, e -> new RoomResource(e));
 		pr.add(new Link(fromController(RoomGroupController.class).build().toString(), "roomGroups"));
 		return ResponseEntity.ok(pr);
 	}
@@ -92,7 +85,7 @@ public class RoomController {
 	@GetMapping("/{id}")
 	public ResponseEntity<RoomResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new RoomResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(Room.class, id));
+				.orElseThrow(() -> new EntityNotFoundException(Room.class, id));
 	}
 
 	@ApiOperation(value = "Room status", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })

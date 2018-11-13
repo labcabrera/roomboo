@@ -1,7 +1,6 @@
 package org.lab.roomboo.core.integration.handler;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import org.lab.roomboo.domain.exception.UserConfirmationException;
 import org.lab.roomboo.domain.exception.UserConfirmationException.ErrorType;
@@ -11,6 +10,7 @@ import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.handler.GenericHandler;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,12 +23,12 @@ public class UserTokenConfirmationHandler implements GenericHandler<String> {
 	private UserConfirmationTokenRepository tokenRepository;
 
 	@Override
-	public Object handle(String token, Map<String, Object> headers) {
+	public Object handle(String token, MessageHeaders headers) {
 		UserConfirmationToken tokenEntity = tokenRepository.findByToken(token)
-			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_TOKEN));
+				.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_TOKEN));
 		String userId = tokenEntity.getUser().getId();
 		AppUser user = repository.findById(userId)
-			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_USER));
+				.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_USER));
 		if (user.getActivation() != null) {
 			throw new UserConfirmationException(ErrorType.USER_ALREADY_ACTIVE);
 		}

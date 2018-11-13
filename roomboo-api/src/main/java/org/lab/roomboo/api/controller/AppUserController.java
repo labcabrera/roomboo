@@ -7,7 +7,6 @@ import java.net.URI;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.AppUserResource;
-import org.lab.roomboo.api.resource.assembler.AppUserResourceAssembler;
 import org.lab.roomboo.core.model.AppUserSearchOptions;
 import org.lab.roomboo.core.service.AppUserService;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
@@ -47,40 +46,34 @@ public class AppUserController {
 	private AppUserRepository repository;
 
 	@Autowired
-	private AppUserResourceAssembler appUserResourceAssembler;
-
-	@Autowired
 	private PagedResourcesAssembler<AppUser> assembler;
 
 	@ApiOperation(value = "App user search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping
-	public ResponseEntity<Resources<AppUserResource>> find( //@formatter:off
+	public ResponseEntity<Resources<AppUserResource>> find( // @formatter:off
 			@RequestParam(value = "q", required = false) String query,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "size", defaultValue = "10") Integer size) { //@formatter:on
+			@RequestParam(value = "size", defaultValue = "10") Integer size) { // @formatter:on
 		Sort sort = new Sort(Sort.Direction.ASC, "displayName");
 		Pageable pageable = PageRequest.of(page, size, sort);
 
 		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
-		AppUserSearchOptions searchOptions = AppUserSearchOptions.builder() //@formatter:off
-			.text(queryDsl.get("text"))
-			.email(queryDsl.get("mail"))
-			.companyId(queryDsl.get("companyId"))
-			.build(); //@formatter:off
+		AppUserSearchOptions searchOptions = AppUserSearchOptions.builder().text(queryDsl.get("text"))
+				.email(queryDsl.get("mail")).companyId(queryDsl.get("companyId")).build();
 
 		Page<AppUser> currentPage = userService.findPageable(searchOptions, pageable);
-		PagedResources<AppUserResource> pr = assembler.toResource(currentPage, appUserResourceAssembler);
+		PagedResources<AppUserResource> pr = assembler.toResource(currentPage, e -> new AppUserResource(e));
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		pr.add(new Link(fromController(CompanyController.class).build().toString(), "companies"));
 		return ResponseEntity.ok(pr);
 	}
 
-	@ApiOperation(value = "App user find by id",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "App user find by id", authorizations = {
+			@Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<AppUserResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new AppUserResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(AppUser.class, id));
+				.orElseThrow(() -> new EntityNotFoundException(AppUser.class, id));
 	}
 
 	@ApiOperation(value = "App user update", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })

@@ -1,25 +1,20 @@
 buildscript {
   ext {
-    springBootVersion            = '2.0.4.RELEASE'
     springfoxSwaggerVersion      = '2.9.2'
     jsonwebtokenVersion          = '0.9.1'
-    palantirPluginVersion        = '0.20.1'
-  }
-  repositories {
-    mavenCentral()
-    maven { url "https://plugins.gradle.org/m2/" }
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${palantirPluginVersion}")
   }
 }
 
-subprojects {
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'org.springframework.boot' version '2.1.0.RELEASE'  apply false
+	id 'com.palantir.docker'      version '0.20.1'         apply false
+}
 
-  apply plugin: 'java'
-  apply plugin: 'eclipse'
-  apply plugin: 'org.springframework.boot'
+subprojects {
+  apply plugin: 'java-library'
+  apply plugin: 'maven-publish'
   apply plugin: 'io.spring.dependency-management'
 
   group = 'org.lab.roomboo'
@@ -38,66 +33,45 @@ subprojects {
 
 project(":roomboo-domain") {
   dependencies {
-    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-validation')
-    compile('org.apache.commons:commons-lang3')
-  }
-  jar {
-    enabled = true
-  }
-  bootJar {
-    classifier = 'boot'
-    // workaround to create a simple java library instead of a spring boot jar
-    mainClassName = 'org.lab.roomboo.Dummy'
+    api('org.springframework.boot:spring-boot-starter-data-mongodb')
+    api('org.springframework.boot:spring-boot-starter-security')
+    api('org.springframework.boot:spring-boot-starter-validation')
+    api('org.apache.commons:commons-lang3')
   }
 }
 
 project(":roomboo-core") {
   dependencies {
-    compile(project(":roomboo-domain"))
-    compile('org.springframework.boot:spring-boot-starter-integration')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-mail')
+    api(project(":roomboo-domain"))
+    api('org.springframework.boot:spring-boot-starter-integration') 
+    api('org.springframework.boot:spring-boot-starter-thymeleaf')
+    api('org.springframework.boot:spring-boot-starter-mail')
+    api('org.springframework.integration:spring-integration-amqp')
+    api('org.springframework.integration:spring-integration-amqp')
     testCompile('com.fasterxml.jackson.core:jackson-databind')
-  }
-  jar {
-    enabled = true
-  }
-  bootJar {
-    classifier = 'boot'
-    // workaround to create a simple java library instead of a spring boot jar
-    mainClassName = 'org.lab.roomboo.Dummy'
   }
 }
 
 project(":roomboo-jwt") {
   dependencies {
-    compile(project(":roomboo-domain"))
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile("io.jsonwebtoken:jjwt:${jsonwebtokenVersion}")
-  }
-  jar {
-    enabled = true
-  }
-  bootJar {
-    classifier = 'boot'
-    // workaround to create a simple java library instead of a spring boot jar
-    mainClassName = 'org.lab.roomboo.Dummy'
+    api(project(":roomboo-domain"))
+    api('org.springframework.boot:spring-boot-starter-security')
+    api('org.springframework.boot:spring-boot-starter-web')
+    api("io.jsonwebtoken:jjwt:${jsonwebtokenVersion}")
   }
 }
 
 project(":roomboo-api") {
+  apply plugin: 'org.springframework.boot'
   apply plugin: 'com.palantir.docker'
   dependencies {
-    compile(project(":roomboo-core"))
-    compile(project(":roomboo-jwt"))
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
-    compile("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")    
+    api(project(":roomboo-core"))
+    api(project(":roomboo-jwt"))
+    api('org.springframework.boot:spring-boot-starter-actuator')
+    api('org.springframework.boot:spring-boot-starter-hateoas')
+    api('org.springframework.boot:spring-boot-starter-web')
+    api("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
+    api("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")    
     testCompile('org.springframework.boot:spring-boot-starter-test')
   }
   springBoot {
@@ -109,4 +83,27 @@ project(":roomboo-api") {
     files jar.archivePath
     buildArgs(['JAR_FILE': "${jar.archiveName}"])
   }
+}
+
+configure(subprojects.findAll { it.name != "roomboo-api" }) {
+	dependencyManagement {
+		imports {
+			mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+		}
+	}
+	task sourcesJar(type: Jar) {
+		from sourceSets.main.allJava
+		classifier = 'sources'
+	}
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				groupId = group
+				artifactId = project.name
+				version = version
+				from components.java
+				artifact sourcesJar
+			}
+		}
+	}
 }

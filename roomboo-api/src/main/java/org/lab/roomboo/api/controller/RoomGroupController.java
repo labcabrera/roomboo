@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.RoomGroupResource;
-import org.lab.roomboo.api.resource.assembler.RoomGroupResourceAssembler;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.model.RoomGroup;
@@ -38,9 +37,6 @@ public class RoomGroupController {
 	private RoomGroupRepository repository;
 
 	@Autowired
-	private RoomGroupResourceAssembler roomGroupResourceAssembler;
-
-	@Autowired
 	private PagedResourcesAssembler<RoomGroup> assembler;
 
 	@ApiOperation(value = "Room group search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
@@ -63,19 +59,19 @@ public class RoomGroupController {
 		Sort sort = new Sort(Sort.Direction.ASC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<RoomGroup> currentPage = repository.findAll(example, pageable);
-		PagedResources<RoomGroupResource> pr = assembler.toResource(currentPage, roomGroupResourceAssembler);
+		PagedResources<RoomGroupResource> pr = assembler.toResource(currentPage, e -> new RoomGroupResource(e));
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		pr.add(new Link(fromController(AppUserController.class).build().toString(), "owners"));
 		pr.add(new Link(fromController(CompanyController.class).build().toString(), "companies"));
 		return ResponseEntity.ok(pr);
 	}
 
-	@ApiOperation(value = "Room group search by id",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "Room group search by id", authorizations = {
+			@Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<RoomGroupResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new RoomGroupResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(RoomGroup.class, id));
+				.orElseThrow(() -> new EntityNotFoundException(RoomGroup.class, id));
 	}
 
 }

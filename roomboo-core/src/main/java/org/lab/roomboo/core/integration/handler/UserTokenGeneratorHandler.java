@@ -1,7 +1,6 @@
 package org.lab.roomboo.core.integration.handler;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import org.lab.roomboo.core.component.TokenGenerator;
 import org.lab.roomboo.core.service.TokenUriService;
@@ -11,6 +10,7 @@ import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.integration.handler.GenericHandler;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class UserTokenGeneratorHandler implements GenericHandler<AppUser> {
 	private Integer tokenExpiration;
 
 	@Override
-	public Object handle(AppUser payload, Map<String, Object> headers) {
+	public Object handle(AppUser payload, MessageHeaders headers) {
 		String userId = payload.getId();
 		log.debug("Generating user confirmation token for user {}", userId);
 

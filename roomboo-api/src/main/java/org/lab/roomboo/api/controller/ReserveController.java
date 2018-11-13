@@ -5,7 +5,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.query.BasicQueryDsl;
 import org.lab.roomboo.api.resource.ReserveResource;
-import org.lab.roomboo.api.resource.assembler.ReserveResourceAssembler;
 import org.lab.roomboo.core.model.ReserveSearchOptions;
 import org.lab.roomboo.core.service.ReserveService;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
@@ -40,9 +39,6 @@ public class ReserveController {
 	private ReserveService reserveService;
 
 	@Autowired
-	private ReserveResourceAssembler reserveResourceAssembler;
-
-	@Autowired
 	private PagedResourcesAssembler<Reserve> assembler;
 
 	@ApiOperation(value = "Reserve search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
@@ -53,30 +49,25 @@ public class ReserveController {
 			@RequestParam(value = "size", defaultValue = "10", required = false) int size) { // @formatter:on
 
 		BasicQueryDsl queryDsl = new BasicQueryDsl(query);
-		//@formatter:off
-		ReserveSearchOptions options = ReserveSearchOptions.builder()
-			.roomId(queryDsl.get("roomId"))
-			.userId(queryDsl.get("userId"))
-			.includeUnconfirmed(queryDsl.get("includeUnconfirmed", Boolean.class, false))
-			.includeCancelled(queryDsl.get("includeCancelled", Boolean.class, false))
-			.build();
-		//@formatter:on
-
+		ReserveSearchOptions options = ReserveSearchOptions.builder().roomId(queryDsl.get("roomId"))
+				.userId(queryDsl.get("userId"))
+				.includeUnconfirmed(queryDsl.get("includeUnconfirmed", Boolean.class, false))
+				.includeCancelled(queryDsl.get("includeCancelled", Boolean.class, false)).build();
 		Sort sort = new Sort(Sort.Direction.DESC, "from");
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Reserve> currentPage = reserveService.findPaginated(options, pageable);
-		PagedResources<ReserveResource> pr = assembler.toResource(currentPage, reserveResourceAssembler);
+		PagedResources<ReserveResource> pr = assembler.toResource(currentPage, e -> new ReserveResource(e));
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		pr.add(new Link(fromController(AppUserController.class).build().toString(), "users"));
 		return ResponseEntity.ok(pr);
 	}
 
-	@ApiOperation(value = "Reserve search by id",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "Reserve search by id", authorizations = {
+			@Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<ReserveResource> findById(@PathVariable("id") String id) {
 		return repository.findById(id).map(p -> ResponseEntity.ok(new ReserveResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(Reserve.class, id));
+				.orElseThrow(() -> new EntityNotFoundException(Reserve.class, id));
 	}
 
 }

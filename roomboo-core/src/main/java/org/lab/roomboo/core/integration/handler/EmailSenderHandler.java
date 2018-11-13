@@ -1,7 +1,5 @@
 package org.lab.roomboo.core.integration.handler;
 
-import java.util.Map;
-
 import javax.mail.internet.MimeMessage;
 
 import org.lab.roomboo.core.model.MailMessage;
@@ -10,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.handler.GenericHandler;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +21,11 @@ public class EmailSenderHandler implements GenericHandler<MailMessage> {
 	protected JavaMailSender sender;
 
 	@Override
-	public Object handle(MailMessage payload, Map<String, Object> headers) {
+	public Object handle(MailMessage payload, MessageHeaders headers) {
 		if (sender == null) {
 			// TODO generate alert
 			log.warn("Email sender is not configured");
-		}
-		else {
+		} else {
 			log.debug("Sending mail {}", payload);
 			try {
 
@@ -37,8 +35,7 @@ public class EmailSenderHandler implements GenericHandler<MailMessage> {
 				message.setSubject(payload.getSubject());
 				message.setText(payload.getBody(), true);
 				sender.send(mimeMessage);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new RoombooException("Email error", ex);
 			}
 		}

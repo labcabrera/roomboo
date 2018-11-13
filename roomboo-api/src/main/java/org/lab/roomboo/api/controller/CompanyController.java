@@ -4,7 +4,6 @@ import static org.springframework.web.servlet.mvc.method.annotation.MvcUriCompon
 
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.CompanyResource;
-import org.lab.roomboo.api.resource.assembler.CompanyResourceAssembler;
 import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.repository.CompanyRepository;
@@ -34,9 +33,6 @@ public class CompanyController {
 	private CompanyRepository companyRepository;
 
 	@Autowired
-	private CompanyResourceAssembler companyResourceAssembler;
-
-	@Autowired
 	private PagedResourcesAssembler<Company> assembler;
 
 	@ApiOperation(value = "Company search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
@@ -48,18 +44,17 @@ public class CompanyController {
 		Sort sort = new Sort(Sort.Direction.ASC, "name");
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Company> currentPage = companyRepository.findAll(pageable);
-		PagedResources<CompanyResource> pr = assembler.toResource(currentPage, companyResourceAssembler);
-		
+		PagedResources<CompanyResource> pr = assembler.toResource(currentPage, e -> new CompanyResource(e));
 		pr.add(new Link(fromController(RoomController.class).build().toString(), "rooms"));
 		pr.add(new Link(fromController(AppUserController.class).build().toString(), "users"));
 		return ResponseEntity.ok(pr);
 	}
 
-	@ApiOperation(value = "Company search by id",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "Company search by id", authorizations = {
+			@Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyResource> findById(@PathVariable("id") String id) {
 		return companyRepository.findById(id).map(p -> ResponseEntity.ok(new CompanyResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException(Company.class, id));
+				.orElseThrow(() -> new EntityNotFoundException(Company.class, id));
 	}
 }
