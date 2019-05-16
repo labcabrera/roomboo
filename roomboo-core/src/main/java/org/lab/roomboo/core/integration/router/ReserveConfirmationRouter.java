@@ -4,7 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.RoomboChannels;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Company;
 import org.lab.roomboo.domain.model.Reserve;
@@ -18,14 +19,13 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.stereotype.Component;
 
 @Component
-// @Slf4j
 public class ReserveConfirmationRouter extends AbstractMessageRouter {
 
-	@Qualifier(Channels.ReserveConfirmationAuto)
+	@Qualifier(RoomboChannels.RESERVE_CONFIRMATION_AUTO)
 	@Autowired
 	private MessageChannel channelReserveConfirmationAuto;
 
-	@Qualifier(Channels.ReserveConfirmationEmail)
+	@Qualifier(RoomboChannels.RESERVE_CONFIRMATION_EMAIL)
 	@Autowired
 	private MessageChannel channelReserveConfirmationEmail;
 
@@ -38,9 +38,11 @@ public class ReserveConfirmationRouter extends AbstractMessageRouter {
 	@Override
 	protected Collection<MessageChannel> determineTargetChannels(Message<?> message) {
 		Reserve reserve = (Reserve) message.getPayload();
-		AppUser user = userRepository.findById(reserve.getUser().getId()).get();
-		Company company = companyRepository.findById(user.getCompany().getId()).get();
-		
+		AppUser user = userRepository.findById(reserve.getUser().getId())
+			.orElseThrow(() -> new EntityNotFoundException("Missing user"));
+		Company company = companyRepository.findById(user.getCompany().getId())
+			.orElseThrow(() -> new EntityNotFoundException("Missing company"));
+
 		//TODO check state user / room
 
 		switch (company.getRegisterConfirmationMode()) {

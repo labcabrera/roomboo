@@ -34,14 +34,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 		this.secret = env.getProperty("app.env.jwt.secret");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.springframework.security.web.authentication.www.BasicAuthenticationFilter#doFilterInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.security.web.authentication.www.BasicAuthenticationFilter#
+	 * doFilterInternal(javax.servlet.http.HttpServletRequest,
+	 * javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
 	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 		throws IOException, ServletException {
-		String header = request.getHeader(JwtConstants.HeaderAuthorization);
-		if (header == null || !header.startsWith(JwtConstants.TokenBearerPrefix)) {
+		String header = request.getHeader(JwtConstants.HEADER);
+		if (header == null || !header.startsWith(JwtConstants.TOKEN_PREFIX)) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -57,10 +61,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 		UsernamePasswordAuthenticationToken result = null;
-		String header = request.getHeader(JwtConstants.HeaderAuthorization);
+		String header = request.getHeader(JwtConstants.HEADER);
 		if (header != null) {
 			log.debug("JWT validation attempt");
-			String token = header.replace(JwtConstants.TokenBearerPrefix, StringUtils.EMPTY);
+			String token = header.replace(JwtConstants.TOKEN_PREFIX, StringUtils.EMPTY);
 			Jws<Claims> claims = Jwts //@formatter:off
 				.parser()
 				.setSigningKey(secret)
@@ -81,7 +85,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 	@SuppressWarnings("unchecked")
 	private List<GrantedAuthority> readGrantedAuthorities(Jws<Claims> claims) {
 		List<GrantedAuthority> result = new ArrayList<>();
-		ArrayList<String> roles = (ArrayList<String>) claims.getBody().get(JwtConstants.KeyClaimRoles);
+		ArrayList<String> roles = (ArrayList<String>) claims.getBody().get(JwtConstants.CLAIM_ROLES);
 		if (roles != null) {
 			roles.forEach(i -> result.add(new SimpleGrantedAuthority(i)));
 		}

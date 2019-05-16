@@ -7,7 +7,7 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 
 @Configuration
 @IntegrationComponentScan
-@ComponentScan({ "org.lab.roomboo.core"}) //, "org.lab.roomboo.domain.repository" })
+@ComponentScan({ "org.lab.roomboo.core" }) //, "org.lab.roomboo.domain.repository" })
 @EnableMongoRepositories("org.lab.roomboo.domain.repository")
 public class RoombooCoreConfig {
 

@@ -15,6 +15,7 @@ subprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
 	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'com.palantir.jacoco-coverage'
 
 	group = 'org.lab.roomboo'
 	version = version

@@ -6,6 +6,7 @@ import java.net.URI;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.lab.roomboo.api.config.SwaggerConfig;
 import org.lab.roomboo.api.resource.ReserveResource;
 import org.lab.roomboo.core.integration.gateway.BookingGateway;
@@ -41,8 +42,7 @@ public class BookingController {
 	@Value("${app.env.token.reserve.cancelation-redirect-uri:}")
 	private String cancelationRedirectUri;
 
-	@ApiOperation(value = "Process booking request",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@ApiOperation(value = "Process booking request", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@PostMapping
 	public ResponseEntity<ReserveResource> processRequest(@RequestBody @Valid BookingRequest request) {
 		Reserve reserve = bookingGateway.processBookingRequest(request);
@@ -56,10 +56,7 @@ public class BookingController {
 	public ResponseEntity<ReserveResource> processCodeConfirmation(@PathVariable("reserveId") String reserveId,
 		@PathVariable("code") String code) {
 		// TODO
-		throw new RuntimeException("Not implemented");
-		//
-		// Reserve reserve = bookingService.processCodeReserveConfirmationByCode(reserveId, code);
-		// return ResponseEntity.ok(new ReserveResource(reserve));
+		throw new NotImplementedException("Not implemented");
 	}
 
 	@ApiOperation(value = "Token confirmation")

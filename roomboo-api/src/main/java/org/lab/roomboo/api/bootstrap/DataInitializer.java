@@ -50,21 +50,24 @@ public abstract class DataInitializer<T> {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, type);
 		try (InputStream in = classLoader.getResourceAsStream(resourcePath)) {
-			List<T> list = objectMapper.readValue(in, javaType);
-			return list;
+			return objectMapper.readValue(in, javaType);
 		}
 		catch (Exception ex) {
 			throw new RoombooException("Error reading " + resourcePath + " as JSON list of " + type.getName(), ex);
 		}
 	}
 
-	public static interface InitializationOrder {
-		int ApiUser = 2000;
-		int Company = 2010;
-		int RoomGroup = 2020;
-		int Room = 2030;
-		int ReserveOwner = 2040;
-		int Reserve = 2050;
+	public static class InitializationOrder {
+
+		private InitializationOrder() {
+		}
+
+		public static final int API_USER = 2000;
+		public static final int COMPANY = 2010;
+		public static final int ROOM_GROUP = 2020;
+		public static final int ROOM = 2030;
+		public static final int RESERVE_OWNER = 2040;
+		public static final int RESERVE = 2050;
 	}
 
 }

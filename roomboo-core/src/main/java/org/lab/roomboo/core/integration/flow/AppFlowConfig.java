@@ -1,6 +1,6 @@
 package org.lab.roomboo.core.integration.flow;
 
-import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.RoomboChannels;
 import org.lab.roomboo.core.integration.handler.EmailSenderHandler;
 import org.lab.roomboo.domain.model.Alert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ public class AppFlowConfig {
 	private MongoTemplate mongoTemplate;
 
 	@Bean
-	IntegrationFlow flowAlertInputChannel() { //@formatter:off
+	IntegrationFlow flowAlertInputChannel() {
 		return IntegrationFlows
-			.from(Channels.AlertInput)
+			.from(RoomboChannels.ALERT_IN)
 			.log(Level.INFO, AppFlowConfig.class.getName(), m -> "Received alert message: " + m.getPayload())
 			.handle(Alert.class, (request, headers) -> {
 				mongoTemplate.save(request);
@@ -31,14 +31,14 @@ public class AppFlowConfig {
 			})
 			.bridge()
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowEmailOutput() { //@formatter:off
+	IntegrationFlow flowEmailOutput() {
 		return IntegrationFlows
-			.from(Channels.EmailOutput)
+			.from(RoomboChannels.EMAIL_OUT)
 			.log(Level.INFO, AppFlowConfig.class.getName(), m -> "Received mail message: " + m.getPayload())
 			.handle(emailSenderHandler)
 			.get();
-	} //@formatter:on
+	}
 }

@@ -1,9 +1,12 @@
 package org.lab.roomboo.jwt;
 
-interface JwtConstants {
+class JwtConstants {
 
-	String HeaderAuthorization = "Authorization";
-	String TokenBearerPrefix = "Bearer";
-	String KeyClaimRoles = "appRoles";
+	public static final String HEADER = "Authorization";
+	public static final String TOKEN_PREFIX = "Bearer";
+	public static final String CLAIM_ROLES = "appRoles";
+
+	private JwtConstants() {
+	}
 
 }

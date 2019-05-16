@@ -113,16 +113,10 @@ public class BookingRequestValidator implements ConstraintValidator<ValidBooking
 	}
 
 	private boolean isValidDate(LocalDateTime dateTime) {
-		if (dateTime.getMinute() % minuteMultiplier != 0) {
-			return false;
-		}
-		if (dateTime.getSecond() != 0) {
-			return false;
-		}
-		if (dateTime.getNano() != 0) {
-			return false;
-		}
-		return true;
+		boolean check01 = dateTime.getMinute() % minuteMultiplier == 0;
+		boolean check02 = dateTime.getSecond() == 0;
+		boolean check03 = dateTime.getNano() == 0;
+		return check01 && check02 && check03;
 	}
 
 }

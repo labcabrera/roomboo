@@ -1,6 +1,6 @@
 package org.lab.roomboo.core.integration.flow;
 
-import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.RoomboChannels;
 import org.lab.roomboo.core.integration.handler.PayloadValidatorHandler;
 import org.lab.roomboo.core.integration.handler.ReserveTokenConfirmationHandler;
 import org.lab.roomboo.core.integration.handler.ReserveTokenGeneratorHandler;
@@ -41,9 +41,9 @@ public class ReserveFlowConfig {
 	private MongoTemplate mongoTemplate;
 
 	@Bean
-	IntegrationFlow flowBookingRequest() { //@formatter:off
+	IntegrationFlow flowBookingRequest() {
 		return IntegrationFlows
-			.from(Channels.BookingInput)
+			.from(RoomboChannels.BOOKING_IN)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received sign-up message: " + m.getPayload())
 			.handle(payloadValidator)
 			.transform(bookingRequestTransformer)
@@ -54,40 +54,37 @@ public class ReserveFlowConfig {
 			.publishSubscribeChannel(c -> c.applySequence(false)
 				.subscribe(f -> f
 					.route(reserveConfirmationRouter)))
-//				.subscribe(f -> f
-//					.transform(alertSignUpTransformer)
-//					.channel(Channels.AlertInput)))
-			.channel(Channels.BookingOutput)
+			.channel(RoomboChannels.BOOKING_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowReserveConfirmationEmail() { //@formatter:off
+	IntegrationFlow flowReserveConfirmationEmail() {
 		return IntegrationFlows
-			.from(Channels.ReserveConfirmationEmail)
+			.from(RoomboChannels.RESERVE_CONFIRMATION_EMAIL)
 			.log(Level.INFO, ReserveFlowConfig.class.getName(), m -> "Received email reserve confirmation message: " + m.getPayload())
 			.handle(tokenConfirmationGeneratorHandler)
 			.transform(emailTransformer)
-			.channel(Channels.EmailOutput)
+			.channel(RoomboChannels.EMAIL_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowBookingConfirmation() { //@formatter:off
+	IntegrationFlow flowBookingConfirmation() {
 		return IntegrationFlows
-			.from(Channels.BookingTokenConfirmationInput)
+			.from(RoomboChannels.BOOKING_TOKEN_CONFIRMATION_IN)
 			.log(Level.INFO, ReserveFlowConfig.class.getName(), m -> "Received reserve token confirmation message: " + m.getPayload())
 			.handle(tokenConfirmationHandler)
-			.channel(Channels.BookingTokenConfirmationOutput)
+			.channel(RoomboChannels.BOOKING_TOKEN_CONFIRMATION_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowBookingCancelation() { //@formatter:off
+	IntegrationFlow flowBookingCancelation() {
 		return IntegrationFlows
-			.from(Channels.BookingTokenCancelationInput)
-			.channel(Channels.BookingTokenCancelationOutput)
+			.from(RoomboChannels.BOOKING_TOKEN_CANCELLATION_IN)
+			.channel(RoomboChannels.BOOKING_TOKEN_CANCELLATION_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 }

@@ -25,17 +25,18 @@ public class EmailSenderHandler implements GenericHandler<MailMessage> {
 		if (sender == null) {
 			// TODO generate alert
 			log.warn("Email sender is not configured");
-		} else {
+		}
+		else {
 			log.debug("Sending mail {}", payload);
 			try {
-
 				MimeMessage mimeMessage = sender.createMimeMessage();
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				message.setTo((String[]) payload.getRecipients().toArray());
+				message.setTo((String[]) payload.getRecipients().toArray(new String[0]));
 				message.setSubject(payload.getSubject());
 				message.setText(payload.getBody(), true);
 				sender.send(mimeMessage);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				throw new RoombooException("Email error", ex);
 			}
 		}

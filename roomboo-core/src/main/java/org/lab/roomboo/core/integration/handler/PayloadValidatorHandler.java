@@ -15,8 +15,8 @@ import org.springframework.validation.Validator;
 public class PayloadValidatorHandler implements GenericHandler<Object> {
 
 	/**
-	 * Header to check whether the message has been previously validated and to
-	 * avoid making repeated validations.
+	 * Header to check whether the message has been previously validated and to avoid
+	 * making repeated validations.
 	 */
 	public static final String HEADER_PRE_VALIDATED = "x-pre-validated";
 

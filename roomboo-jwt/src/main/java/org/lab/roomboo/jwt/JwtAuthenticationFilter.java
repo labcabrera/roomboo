@@ -21,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.Assert;
@@ -53,16 +52,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	 * http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-		throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		log.debug("Attempting authentication");
 		try {
-			String header = request.getHeader(JwtConstants.HeaderAuthorization);
-			Assert.notNull(header, "Missing header " + JwtConstants.HeaderAuthorization);
+			String header = request.getHeader(JwtConstants.HEADER);
+			Assert.notNull(header, "Missing header " + JwtConstants.HEADER);
 			Assert.isTrue(header.startsWith("Basic "), "Expected basic authorization header");
 			String b64 = header.replace("Basic ", StringUtils.EMPTY);
 			String decoded = new String(Base64.getDecoder().decode(b64), Charset.forName("UTF-8"));
-			int index = decoded.indexOf(":");
+			int index = decoded.indexOf(':');
 			Assert.isTrue(index > 0, "Invalid credentials");
 			String username = decoded.substring(0, index);
 			String password = decoded.substring(index + 1, decoded.length());
@@ -83,14 +81,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	 * @see org.springframework.security.web.authentication.
 	 * AbstractAuthenticationProcessingFilter#successfulAuthentication(javax.
 	 * servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
-	 * javax.servlet.FilterChain,
-	 * org.springframework.security.core.Authentication)
+	 * javax.servlet.FilterChain, org.springframework.security.core.Authentication)
 	 */
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication auth) throws IOException, ServletException {
 		String token = createToken(auth);
-		response.addHeader(JwtConstants.HeaderAuthorization, JwtConstants.TokenBearerPrefix + " " + token);
+		response.addHeader(JwtConstants.HEADER, JwtConstants.TOKEN_PREFIX + " " + token);
 	}
 
 	private String createToken(Authentication auth) {
@@ -99,14 +96,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		ZoneId zoneId = ZoneId.systemDefault();
 		String username = ((UserDetails) auth.getPrincipal()).getUsername();
 		List<String> roles = auth.getAuthorities().stream().map(x -> x.getAuthority()).collect(Collectors.toList());
-		String token = Jwts.builder() //@formatter:off
+		return Jwts.builder()
 			.setIssuedAt(Date.from(now.atZone(zoneId).toInstant()))
 			.setExpiration(Date.from(expirationDate.atZone(zoneId).toInstant()))
 			.setIssuer(issuer)
 			.setSubject(username)
-			.claim(JwtConstants.KeyClaimRoles, roles)
+			.claim(JwtConstants.CLAIM_ROLES, roles)
 			.signWith(SignatureAlgorithm.HS512, secret)
-			.compact(); //@formatter:on
-		return token;
+			.compact();
 	}
 }

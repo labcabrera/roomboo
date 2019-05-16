@@ -26,7 +26,7 @@ public class Company {
 
 	public enum SignUpActivationMode {
 		AUTO, EMAIL;
-	};
+	}
 
 	public enum RegisterConfirmationMode {
 		AUTO, EMAIL, CODE;

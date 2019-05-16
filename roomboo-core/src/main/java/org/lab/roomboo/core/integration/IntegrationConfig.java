@@ -20,42 +20,42 @@ public class IntegrationConfig {
 		return pool;
 	}
 
-	@Bean(name = Channels.SignUpInput)
+	@Bean(name = RoomboChannels.SIGN_UP_IN)
 	MessageChannel channelSignUpInput() {
-		return MessageChannels.direct(Channels.SignUpInput).get();
+		return MessageChannels.direct(RoomboChannels.SIGN_UP_IN).get();
 	}
 
-	@Bean(name = Channels.SignUpOutput)
+	@Bean(name = RoomboChannels.SIGN_UP_OUT)
 	MessageChannel channelSignUpOutput() {
-		return MessageChannels.direct(Channels.SignUpOutput).get();
+		return MessageChannels.direct(RoomboChannels.SIGN_UP_OUT).get();
 	}
 
-	@Bean(name = Channels.SignUpError)
+	@Bean(name = RoomboChannels.SIGN_UP_ERR)
 	MessageChannel channelSignUpError() {
 		return MessageChannels.direct().get();
 	}
 
-	@Bean(name = Channels.SignUpConfirmationAuto)
+	@Bean(name = RoomboChannels.SIGN_UP_CONFIRMATION_AUTO)
 	MessageChannel channel001() {
-		return MessageChannels.direct(Channels.SignUpConfirmationAuto).get();
+		return MessageChannels.direct(RoomboChannels.SIGN_UP_CONFIRMATION_AUTO).get();
 	}
 
-	@Bean(name = Channels.ReserveConfirmationAuto)
+	@Bean(name = RoomboChannels.RESERVE_CONFIRMATION_AUTO)
 	MessageChannel channelReserveConfirmationAuto() {
 		return MessageChannels.direct().get();
 	}
 
-	@Bean(name = Channels.ReserveConfirmationEmail)
+	@Bean(name = RoomboChannels.RESERVE_CONFIRMATION_EMAIL)
 	MessageChannel channelReserveConfirmationEmail() {
 		return MessageChannels.direct().get();
 	}
 
-	@Bean(name = Channels.AlertInput)
+	@Bean(name = RoomboChannels.ALERT_IN)
 	MessageChannel channelSystemNotification() {
 		return MessageChannels.publishSubscribe(executor()).get();
 	}
 
-	@Bean(name = Channels.SignUpConfirmationEmail)
+	@Bean(name = RoomboChannels.SIGN_UP_CONFIRMATION_EMAIL)
 	MessageChannel channel002() {
 		return MessageChannels.publishSubscribe(executor()).get();
 	}
