@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(InitializationOrder.Reserve)
+@Order(InitializationOrder.RESERVE)
 public class ReserveDataInitializer extends DataInitializer<Reserve> {
 
 	public ReserveDataInitializer(ReserveRepository repository) {

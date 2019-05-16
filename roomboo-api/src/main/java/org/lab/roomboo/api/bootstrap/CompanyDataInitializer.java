@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(InitializationOrder.Company)
+@Order(InitializationOrder.COMPANY)
 public class CompanyDataInitializer extends DataInitializer<Company> {
 
 	public CompanyDataInitializer(CompanyRepository repository) {

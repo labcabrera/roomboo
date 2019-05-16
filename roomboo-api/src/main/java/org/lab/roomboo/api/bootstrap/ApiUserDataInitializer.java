@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(InitializationOrder.ApiUser)
+@Order(InitializationOrder.API_USER)
 public class ApiUserDataInitializer extends DataInitializer<ApiUser> {
 
 	@Autowired

@@ -7,7 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(InitializationOrder.Room)
+@Order(InitializationOrder.ROOM)
 public class RoomDataInitializer extends DataInitializer<Room> {
 
 	public RoomDataInitializer(RoomRepository repository) {

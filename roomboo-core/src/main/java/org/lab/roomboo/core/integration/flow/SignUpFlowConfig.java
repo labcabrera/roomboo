@@ -2,13 +2,13 @@ package org.lab.roomboo.core.integration.flow;
 
 import java.time.LocalDateTime;
 
-import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.RoomboChannels;
 import org.lab.roomboo.core.integration.handler.PayloadValidatorHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenConfirmationHandler;
 import org.lab.roomboo.core.integration.handler.UserTokenGeneratorHandler;
 import org.lab.roomboo.core.integration.router.UserActivationRouter;
-import org.lab.roomboo.core.integration.transformer.UserActivationEmailTransformer;
 import org.lab.roomboo.core.integration.transformer.UserActivationAlertTransformer;
+import org.lab.roomboo.core.integration.transformer.UserActivationEmailTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterAlertTransformer;
 import org.lab.roomboo.core.integration.transformer.UserRegisterTransformer;
 import org.lab.roomboo.domain.model.AppUser;
@@ -51,9 +51,9 @@ public class SignUpFlowConfig {
 	private MongoTemplate mongoTemplate;
 
 	@Bean
-	IntegrationFlow userSignUpFlow() { //@formatter:off
+	IntegrationFlow userSignUpFlow() {
 		return IntegrationFlows
-			.from(Channels.SignUpInput)
+			.from(RoomboChannels.SIGN_UP_IN)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received sign-up message: " + m.getPayload())
 			.handle(validationHandler)
 			.transform(signUpUserTransformer)
@@ -66,15 +66,15 @@ public class SignUpFlowConfig {
 					.route(signUpConfimationRouter))
 				.subscribe(f -> f
 					.transform(alertSignUpTransformer)
-					.channel(Channels.AlertInput)))
-			.channel(Channels.SignUpOutput)
+					.channel(RoomboChannels.ALERT_IN)))
+			.channel(RoomboChannels.SIGN_UP_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowSignUpConfirmationAuto() { //@formatter:off
+	IntegrationFlow flowSignUpConfirmationAuto() {
 		return IntegrationFlows
-			.from(Channels.SignUpConfirmationAuto)
+			.from(RoomboChannels.SIGN_UP_CONFIRMATION_AUTO)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received auto-confirmation message: " + m.getPayload())
 			.handle(AppUser.class, (request, headers) -> {
 				request.setActivation(LocalDateTime.now());
@@ -82,44 +82,44 @@ public class SignUpFlowConfig {
 				return request;
 			})
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowSignUpConfirmationMail() { //@formatter:off
+	IntegrationFlow flowSignUpConfirmationMail() {
 		return IntegrationFlows
-			.from(Channels.SignUpConfirmationEmail)
+			.from(RoomboChannels.SIGN_UP_CONFIRMATION_EMAIL)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received email confirmation message: " + m.getPayload())
 			.handle(userActivationTokenHandler)
 			.transform(emailConfirmationTransformer)
-			.channel(Channels.EmailOutput)
+			.channel(RoomboChannels.EMAIL_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowUserNewTokenConfirmation() { //@formatter:off
+	IntegrationFlow flowUserNewTokenConfirmation() {
 		return IntegrationFlows
-			.from(Channels.UserNewTokenConfirmationInput)
+			.from(RoomboChannels.USER_NEW_TOKEN_CONFIRMATION_IN)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received new user token confirmation message: " + m.getPayload())
-			.transform((payload) -> mongoTemplate.findById(payload, AppUser.class))
+			.transform(payload -> mongoTemplate.findById(payload, AppUser.class))
 			.publishSubscribeChannel(c -> c.applySequence(false)
 				.subscribe(f -> f
 					.route(signUpConfimationRouter)))
-			.channel(Channels.UserNewTokenConfirmationOutput)
+			.channel(RoomboChannels.USER_NEW_TOKEN_CONFIRMATION_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 	@Bean
-	IntegrationFlow flowUserTokenConfirmation() { //@formatter:off
+	IntegrationFlow flowUserTokenConfirmation() {
 		return IntegrationFlows
-			.from(Channels.UserTokenConfirmationInput)
+			.from(RoomboChannels.USER_TOKEN_CONFIRMATION_IN)
 			.log(Level.INFO, SignUpFlowConfig.class.getName(), m -> "Received user token confirmation: " + m.getPayload())
 			.handle(userTokenConfirmationHandler)
 			.publishSubscribeChannel(c -> c.applySequence(false)
 				.subscribe(f -> f
 					.transform(userActivationAlertTransformer)
-					.channel(Channels.AlertInput)))
-			.channel(Channels.UserTokenConfirmationOutput)
+					.channel(RoomboChannels.ALERT_IN)))
+			.channel(RoomboChannels.USER_TOKEN_CONFIRMATION_OUT)
 			.get();
-	} //@formatter:on
+	}
 
 }

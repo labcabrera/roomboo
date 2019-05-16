@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.lab.roomboo.core.model.MailMessage;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.UserConfirmationToken;
 import org.lab.roomboo.domain.repository.UserConfirmationTokenRepository;
@@ -24,18 +25,19 @@ public class UserActivationEmailTransformer implements GenericTransformer<AppUse
 
 	@Override
 	public MailMessage transform(AppUser source) {
-		UserConfirmationToken token = repository.findByUserId(source.getId()).get();
+		UserConfirmationToken token = repository.findByUserId(source.getId())
+			.orElseThrow(() -> new EntityNotFoundException("Missing confirmation token"));
 		Context context = new Context(Locale.getDefault());
 		context.setVariable("user", source);
 		context.setVariable("token", token);
 
 		String htmlContent = templateEngine.process("mail-user-created", context);
 
-		return MailMessage.builder() //@formatter:off
+		return MailMessage.builder()
 			.subject("Roombo verification")
 			.body(htmlContent)
 			.recipients(Arrays.asList(source.getEmail()))
-			.build(); //@formatter:on
+			.build();
 	}
 
 }

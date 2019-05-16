@@ -13,7 +13,7 @@ public class MongoUserDetailService implements UserDetailsService {
 	private final ApiUserRepository apiUserRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) {
 		return apiUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
 	}
 

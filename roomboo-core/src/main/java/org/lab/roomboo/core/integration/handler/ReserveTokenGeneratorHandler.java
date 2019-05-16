@@ -30,11 +30,12 @@ public class ReserveTokenGeneratorHandler implements GenericHandler<Reserve> {
 
 	@Override
 	public Object handle(Reserve payload, MessageHeaders headers) {
-		ReserveConfirmationToken token = new ReserveConfirmationToken();
-		token.setCreated(LocalDateTime.now());
-		token.setExpiration(LocalDateTime.now().plusMinutes(tokenExpiration));
-		token.setReserve(payload);
-		token.setToken(tokenGenerator.generate());
+		ReserveConfirmationToken token = ReserveConfirmationToken.builder()
+			.created(LocalDateTime.now())
+			.expiration(LocalDateTime.now().plusMinutes(tokenExpiration))
+			.reserve(payload)
+			.token(tokenGenerator.generate())
+			.build();
 		tokenUriService.processUri(token);
 		tokenRepository.save(token);
 		return payload;

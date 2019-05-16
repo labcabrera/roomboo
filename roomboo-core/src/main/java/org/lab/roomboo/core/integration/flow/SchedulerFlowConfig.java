@@ -21,11 +21,11 @@ public class SchedulerFlowConfig {
 	private String cronTokenCleaner;
 
 	@Bean
-	IntegrationFlow flowTokenCleaner() { //@formatter:off
+	IntegrationFlow flowTokenCleaner() {
 		return IntegrationFlows
 			.from(() -> new GenericMessage<>(StringUtils.EMPTY), e -> e.poller(p -> p.cron(cronTokenCleaner)))
 			.handle(tokenCleanerHandler)
 			.get();
-	} //@formatter:on
+	}
 
 }

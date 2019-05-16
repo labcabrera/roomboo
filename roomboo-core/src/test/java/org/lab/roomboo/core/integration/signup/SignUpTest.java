@@ -20,12 +20,12 @@ public abstract class SignUpTest extends IntegrationTest {
 	protected AppUserRepository appUserRepository;
 
 	protected SignUpRequest getValidSignUpRequest(String companyId) {
-		return SignUpRequest.builder() //@formatter:off
+		return SignUpRequest.builder()
 			.email(getValidEmail(companyId))
 			.name("Luis")
 			.lastName("Cabrera")
 			.companyId(companyId)
-			.build(); //@formatter:on
+			.build();
 	}
 
 	private String getValidEmail(String companyId) {

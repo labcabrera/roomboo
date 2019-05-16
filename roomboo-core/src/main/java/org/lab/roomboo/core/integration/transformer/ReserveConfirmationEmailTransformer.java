@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import org.lab.roomboo.core.model.MailMessage;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Reserve;
 import org.lab.roomboo.domain.model.ReserveConfirmationToken;
@@ -29,8 +30,10 @@ public class ReserveConfirmationEmailTransformer implements GenericTransformer<R
 
 	@Override
 	public MailMessage transform(Reserve reserve) {
-		ReserveConfirmationToken token = repository.findByReserveId(reserve.getId()).get();
-		AppUser user = userRepository.findById(reserve.getUser().getId()).get();
+		ReserveConfirmationToken token = repository.findByReserveId(reserve.getId())
+			.orElseThrow(() -> new EntityNotFoundException("Missing confirmation token"));
+		AppUser user = userRepository.findById(reserve.getUser().getId())
+			.orElseThrow(() -> new EntityNotFoundException("Missing user token"));
 
 		Context context = new Context(Locale.getDefault());
 		context.setVariable("user", user);
@@ -39,11 +42,11 @@ public class ReserveConfirmationEmailTransformer implements GenericTransformer<R
 
 		String htmlContent = templateEngine.process("mail-reserve-created", context);
 
-		return MailMessage.builder() //@formatter:off
+		return MailMessage.builder()
 			.subject("Reserve confirmation")
 			.body(htmlContent)
 			.recipients(Arrays.asList(user.getEmail()))
-			.build(); //@formatter:on
+			.build();
 	}
 
 }

@@ -3,7 +3,8 @@ package org.lab.roomboo.core.integration.router;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.lab.roomboo.core.integration.Channels;
+import org.lab.roomboo.core.integration.RoomboChannels;
+import org.lab.roomboo.domain.exception.EntityNotFoundException;
 import org.lab.roomboo.domain.exception.RoombooException;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Company;
@@ -21,11 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserActivationRouter extends AbstractMessageRouter {
 
-	@Qualifier(Channels.SignUpConfirmationAuto)
+	@Qualifier(RoomboChannels.SIGN_UP_CONFIRMATION_AUTO)
 	@Autowired
 	private MessageChannel directConfirmationChannel;
 
-	@Qualifier(Channels.SignUpConfirmationEmail)
+	@Qualifier(RoomboChannels.SIGN_UP_CONFIRMATION_EMAIL)
 	@Autowired
 	private MessageChannel emailConfirmationChannel;
 
@@ -35,7 +36,8 @@ public class UserActivationRouter extends AbstractMessageRouter {
 	@Override
 	protected Collection<MessageChannel> determineTargetChannels(Message<?> message) {
 		AppUser user = (AppUser) message.getPayload();
-		Company company = companyRepository.findById(user.getCompany().getId()).get();
+		Company company = companyRepository.findById(user.getCompany().getId())
+			.orElseThrow(() -> new EntityNotFoundException("Missing company"));
 		switch (company.getSignUpActivationMode()) {
 		case AUTO:
 			log.debug("Routing to auto-confirmation channel");

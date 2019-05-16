@@ -25,10 +25,10 @@ public class UserTokenConfirmationHandler implements GenericHandler<String> {
 	@Override
 	public Object handle(String token, MessageHeaders headers) {
 		UserConfirmationToken tokenEntity = tokenRepository.findByToken(token)
-				.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_TOKEN));
+			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_TOKEN));
 		String userId = tokenEntity.getUser().getId();
 		AppUser user = repository.findById(userId)
-				.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_USER));
+			.orElseThrow(() -> new UserConfirmationException(ErrorType.INVALID_USER));
 		if (user.getActivation() != null) {
 			throw new UserConfirmationException(ErrorType.USER_ALREADY_ACTIVE);
 		}
