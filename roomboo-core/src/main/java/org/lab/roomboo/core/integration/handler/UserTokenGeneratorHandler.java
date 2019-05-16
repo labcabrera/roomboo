@@ -38,11 +38,12 @@ public class UserTokenGeneratorHandler implements GenericHandler<AppUser> {
 
 		tokenRepository.deleteByUserId(userId);
 
-		UserConfirmationToken token = new UserConfirmationToken();
-		token.setCreated(LocalDateTime.now());
-		token.setExpiration(LocalDateTime.now().plusMinutes(tokenExpiration));
-		token.setUser(payload);
-		token.setToken(tokenGenerator.generate());
+		UserConfirmationToken token = UserConfirmationToken.builder()
+			.created(LocalDateTime.now())
+			.expiration(LocalDateTime.now().plusMinutes(tokenExpiration))
+			.user(payload)
+			.token(tokenGenerator.generate())
+			.build();
 		tokenUriService.processUri(token);
 		tokenRepository.save(token);
 

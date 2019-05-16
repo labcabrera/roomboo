@@ -1,15 +1,14 @@
 package org.lab.roomboo.core;
 
-import org.lab.roomboo.domain.RoomboDomainConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 
 @Configuration
-@ComponentScan
 @IntegrationComponentScan
-@Import(RoomboDomainConfig.class)
+@ComponentScan({ "org.lab.roomboo.core"}) //, "org.lab.roomboo.domain.repository" })
+@EnableMongoRepositories("org.lab.roomboo.domain.repository")
 public class RoombooCoreConfig {
 
 }

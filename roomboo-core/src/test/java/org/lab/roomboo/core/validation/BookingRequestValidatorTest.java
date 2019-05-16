@@ -13,22 +13,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.lab.roomboo.core.model.BookingRequest;
 import org.lab.roomboo.core.service.ReserveService;
-import org.lab.roomboo.core.validation.BookingRequestValidatorTest.BookingRequestValidatorTestConfig;
 import org.lab.roomboo.domain.model.AppUser;
 import org.lab.roomboo.domain.model.Room;
 import org.lab.roomboo.domain.repository.AppUserRepository;
 import org.lab.roomboo.domain.repository.RoomRepository;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = BookingRequestValidatorTestConfig.class)
+@ContextConfiguration
 public class BookingRequestValidatorTest {
 
 	@Autowired
@@ -131,7 +131,6 @@ public class BookingRequestValidatorTest {
 	}
 
 	private BookingRequest buildEntity() {
-		//@formatter:off
 		return BookingRequest.builder()
 			.name("Reserve name")
 			.roomId("roomIdOk")
@@ -139,22 +138,22 @@ public class BookingRequestValidatorTest {
 			.from(LocalDateTime.parse("2020-01-01T10:00:00.000"))
 			.to(LocalDateTime.parse("2020-01-01T11:00:00.000"))
 			.build();
-		//@formatter:on
 	}
 
 	@Configuration
-	@EnableAutoConfiguration
 	public static class BookingRequestValidatorTestConfig {
+
+		@Bean
+		Validator validator() {
+			return new LocalValidatorFactoryBean();
+		}
 
 		@Bean
 		RoomRepository roomRepository() {
 			RoomRepository mock = Mockito.mock(RoomRepository.class);
-			//@formatter:off
-			Mockito.when(mock.findById("roomIdOk"))
-				.thenReturn(Optional.of(Room.builder().id("roomIdOk").build()));
+			Mockito.when(mock.findById("roomIdOk")).thenReturn(Optional.of(Room.builder().id("roomIdOk").build()));
 			Mockito.when(mock.findById("roomIdLocked"))
 				.thenReturn(Optional.of(Room.builder().id("roomIdLocked").locked(LocalDateTime.parse("2010-01-01T00:00:00.000")).build()));
-			//@formatter:on
 			return mock;
 		}
 
@@ -162,7 +161,6 @@ public class BookingRequestValidatorTest {
 		AppUserRepository appUserRepository() {
 			AppUserRepository mock = Mockito.mock(AppUserRepository.class);
 
-			//@formatter:off
 			AppUser userActive = AppUser.builder()
 				.id("userIdOk")
 				.email("test@roomboo.org")
@@ -188,7 +186,6 @@ public class BookingRequestValidatorTest {
 				.activation(LocalDateTime.parse("2010-01-01T00:00:00.000"))
 				.expiration(LocalDateTime.parse("2010-02-01T00:00:00.000"))
 				.build();
-			//@formatter:on
 
 			Mockito.when(mock.findById("userIdOk")).thenReturn(Optional.of(userActive));
 			Mockito.when(mock.findById("userNotActive")).thenReturn(Optional.of(userInactive));
@@ -207,6 +204,11 @@ public class BookingRequestValidatorTest {
 		@Bean
 		BookingRequestValidator bookingRequestValidator() {
 			return new BookingRequestValidator();
+		}
+
+		@Bean
+		MongoTemplate mongoTemplate() {
+			return Mockito.mock(MongoTemplate.class);
 		}
 
 	}

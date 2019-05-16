@@ -65,14 +65,14 @@ project(":roomboo-api") {
 	apply plugin: 'org.springframework.boot'
 	apply plugin: 'com.palantir.docker'
 	dependencies {
-		api(project(":roomboo-core"))
-		api(project(":roomboo-jwt"))
-		api('org.springframework.boot:spring-boot-starter-actuator')
-		api('org.springframework.boot:spring-boot-starter-hateoas')
-		api('org.springframework.boot:spring-boot-starter-web')
-		api("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
-		api("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
-		testCompile('org.springframework.boot:spring-boot-starter-test')
+		api project(":roomboo-core")
+		api project(":roomboo-jwt")
+		api 'org.springframework.boot:spring-boot-starter-actuator'
+		api 'org.springframework.boot:spring-boot-starter-hateoas'
+		api 'org.springframework.boot:spring-boot-starter-web'
+		api "io.springfox:springfox-swagger2:${springfoxSwaggerVersion}"
+		api "io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}"
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	}
 	springBoot {
 		buildInfo()
